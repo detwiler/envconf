@@ -1,0 +1,7 @@
+#! /bin/bash
+
+EDITOR=@EDITOR@
+
+GIT_EDITOR=${EDITOR}
+
+SVN_EDITOR=${EDITOR}

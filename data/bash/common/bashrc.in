@@ -1,0 +1,14 @@
+#! /bin/bash
+
+# bashrc: environment customizations
+
+# source aliases and shell options
+
+for file in $(command ls @pkgdatadir@/bashrc.d/*.sh); do
+
+  if [[ -r "${file}" ]]; then
+    source "${file}"
+  fi
+done
+
+unset file

@@ -1,0 +1,13 @@
+#! /bin/bash
+
+# profile: environment customizations
+
+# source environment variables 
+
+for file in $(command ls @pkgdatadir@/profile.d/*.sh); do
+  if [ -r "${file}" ]; then
+    source "${file}"
+  fi
+done
+
+unset file
