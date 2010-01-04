@@ -11,8 +11,12 @@ AM_INIT_AUTOMAKE([-Wall -Werror])
 AM_SILENT_RULES
 
 AC_CANONICAL_HOST
-# TODO make sure dist includes config.guess and config.sub
-# TODO take action for cygwin systems
+# cygwin systems
+AM_CONDITIONAL([HCCYGWIN],
+               [case "${host_os}" in
+                  *cygwin* ) true;;
+                         * ) false;;
+                esac])
 
 # Checks for programs.
 AC_PROG_INSTALL
@@ -58,6 +62,8 @@ AC_CONFIG_FILES([Makefile
                  data/bash/common/Makefile
                  data/bash/common/bashrc.d/Makefile
                  data/bash/common/profile.d/Makefile
+                 data/bash/cygwin/Makefile
+                 data/bash/cygwin/bashrc.d/Makefile
                  data/bash/umbc/Makefile
                  data/bash/umbc/profile.d/Makefile
                  data/dircolors/Makefile
