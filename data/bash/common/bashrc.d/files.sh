@@ -1,6 +1,4 @@
-#!/bin/bash
-
-# $Id$
+#! /bin/bash
 
 # Interactive operation...
 alias rm='rm -i'

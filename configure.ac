@@ -28,6 +28,25 @@ AC_CHECK_PROG([EDITOR], [vim], [vim], [vi])
 AC_CHECK_PROG([hcdircolors], [dircolors], [yes])
 AM_CONDITIONAL([HCDIRCOLORS], [test "x${hcdircolors}" = xyes])
 
+# TODO write custom m4 macro for this
+# admittedly we're not using portable bourne shell here, but we know we're bash
+AM_CONDITIONAL([MULTI_BASH], [(( $(type -ap bash | wc --lines) > 1 ))])
+AM_COND_IF([MULTI_BASH],
+           [for cmd in $(type -ap bash); do
+              if test -z ${max} || \
+                  test '$(${cmd} --version)' \> '$(${max} --version)'; then
+                max=${cmd}
+              fi
+            done
+            AC_SUBST([LATEST_BASH], [${max}])
+            AC_CONFIG_FILES([data/bash/common/bashrc.d/0-multi-bash-hack.sh])])
+
+AM_CONDITIONAL([HC_LSCOLOR], [ls --color &> /dev/null])
+AM_COND_IF([HC_LSCOLOR],
+           [LS_ALIASES=data/bash/common/bashrc.d/ls-color.aliases],
+           [LS_ALIASES=data/bash/common/bashrc.d/ls.aliases])
+AC_SUBST_FILE([LS_ALIASES])
+
 # Checks for libraries.
 
 # Checks for files.
@@ -50,19 +69,6 @@ AM_COND_IF([UMBC],
            ])
 AM_CONDITIONAL([UMBC_CADENCE], [test "x${umbc_cadence}" = xtrue])
 
-# TODO write custom m4 macro for this
-# admittedly we're not using portable bourne shell here, but we know we're bash
-AM_CONDITIONAL([MULTI_BASH], [(( $(type -ap bash | wc --lines) > 1 ))])
-AM_COND_IF([MULTI_BASH],
-           [for cmd in $(type -ap bash); do
-              if test -z ${max} || \
-                  test '$(${cmd} --version)' \> '$(${max} --version)'; then
-                max=${cmd}
-              fi
-            done
-            AC_SUBST([LATEST_BASH], [${max}])
-            AC_CONFIG_FILES([data/bash/common/bashrc.d/0-multi-bash-hack.sh])])
-
 # enable customization for root user
 AM_CONDITIONAL([HCROOT], [(( $(id -u) == 0 ))])
 AM_COND_IF([HCROOT], [user_color=31], [user_color=32])
@@ -79,6 +85,7 @@ AC_CONFIG_FILES([Makefile
                  data/bash/Makefile
                  data/bash/common/Makefile
                  data/bash/common/bashrc.d/Makefile
+                 data/bash/common/bashrc.d/ls.sh
                  data/bash/common/bashrc.d/ps1.sh
                  data/bash/common/profile.d/Makefile
                  data/bash/common/profile.d/editor.sh

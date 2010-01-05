@@ -2,11 +2,10 @@
 
 bashrcdir = $(pkgdatadir)/bashrc.d
 
-bashrc_DATA = ps1.sh
+bashrc_DATA = ls.sh \
+	      ps1.sh
 
 # CLEANFILES = $(bashrc_DATA)
-
-# EXTRA_DIST = dircolors.sh.in
 
 # edit = sed -e 's:@pkgdatadir[@]:$(pkgdatadir):g'
 
@@ -16,8 +15,6 @@ bashrc_DATA = ps1.sh
 dist_bashrc_DATA = ctags.sh \
 		   files.sh \
 		   functions.sh \
-		   java.sh \
-		   ls.sh \
 		   minicom.sh \
 		   misc.sh \
 		   mount.sh \
@@ -37,3 +34,6 @@ dist_bashrc_DATA = ctags.sh \
 if MULTI_BASH
 bashrc_DATA += 0-multi-bash-hack.sh
 endif
+
+EXTRA_DIST = ls.aliases \
+	     ls-color.aliases

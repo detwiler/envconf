@@ -1,6 +1,4 @@
-#!/bin/bash
-
-# $Id$
+#! /bin/bash
 
 # TODO make java tags
 

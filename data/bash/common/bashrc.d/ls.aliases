@@ -1,0 +1,4 @@
+alias ls='command ls -F'
+alias l.='command ls -dF .*'
+alias ll='command ls -lF'
+alias ll.='command ls -ldF .*'

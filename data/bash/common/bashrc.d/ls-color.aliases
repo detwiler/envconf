@@ -1,0 +1,7 @@
+alias ls='command ls --classify --color=auto'
+alias l.='command ls --directory --classify --color=auto .*'
+alias ll='command ls -l --classify --human-readable --color=auto'
+alias ll.='command ls -l --directory --classify --human-readable --color=auto .*'
+alias llz='command ls --classify --context --color=auto'
+alias dir='ls --color=auto --format=vertical'
+alias vdir='ls --color=auto --format=long'
