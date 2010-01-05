@@ -1,0 +1,21 @@
+#! /bin/bash
+
+# the old PS1="[\u@\h \W]\$ "
+
+# use a cygwin-style prompt
+
+# only do this in interactive shells
+echo $- | grep i &> /dev/null || return
+
+case "${TERM}" in
+
+  xterm | cygwin)
+    PS1='\[\e]0;\u@\h \w\a\]\n\[\e[@USER_COLOR@m\]\u@\h \[\e[33m\]\w\[\e[0m\]\n\$ ';;
+
+  linux)
+    PS1='\n\[\e[@USER_COLOR@m\]\u@\h \[\e[33m\]\w\[\e[0m\]\n\$ ';;
+
+  *) 
+    PS1='\n\u@\h \w\n\$ ';;
+
+esac

@@ -2,7 +2,7 @@
 
 bashrcdir = $(pkgdatadir)/bashrc.d
 
-# bashrc_DATA = dircolors.sh
+bashrc_DATA = ps1.sh
 
 # CLEANFILES = $(bashrc_DATA)
 
@@ -13,8 +13,7 @@ bashrcdir = $(pkgdatadir)/bashrc.d
 # dircolors.sh: dircolors.sh.in Makefile
 # $(edit) < $(srcdir)/dircolors.sh.in > dircolors.sh
 
-dist_bashrc_DATA = bash.sh \
-		   ctags.sh \
+dist_bashrc_DATA = ctags.sh \
 		   files.sh \
 		   functions.sh \
 		   java.sh \
@@ -36,5 +35,5 @@ dist_bashrc_DATA = bash.sh \
 		   yum.sh
 
 if MULTI_BASH
-bashrc_DATA = 0-multi-bash-hack.sh
+bashrc_DATA += 0-multi-bash-hack.sh
 endif

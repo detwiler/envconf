@@ -55,13 +55,18 @@ AM_CONDITIONAL([UMBC_CADENCE], [test "x${umbc_cadence}" = xtrue])
 AM_CONDITIONAL([MULTI_BASH], [(( $(type -ap bash | wc --lines) > 1 ))])
 AM_COND_IF([MULTI_BASH],
            [for cmd in $(type -ap bash); do
-              if test -z ${max} -o \
-                  "`${cmd} --version`" > "`${max} --version`"; then
+              if test -z ${max} || \
+                  test '$(${cmd} --version)' \> '$(${max} --version)'; then
                 max=${cmd}
               fi
             done
             AC_SUBST([LATEST_BASH], [${max}])
             AC_CONFIG_FILES([data/bash/common/bashrc.d/0-multi-bash-hack.sh])])
+
+# enable customization for root user
+AM_CONDITIONAL([HCROOT], [(( $(id -u) == 0 ))])
+AM_COND_IF([HCROOT], [user_color=31], [user_color=32])
+AC_SUBST([USER_COLOR], [${user_color}])
 
 # Checks for header files.
 
@@ -74,6 +79,7 @@ AC_CONFIG_FILES([Makefile
                  data/bash/Makefile
                  data/bash/common/Makefile
                  data/bash/common/bashrc.d/Makefile
+                 data/bash/common/bashrc.d/ps1.sh
                  data/bash/common/profile.d/Makefile
                  data/bash/common/profile.d/editor.sh
                  data/bash/cygwin/Makefile
