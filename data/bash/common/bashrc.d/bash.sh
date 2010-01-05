@@ -1,6 +1,4 @@
-#!/bin/bash
-
-# $Id$
+#! /bin/bash
 
 # the old PS1="[\u@\h \W]\$ "
 

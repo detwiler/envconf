@@ -13,4 +13,4 @@ bashrcdir = $(pkgdatadir)/bashrc.d
 # dircolors.sh: dircolors.sh.in Makefile
 # $(edit) < $(srcdir)/dircolors.sh.in > dircolors.sh
 
-dist_bashrc_DATA = bash-completion.sh
+dist_bashrc_DATA = cygwin-bash-completion.sh

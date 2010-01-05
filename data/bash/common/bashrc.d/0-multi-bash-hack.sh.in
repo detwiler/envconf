@@ -1,0 +1,10 @@
+#! /bin/bash
+
+# hack to force use of most recent version of bash
+
+# only do this in interactive shells
+echo $- | grep i &> /dev/null || return
+
+LATEST_BASH=@LATEST_BASH@
+
+[[ ${BASH} == ${LATEST_BASH} ]] || ${LATEST_BASH} --login

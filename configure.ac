@@ -50,6 +50,19 @@ AM_COND_IF([UMBC],
            ])
 AM_CONDITIONAL([UMBC_CADENCE], [test "x${umbc_cadence}" = xtrue])
 
+# TODO write custom m4 macro for this
+# admittedly we're not using portable bourne shell here, but we know we're bash
+AM_CONDITIONAL([MULTI_BASH], [(( $(type -ap bash | wc --lines) > 1 ))])
+AM_COND_IF([MULTI_BASH],
+           [for cmd in $(type -ap bash); do
+              if test -z ${max} -o \
+                  "$(${cmd} --version)" > "$(${max} --version)"; then
+                max=${cmd}
+              fi
+            done
+            AC_SUBST([LATEST_BASH], [${max}])
+            AC_CONFIG_FILES([data/bash/common/bashrc.d/0-multi-bash-hack.sh])])
+
 # Checks for header files.
 
 # Checks for typedefs, structures, and compiler characteristics.
@@ -62,6 +75,7 @@ AC_CONFIG_FILES([Makefile
                  data/bash/common/Makefile
                  data/bash/common/bashrc.d/Makefile
                  data/bash/common/profile.d/Makefile
+                 data/bash/common/profile.d/editor.sh
                  data/bash/cygwin/Makefile
                  data/bash/cygwin/bashrc.d/Makefile
                  data/bash/umbc/Makefile

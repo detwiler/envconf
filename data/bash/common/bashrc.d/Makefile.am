@@ -34,3 +34,7 @@ dist_bashrc_DATA = bash.sh \
 		   svn.sh \
 		   vim.sh \
 		   yum.sh
+
+if MULTI_BASH
+bashrc_DATA = 0-multi-bash-hack.sh
+endif
