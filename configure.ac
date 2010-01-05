@@ -56,7 +56,7 @@ AM_CONDITIONAL([MULTI_BASH], [(( $(type -ap bash | wc --lines) > 1 ))])
 AM_COND_IF([MULTI_BASH],
            [for cmd in $(type -ap bash); do
               if test -z ${max} -o \
-                  "$(${cmd} --version)" > "$(${max} --version)"; then
+                  "`${cmd} --version`" > "`${max} --version`"; then
                 max=${cmd}
               fi
             done

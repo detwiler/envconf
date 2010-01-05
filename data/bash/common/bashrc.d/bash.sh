@@ -5,6 +5,12 @@
 # moved this setting here because it wasn't working without TERM defined
 # use a cygwin-style prompt
 
+# TODO move to ps1.sh.in
+# TODO configure color based on root or not
+
+# only do this in interactive shells
+echo $- | grep i &> /dev/null || return
+
 case "${TERM}" in
 
   xterm | cygwin)
@@ -17,19 +23,3 @@ case "${TERM}" in
     PS1='\n\u@\h \w\n\$ ';;
 
 esac
-
-# hack to force us to use the most recent version of bash
-if (( $(type -ap bash | wc --lines) > 1 )); then
-
-  for cmd in $(type -ap bash); do
-
-    if [[ -z ${max} || ("$(${cmd} --version)" > "$(${max} --version)") ]]; then
-      max="${cmd}"
-    fi
-  done
-
-  alias bash="${max}"
-
-  unset cmd
-  unset max
-fi
