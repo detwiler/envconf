@@ -1,11 +1,9 @@
-#!/bin/bash
-
-# $Id$
+#! /bin/bash
 
 minicom_dir="/etc"
 log_dir="/tmp"
 
-# need this set for shell pattern below to work
+# this needs to be set for shell pattern below to work
 shopt -s extglob
 
 for file in $(command ls ${minicom_dir}/minirc.!(dfl) 2> /dev/null); do

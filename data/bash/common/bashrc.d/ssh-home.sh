@@ -1,11 +1,6 @@
-#!/bin/bash
-
-# $Id$
+#! /bin/bash
 
 # home accounts
 
-alias wolverine='ssh -X -l mike detnet.us'
-alias wolverinesftp='sftp mike@detnet.us'
-
-alias wolf='ssh -X -l mike wolf'
-alias wolfsftp='sftp mike@wolf'
+alias wolverine='ssh -X -l detwiler detnet.us'
+alias wolf='ssh -X -l detwiler wolf'

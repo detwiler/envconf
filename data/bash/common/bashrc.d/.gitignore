@@ -1,5 +1,6 @@
 # .gitignore
 
 # generated data files
+grep.sh
 ls.sh
 ps1.sh

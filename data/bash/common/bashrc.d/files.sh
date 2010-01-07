@@ -13,4 +13,3 @@ alias du='du -h'
 alias di='dirs -v'
 alias pu='pushd'
 alias po='popd'
-

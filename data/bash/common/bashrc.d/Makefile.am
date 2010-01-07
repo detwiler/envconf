@@ -17,22 +17,29 @@ dist_bashrc_DATA = ctags.sh \
 		   functions.sh \
 		   minicom.sh \
 		   misc.sh \
-		   mount.sh \
 		   set.sh \
 		   shopt.sh \
-		   ssh-digidata.sh \
-		   ssh-home.sh \
-		   ssh-umbc.sh \
-		   ssh-umd-cs.sh \
-		   ssh-umd.sh \
-		   ssh-umiacs-local.sh \
-		   ssh-umiacs.sh \
 		   svn.sh \
-		   vim.sh \
-		   yum.sh
+		   vim.sh
+
+if SSH_HOSTS
+dist_bashrc_DATA += ssh-home.sh \
+		    ssh-umbc.sh \
+		    ssh-umd-cs.sh \
+		    ssh-umiacs.sh
+
+if UMIACS_HOST
+dist_bashrc_DATA += ssh-umiacs-local.sh
+endif UMIACS_HOST
+
+endif SSH_HOSTS
 
 if MULTI_BASH
 bashrc_DATA += 0-multi-bash-hack.sh
+endif
+
+if HCGREP_COLOR
+bashrc_DATA += grep.sh
 endif
 
 EXTRA_DIST = ls.aliases \

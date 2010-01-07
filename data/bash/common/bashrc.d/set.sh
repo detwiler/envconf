@@ -1,6 +1,4 @@
-#!/bin/bash
-
-# $Id$
+#! /bin/bash
 
 # shell options
 
@@ -12,4 +10,3 @@ set -o ignoreeof
 
 # Don't wait for job termination notification
 # set -o notify
-

@@ -28,7 +28,17 @@ AC_CHECK_PROG([EDITOR], [vim], [vim], [vi])
 AC_CHECK_PROG([hcdircolors], [dircolors], [yes])
 AM_CONDITIONAL([HCDIRCOLORS], [test "x${hcdircolors}" = xyes])
 
-# TODO write custom m4 macro for this
+AC_PATH_PROGS_FEATURE_CHECK([GREP_COLOR], [grep],
+    [if echo color | ${ac_path_GREP_COLOR} --color color &> /dev/null; then
+       ac_cv_path_GREP_COLOR=${ac_path_GREP_COLOR}
+       ac_path_GREP_COLOR_found=:
+     fi])
+AM_CONDITIONAL([HCGREP_COLOR], [test -n ${ac_cv_path_GREP_COLOR}])
+AM_COND_IF([HCGREP_COLOR],
+           [AC_SUBST([GREP_COLOR], [${ac_cv_path_GREP_COLOR}])
+            AC_CONFIG_FILES([data/bash/common/bashrc.d/grep.sh])])
+
+# TODO write custom m4 macro for this, or AC_PATH_PROGS_FEATURE_CHECK?
 # admittedly we're not using portable bourne shell here, but we know we're bash
 AM_CONDITIONAL([MULTI_BASH], [(( $(type -ap bash | wc --lines) > 1 ))])
 AM_COND_IF([MULTI_BASH],
@@ -40,6 +50,9 @@ AM_COND_IF([MULTI_BASH],
             done
             AC_SUBST([LATEST_BASH], [${max}])
             AC_CONFIG_FILES([data/bash/common/bashrc.d/0-multi-bash-hack.sh])])
+
+# TODO multi-svn-hack
+# TODO multi-vim-hack
 
 AM_CONDITIONAL([HC_LSCOLOR], [ls --color &> /dev/null])
 AM_COND_IF([HC_LSCOLOR],
@@ -74,11 +87,28 @@ AM_CONDITIONAL([HCROOT], [(( $(id -u) == 0 ))])
 AM_COND_IF([HCROOT], [user_color=31], [user_color=32])
 AC_SUBST([USER_COLOR], [${user_color}])
 
+# umiacs 
+AM_CONDITIONAL([UMIACS_HOST], [hostname | grep umiacs &> /dev/null])
+
 # Checks for header files.
 
 # Checks for typedefs, structures, and compiler characteristics.
 
 # Checks for library functions.
+
+# Additional options
+
+# option to conditionally include ssh hosts
+AC_ARG_ENABLE([ssh-hosts],
+              [AS_HELP_STRING([--enable-ssh-hosts],
+                              [enable ssh hosts (default no)])],
+              [case "${enableval}" in
+                 yes) ssh_hosts="true" ;;
+                 no) ssh_hosts="false" ;;
+                 *) AC_MSG_ERROR(
+                      [bad value ${enableval} for --enable-ssh-hosts]) ;;
+              esac], [ssh_hosts="false"])
+AM_CONDITIONAL([SSH_HOSTS], [test "x${ssh_hosts}" = xtrue])
 
 AC_CONFIG_FILES([Makefile
                  data/Makefile

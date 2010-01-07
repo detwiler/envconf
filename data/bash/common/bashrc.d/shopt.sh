@@ -1,6 +1,4 @@
-#!/bin/bash
-
-# $Id$
+#! /bin/bash
 
 # shopt shell options
 
@@ -16,4 +14,3 @@ shopt -s extglob
 
 # Make bash append rather than overwrite the history on disk
 shopt -s histappend
-
