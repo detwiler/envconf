@@ -5,3 +5,5 @@
 grep.sh
 ls.sh
 ps1.sh
+svn.sh
+vim.sh

@@ -1,0 +1,5 @@
+#! /bin/bash
+
+# hack to force us to use the most recent version of vim
+
+alias vim="@LATEST_VIM@" 

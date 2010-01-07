@@ -51,8 +51,27 @@ AM_COND_IF([MULTI_BASH],
             AC_SUBST([LATEST_BASH], [${max}])
             AC_CONFIG_FILES([data/bash/common/bashrc.d/0-multi-bash-hack.sh])])
 
-# TODO multi-svn-hack
-# TODO multi-vim-hack
+AM_CONDITIONAL([MULTI_SVN], [(( $(type -ap svn | wc --lines) > 1 ))])
+AM_COND_IF([MULTI_SVN],
+           [for cmd in $(type -ap svn); do
+              if test -z ${max} || \
+                  test '$(${cmd} --version)' \> '$(${max} --version)'; then
+                max=${cmd}
+              fi
+            done
+            AC_SUBST([LATEST_SVN], [${max}])
+            AC_CONFIG_FILES([data/bash/common/bashrc.d/svn.sh])])
+
+AM_CONDITIONAL([MULTI_VIM], [(( $(type -ap vim | wc --lines) > 1 ))])
+AM_COND_IF([MULTI_VIM],
+           [for cmd in $(type -ap vim); do
+              if test -z ${max} || \
+                  test '$(${cmd} --version)' \> '$(${max} --version)'; then
+                max=${cmd}
+              fi
+            done
+            AC_SUBST([LATEST_VIM], [${max}])
+            AC_CONFIG_FILES([data/bash/common/bashrc.d/vim.sh])])
 
 AM_CONDITIONAL([HC_LSCOLOR], [ls --color &> /dev/null])
 AM_COND_IF([HC_LSCOLOR],
