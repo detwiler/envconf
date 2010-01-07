@@ -43,34 +43,34 @@ AM_COND_IF([HCGREP_COLOR],
 AM_CONDITIONAL([MULTI_BASH], [(( $(type -ap bash | wc --lines) > 1 ))])
 AM_COND_IF([MULTI_BASH],
            [for cmd in $(type -ap bash); do
-              if test -z ${max} || \
-                  test '$(${cmd} --version)' \> '$(${max} --version)'; then
-                max=${cmd}
+              if test -z ${maxbash} || \
+                  test '$(${cmd} --version)' \> '$(${maxbash} --version)'; then
+                maxbash=${cmd}
               fi
             done
-            AC_SUBST([LATEST_BASH], [${max}])
+            AC_SUBST([LATEST_BASH], [${maxbash}])
             AC_CONFIG_FILES([data/bash/common/bashrc.d/0-multi-bash-hack.sh])])
 
 AM_CONDITIONAL([MULTI_SVN], [(( $(type -ap svn | wc --lines) > 1 ))])
 AM_COND_IF([MULTI_SVN],
            [for cmd in $(type -ap svn); do
-              if test -z ${max} || \
-                  test '$(${cmd} --version)' \> '$(${max} --version)'; then
-                max=${cmd}
+              if test -z ${maxsvn} || \
+                  test '$(${cmd} --version)' \> '$(${maxsvn} --version)'; then
+                maxsvn=${cmd}
               fi
             done
-            AC_SUBST([LATEST_SVN], [${max}])
+            AC_SUBST([LATEST_SVN], [${maxsvn}])
             AC_CONFIG_FILES([data/bash/common/bashrc.d/svn.sh])])
 
 AM_CONDITIONAL([MULTI_VIM], [(( $(type -ap vim | wc --lines) > 1 ))])
 AM_COND_IF([MULTI_VIM],
            [for cmd in $(type -ap vim); do
-              if test -z ${max} || \
-                  test '$(${cmd} --version)' \> '$(${max} --version)'; then
-                max=${cmd}
+              if test -z ${maxvim} || \
+                  test '$(${cmd} --version)' \> '$(${maxvim} --version)'; then
+                maxvim=${cmd}
               fi
             done
-            AC_SUBST([LATEST_VIM], [${max}])
+            AC_SUBST([LATEST_VIM], [${maxvim}])
             AC_CONFIG_FILES([data/bash/common/bashrc.d/vim.sh])])
 
 AM_CONDITIONAL([HC_LSCOLOR], [ls --color &> /dev/null])
