@@ -1,6 +1,7 @@
 # .gitignore
 
 # generated data files
+0-multi-bash-hack.sh
 grep.sh
 ls.sh
 ps1.sh
