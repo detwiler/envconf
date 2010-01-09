@@ -41,5 +41,9 @@ endif UMIACS_HOST
 
 endif SSH_HOSTS
 
+if VI_ALIAS
+dist_bashrc_DATA += vi.sh
+endif VI_ALIAS
+
 EXTRA_DIST = ls.aliases \
 	     ls-color.aliases

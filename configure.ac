@@ -24,6 +24,7 @@ AC_PROG_SED
 
 AC_ARG_VAR([EDITOR], [default text editor])
 AC_CHECK_PROG([EDITOR], [vim], [vim], [vi])
+AM_CONDITIONAL([VI_ALIAS], [test "x${EDITOR}" = xvim])
 
 AC_CHECK_PROG([hcdircolors], [dircolors], [yes])
 AM_CONDITIONAL([HCDIRCOLORS], [test "x${hcdircolors}" = xyes])
