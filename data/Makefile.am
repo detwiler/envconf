@@ -1,6 +1,7 @@
 # Makefile.am
 
-SUBDIRS = bash
+SUBDIRS = bash \
+	  readline
 
 if HCDIRCOLORS
 SUBDIRS += dircolors

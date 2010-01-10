@@ -130,6 +130,12 @@ AC_ARG_ENABLE([ssh-hosts],
               esac], [ssh_hosts="false"])
 AM_CONDITIONAL([SSH_HOSTS], [test "x${ssh_hosts}" = xtrue])
 
+AC_SUBST([homedir], [${HOME}])
+AC_SUBST([bashrcdir], ["\$(pkgdatadir)/bashrc.d"])
+AC_SUBST([profiledir], ["\$(pkgdatadir)/profile.d"])
+
+AM_CONDITIONAL([HCREADLINE], [test "x${INPUTRC}" != x])
+
 AC_CONFIG_FILES([Makefile
                  data/Makefile
                  data/bash/Makefile
@@ -144,6 +150,7 @@ AC_CONFIG_FILES([Makefile
                  data/bash/umbc/Makefile
                  data/bash/umbc/profile.d/Makefile
                  data/dircolors/Makefile
+                 data/readline/Makefile
                  ])
 
 AC_OUTPUT

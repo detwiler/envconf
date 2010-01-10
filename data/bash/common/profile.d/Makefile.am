@@ -1,7 +1,5 @@
 # Makefile.am
 
-profiledir = $(pkgdatadir)/profile.d
-
 profile_DATA = editor.sh
 
 dist_profile_DATA = bash-completion.sh \

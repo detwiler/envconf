@@ -2,8 +2,6 @@
 
 dist_pkgdata_DATA = dircolors
 
-profiledir = $(pkgdatadir)/profile.d
-
 profile_DATA = dircolors.sh
 
 CLEANFILES = $(profile_DATA)

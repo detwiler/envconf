@@ -1,0 +1,46 @@
+# .inputrc
+# vim: set filetype=readline :
+
+# bash readline customizations
+
+# readline variable settings
+#
+#set meta-flag on
+#set convert-meta off
+#set input-meta on
+#set output-meta on
+
+$if Bash
+  # Don't ring bell on completion
+  #set bell-style none
+
+  # or, don't beep at me - show me
+  set bell-style visible
+
+  # Filename completion/expansion
+  set completion-ignore-case on
+  set show-all-if-ambiguous on
+
+  # Expand homedir name
+  set expand-tilde on
+
+  # Append "/" to all dirnames
+  set mark-directories on
+  set mark-symlinked-directories on
+
+  # Match all files
+  #set match-hidden-files on
+
+  # Use an internal more-like pager to display a screenful of possible
+  # completions at a time.
+  set page-completions on
+
+  # A character denoting a file's type as reported by stat(2) is appended to
+  # the filename when listing possible completions.
+  set visible-stats on
+
+  # 'Magic Space'
+  # Insert a space character then performs
+  # a history expansion in the line
+  Space: magic-space
+$endif

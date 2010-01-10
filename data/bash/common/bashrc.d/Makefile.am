@@ -1,7 +1,5 @@
 # Makefile.am
 
-bashrcdir = $(pkgdatadir)/bashrc.d
-
 bashrc_DATA = ls.sh \
 	      ps1.sh
 
