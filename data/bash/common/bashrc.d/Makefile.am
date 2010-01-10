@@ -15,9 +15,15 @@ if MULTI_VIM
 bashrc_DATA += vim.sh
 endif
 
-if HCGREP_COLOR
+if HAVE_GREP_COLOR
 bashrc_DATA += grep.sh
 endif
+
+if PROXY_CHECK
+if HAVE_WGET
+bashrc_DATA += proxy.sh
+endif HAVE_WGET
+endif PROXY_CHECK
 
 dist_bashrc_DATA = ctags.sh \
 		   files.sh \
@@ -42,6 +48,8 @@ endif SSH_HOSTS
 if VI_ALIAS
 dist_bashrc_DATA += vi.sh
 endif VI_ALIAS
+
+DISTCLEANFILES = $(bashrc_DATA)
 
 EXTRA_DIST = ls.aliases \
 	     ls-color.aliases

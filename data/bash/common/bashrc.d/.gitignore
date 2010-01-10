@@ -4,6 +4,7 @@
 0-multi-bash-hack.sh
 grep.sh
 ls.sh
+proxy.sh
 ps1.sh
 svn.sh
 vim.sh

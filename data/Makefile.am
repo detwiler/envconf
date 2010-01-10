@@ -3,6 +3,6 @@
 SUBDIRS = bash \
 	  readline
 
-if HCDIRCOLORS
+if HAVE_DIRCOLORS
 SUBDIRS += dircolors
 endif

@@ -1,0 +1,16 @@
+#! /bin/bash
+
+# Source global definitions
+if [ -f /etc/bashrc ]; then
+  source /etc/bashrc
+fi
+
+# User specific aliases and functions
+
+if [ -f "@pkgdatadir@/functions" ]; then
+  source "@pkgdatadir@/functions"
+fi
+
+if [ -f "@pkgdatadir@/bashrc" ]; then
+  source "@pkgdatadir@/bashrc"
+fi

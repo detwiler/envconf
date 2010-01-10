@@ -1,0 +1,18 @@
+#! /bin/bash
+
+function proxy_check()
+{
+  read -p "proxy username: " proxy_user
+  read -sp "proxy password: " proxy_passwd
+  echo
+
+  if @WGET@ --proxy-user="${proxy_user}" \
+    --proxy-password="${proxy_passwd}" --spider http://google.com &> /dev/null;
+  then
+    export proxy_user proxy_passwd
+  else
+    echo "Invalid proxy username and password combination!"
+    unset proxy_user proxy_passwd
+    return 1
+  fi
+} # proxy_check

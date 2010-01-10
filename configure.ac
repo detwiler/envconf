@@ -26,18 +26,28 @@ AC_ARG_VAR([EDITOR], [default text editor])
 AC_CHECK_PROG([EDITOR], [vim], [vim], [vi])
 AM_CONDITIONAL([VI_ALIAS], [test "x${EDITOR}" = xvim])
 
-AC_CHECK_PROG([hcdircolors], [dircolors], [yes])
-AM_CONDITIONAL([HCDIRCOLORS], [test "x${hcdircolors}" = xyes])
+AC_CHECK_PROG([have_dircolors], [dircolors], [yes])
+AM_CONDITIONAL([HAVE_DIRCOLORS], [test "x${have_dircolors}" = xyes])
+
+AC_ARG_VAR([WGET], [path to wget])
+AC_PATH_PROG([WGET], [wget])
+AM_CONDITIONAL([HAVE_WGET], [test "x${WGET}" != x])
 
 AC_PATH_PROGS_FEATURE_CHECK([GREP_COLOR], [grep],
     [if echo color | ${ac_path_GREP_COLOR} --color color &> /dev/null; then
        ac_cv_path_GREP_COLOR=${ac_path_GREP_COLOR}
        ac_path_GREP_COLOR_found=:
      fi])
-AM_CONDITIONAL([HCGREP_COLOR], [test -n ${ac_cv_path_GREP_COLOR}])
-AM_COND_IF([HCGREP_COLOR],
+AM_CONDITIONAL([HAVE_GREP_COLOR], [test -n ${ac_cv_path_GREP_COLOR}])
+AM_COND_IF([HAVE_GREP_COLOR],
            [AC_SUBST([GREP_COLOR], [${ac_cv_path_GREP_COLOR}])
             AC_CONFIG_FILES([data/bash/common/bashrc.d/grep.sh])])
+
+AC_ARG_VAR([EGREP], [path to egrep])
+AC_PATH_PROG([EGREP], [egrep])
+AM_CONDITIONAL([HAVE_EGREP], [test "x${EGREP}" != x])
+AM_COND_IF([HAVE_EGREP],
+           [AC_CONFIG_FILES([data/bash/common/functions])])
 
 # TODO write custom m4 macro for this, or AC_PATH_PROGS_FEATURE_CHECK?
 # admittedly we're not using portable bourne shell here, but we know we're bash
@@ -130,7 +140,22 @@ AC_ARG_ENABLE([ssh-hosts],
               esac], [ssh_hosts="false"])
 AM_CONDITIONAL([SSH_HOSTS], [test "x${ssh_hosts}" = xtrue])
 
-AC_SUBST([homedir], [${HOME}])
+# option to enable proxy check
+AC_ARG_ENABLE([proxy-check],
+              [AS_HELP_STRING([--enable-proxy-check],
+                              [enable proxy check (default no)])],
+              [case "${enableval}" in
+                 yes) proxy_check="true" ;;
+                 no) proxy_check="false" ;;
+                 *) AC_MSG_ERROR(
+                      [bad value ${enableval} for --enable-proxy-check]) ;;
+              esac], [proxy_check="false"])
+AM_CONDITIONAL([PROXY_CHECK], [test "x${proxy_check}" = xtrue])
+AM_COND_IF([PROXY_CHECK], [AM_COND_IF([HAVE_WGET],
+           [AC_CONFIG_FILES([data/bash/common/bashrc.d/proxy.sh])],
+           [AC_MSG_ERROR([must have wget for --enable-proxy-check])])])
+
+AC_SUBST([homedir], [${HOME}/hctest])
 AC_SUBST([bashrcdir], ["\$(pkgdatadir)/bashrc.d"])
 AC_SUBST([profiledir], ["\$(pkgdatadir)/profile.d"])
 

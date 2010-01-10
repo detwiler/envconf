@@ -1,0 +1,19 @@
+#! /bin/bash
+
+# source the system wide bashrc if it exists
+if [ -f /etc/bash.bashrc ] ; then
+  source /etc/bash.bashrc
+fi
+
+# source the users bashrc if it exists
+if [ -f "${HOME}/.bashrc" ] ; then
+  source "${HOME}/.bashrc"
+fi
+
+# Set PATH so it includes user's private bin if it exists
+pathmung @bindir@
+
+# source customizations
+if [ -f "@pkgdatadir@/profile" ]; then
+  source "@pkgdatadir@/profile"
+fi
