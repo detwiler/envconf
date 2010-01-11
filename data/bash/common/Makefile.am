@@ -20,7 +20,9 @@ EXTRA_DIST = .bash_profile.in \
 
 edit = $(SED) \
        -e 's:@bindir[@]:$(bindir):g' \
-       -e 's:@pkgdatadir[@]:$(pkgdatadir):g'
+       -e 's:@pkgdatadir[@]:$(pkgdatadir):g' \
+       -e 's:@bashrcdir[@]:$(bashrcdir):g' \
+       -e 's:@profiledir[@]:$(profiledir):g'
 
 .bash_profile: .bash_profile.in Makefile
 	$(edit) < $(srcdir)/.bash_profile.in > .bash_profile

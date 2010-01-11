@@ -45,9 +45,9 @@ endif UMIACS_HOST
 
 endif SSH_HOSTS
 
-if VI_ALIAS
+if HAVE_VIM
 dist_bashrc_DATA += vi.sh
-endif VI_ALIAS
+endif HAVE_VIM
 
 DISTCLEANFILES = $(bashrc_DATA)
 

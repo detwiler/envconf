@@ -21,10 +21,11 @@ AM_CONDITIONAL([HCCYGWIN],
 # Checks for programs.
 AC_PROG_INSTALL
 AC_PROG_SED
+AM_CONDITIONAL([HAVE_SED], [test "x${SED}" != x])
 
 AC_ARG_VAR([EDITOR], [default text editor])
 AC_CHECK_PROG([EDITOR], [vim], [vim], [vi])
-AM_CONDITIONAL([VI_ALIAS], [test "x${EDITOR}" = xvim])
+AM_CONDITIONAL([HAVE_VIM], [test "x${EDITOR}" = xvim])
 
 AC_CHECK_PROG([have_dircolors], [dircolors], [yes])
 AM_CONDITIONAL([HAVE_DIRCOLORS], [test "x${have_dircolors}" = xyes])
@@ -158,6 +159,8 @@ AM_COND_IF([PROXY_CHECK], [AM_COND_IF([HAVE_WGET],
 AC_SUBST([homedir], [${HOME}/hctest])
 AC_SUBST([bashrcdir], ["\$(pkgdatadir)/bashrc.d"])
 AC_SUBST([profiledir], ["\$(pkgdatadir)/profile.d"])
+AC_SUBST([seddatadir], ["\$(pkgdatadir)/sed"])
+AC_SUBST([vimdatadir], ["\$(pkgdatadir)/vim"])
 
 AM_CONDITIONAL([HCREADLINE], [test "x${INPUTRC}" != x])
 
@@ -176,6 +179,9 @@ AC_CONFIG_FILES([Makefile
                  data/bash/umbc/profile.d/Makefile
                  data/dircolors/Makefile
                  data/readline/Makefile
+                 scripts/Makefile
+                 scripts/sed/Makefile
+                 scripts/vim/Makefile
                  ])
 
 AC_OUTPUT

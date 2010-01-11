@@ -4,7 +4,7 @@
 
 # source environment variables 
 
-for file in $(command ls @pkgdatadir@/profile.d/*.sh); do
+for file in $(command ls @profiledir@/*.sh); do
   if [ -r "${file}" ]; then
     source "${file}"
   fi

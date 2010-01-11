@@ -1,5 +1,6 @@
 # Makefile.am
 
-SUBDIRS = data
+SUBDIRS = data \
+	  scripts
 
 ACLOCAL_AMFLAGS = -I m4

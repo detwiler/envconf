@@ -1,0 +1,13 @@
+#! /bin/bash
+
+# replace spaces with hyphens in filename arguments
+
+for filename in "${@}"; do
+
+  newname="${filename// /-}" # replace all spaces with hyphens
+
+  if [[ "${filename}" != "${newname}" ]]; then
+    mv --verbose "${filename}" "${newname}"
+  fi
+
+done

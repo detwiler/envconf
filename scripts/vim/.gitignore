@@ -1,0 +1,5 @@
+# .gitignore
+
+# generated data files
+beautify
+kr2allman
