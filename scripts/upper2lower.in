@@ -1,18 +1,12 @@
 #! /bin/bash
 
-cygwin_os="Cygwin"
-
-os=$(uname --operating-system)
-
 for filename in "$@"; do
   lcasename=$(echo ${filename} | tr [:upper:] [:lower:])
 
-  # windows is case insensitive so we need to play games
-  if [[ "${os}" == "${cygwin_os}" ]]; then
-    tempfile=$(mktemp)
-    mv --force ${filename} ${tempfile}
-    mv --force ${tempfile} ${lcasename}
-  else
-    mv --force ${filename} ${lcasename}
+  if [[ "${filename}" != "${lcasename}" ]]; then
+
+    @UPPER2LOWER@
+
   fi
+
 done

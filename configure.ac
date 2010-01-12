@@ -17,6 +17,10 @@ AM_CONDITIONAL([HCCYGWIN],
                   *cygwin* ) true;;
                          * ) false;;
                 esac])
+AM_COND_IF([HCCYGWIN],
+           [UPPER2LOWER=scripts/upper2lower.cygwin],
+           [UPPER2LOWER=scripts/upper2lower.linux])
+AC_SUBST_FILE([UPPER2LOWER])
 
 # Checks for programs.
 AC_PROG_INSTALL
@@ -180,6 +184,7 @@ AC_CONFIG_FILES([Makefile
                  data/dircolors/Makefile
                  data/readline/Makefile
                  scripts/Makefile
+                 scripts/upper2lower
                  scripts/sed/Makefile
                  scripts/vim/Makefile
                  ])

@@ -1,0 +1,4 @@
+    # windows is case insensitive so we need to play games
+    tempfile=$(mktemp)
+    mv --force ${filename} ${tempfile}
+    mv --force ${tempfile} ${lcasename}
