@@ -1,0 +1,3 @@
+#! /bin/bash
+
+sed --quiet --file=@seddatadir@/ccproto.sed $@
