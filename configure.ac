@@ -46,6 +46,9 @@ AM_COND_IF([HAVE_VIM], [AM_COND_IF([HCCYGWIN],
 AC_CHECK_PROG([have_dircolors], [dircolors], [yes])
 AM_CONDITIONAL([HAVE_DIRCOLORS], [test "x${have_dircolors}" = xyes])
 
+AC_CHECK_PROG([have_svn], [svn], [yes])
+AM_CONDITIONAL([HAVE_SVN], [test "x${have_svn}" = xyes])
+
 AC_ARG_VAR([WGET], [path to wget])
 AC_PATH_PROG([WGET], [wget])
 AM_CONDITIONAL([HAVE_WGET], [test "x${WGET}" != x])
@@ -191,6 +194,7 @@ AC_CONFIG_FILES([Makefile
                  data/git/Makefile
                  data/git/.gitconfig
                  data/readline/Makefile
+                 data/svn/Makefile
                  data/vim/Makefile
                  scripts/Makefile
                  scripts/upper2lower
