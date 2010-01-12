@@ -10,7 +10,7 @@ AC_CONFIG_SRCDIR([data/bash/common/bashrc.in])
 AM_INIT_AUTOMAKE([-Wall -Werror])
 AM_SILENT_RULES
 
-AC_SUBST([homedir], [${HOME}/hctest])
+AC_SUBST([homedir], [${HOME}])
 AC_SUBST([bashrcdir], ["\$(pkgdatadir)/bashrc.d"])
 AC_SUBST([profiledir], ["\$(pkgdatadir)/profile.d"])
 AC_SUBST([seddatadir], ["\$(pkgdatadir)/sed"])
