@@ -10,6 +10,12 @@ AC_CONFIG_SRCDIR([data/bash/common/bashrc.in])
 AM_INIT_AUTOMAKE([-Wall -Werror])
 AM_SILENT_RULES
 
+AC_SUBST([homedir], [${HOME}/hctest])
+AC_SUBST([bashrcdir], ["\$(pkgdatadir)/bashrc.d"])
+AC_SUBST([profiledir], ["\$(pkgdatadir)/profile.d"])
+AC_SUBST([seddatadir], ["\$(pkgdatadir)/sed"])
+AC_SUBST([vimdatadir], ["\$(pkgdatadir)/vim"])
+
 AC_CANONICAL_HOST
 # cygwin systems
 AM_CONDITIONAL([HCCYGWIN],
@@ -30,6 +36,12 @@ AM_CONDITIONAL([HAVE_SED], [test "x${SED}" != x])
 AC_ARG_VAR([EDITOR], [default text editor])
 AC_CHECK_PROG([EDITOR], [vim], [vim], [vi])
 AM_CONDITIONAL([HAVE_VIM], [test "x${EDITOR}" = xvim])
+
+AM_COND_IF([HAVE_VIM], [AM_COND_IF([HCCYGWIN],
+           [GVIM_FONT=/dev/null],
+           [GVIM_FONT=data/vim/gvimrc.linux])
+           AC_SUBST_FILE([GVIM_FONT])
+           AC_CONFIG_FILES([data/vim/.gvimrc])])
 
 AC_CHECK_PROG([have_dircolors], [dircolors], [yes])
 AM_CONDITIONAL([HAVE_DIRCOLORS], [test "x${have_dircolors}" = xyes])
@@ -160,12 +172,6 @@ AM_COND_IF([PROXY_CHECK], [AM_COND_IF([HAVE_WGET],
            [AC_CONFIG_FILES([data/bash/common/bashrc.d/proxy.sh])],
            [AC_MSG_ERROR([must have wget for --enable-proxy-check])])])
 
-AC_SUBST([homedir], [${HOME}/hctest])
-AC_SUBST([bashrcdir], ["\$(pkgdatadir)/bashrc.d"])
-AC_SUBST([profiledir], ["\$(pkgdatadir)/profile.d"])
-AC_SUBST([seddatadir], ["\$(pkgdatadir)/sed"])
-AC_SUBST([vimdatadir], ["\$(pkgdatadir)/vim"])
-
 AM_CONDITIONAL([HCREADLINE], [test "x${INPUTRC}" != x])
 
 AC_CONFIG_FILES([Makefile
@@ -185,6 +191,7 @@ AC_CONFIG_FILES([Makefile
                  data/git/Makefile
                  data/git/.gitconfig
                  data/readline/Makefile
+                 data/vim/Makefile
                  scripts/Makefile
                  scripts/upper2lower
                  scripts/sed/Makefile

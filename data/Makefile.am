@@ -7,3 +7,7 @@ SUBDIRS = bash \
 if HAVE_DIRCOLORS
 SUBDIRS += dircolors
 endif
+
+if HAVE_VIM
+SUBDIRS += vim
+endif

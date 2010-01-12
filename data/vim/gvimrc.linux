@@ -1,0 +1,2 @@
+" set the default font for gvim
+set guifont=Bitstream\ Vera\ Sans\ Mono\ 8
