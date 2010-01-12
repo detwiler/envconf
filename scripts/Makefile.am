@@ -16,7 +16,7 @@ dist_bin_SCRIPTS = fics \
 		   makecscope \
 		   mini \
 		   nixify \
-		   pattern-rename \
+		   pattmv \
 		   space2hyphen
 
 DISTCLEANFILES = $(bin_SCRIPTS)
