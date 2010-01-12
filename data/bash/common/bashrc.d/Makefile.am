@@ -49,6 +49,10 @@ if HAVE_VIM
 dist_bashrc_DATA += vi.sh
 endif HAVE_VIM
 
+if HAVE_BASH_COMP
+dist_bashrc_DATA += bash-completion.sh
+endif HAVE_BASH_COMP
+
 DISTCLEANFILES = $(bashrc_DATA)
 
 EXTRA_DIST = ls.aliases \

@@ -114,6 +114,10 @@ AC_SUBST_FILE([LS_ALIASES])
 
 # Checks for files.
 
+AC_CHECK_FILE([${HOME}/usr/etc/profile.d/bash_completion.sh],
+              [have_bash_comp=yes])
+AM_CONDITIONAL([HAVE_BASH_COMP], [test "x${have_bash_comp}" = xyes])
+
 # umbc systems
 AC_CHECK_FILE([/afs/umbc.edu], [umbc=true])
 AM_CONDITIONAL([UMBC], [test "x${umbc}" = xtrue])

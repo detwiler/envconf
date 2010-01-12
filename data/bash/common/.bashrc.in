@@ -11,6 +11,9 @@ if [ -f "@pkgdatadir@/functions" ]; then
   source "@pkgdatadir@/functions"
 fi
 
+# Set PATH so it includes user's private bin if it exists
+pathmung @bindir@
+
 if [ -f "@pkgdatadir@/bashrc" ]; then
   source "@pkgdatadir@/bashrc"
 fi
