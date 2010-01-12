@@ -1,0 +1,11 @@
+# .gitignore
+
+# vim backup files
+.*.sw[op]
+*~
+
+# archive files
+*.tar
+*.bz2
+*.gz
+*.tgz

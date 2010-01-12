@@ -1,6 +1,7 @@
 # Makefile.am
 
 SUBDIRS = bash \
+	  git \
 	  readline
 
 if HAVE_DIRCOLORS

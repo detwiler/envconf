@@ -1,0 +1,8 @@
+[user]
+	name = Mike Detwiler
+	email = mike.detwiler@gmail.com
+[core]
+	editor = vim
+	excludesfile = @homedir@/.gitignore-core
+[color]
+	ui = auto

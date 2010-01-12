@@ -182,6 +182,8 @@ AC_CONFIG_FILES([Makefile
                  data/bash/umbc/Makefile
                  data/bash/umbc/profile.d/Makefile
                  data/dircolors/Makefile
+                 data/git/Makefile
+                 data/git/.gitconfig
                  data/readline/Makefile
                  scripts/Makefile
                  scripts/upper2lower
