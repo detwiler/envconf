@@ -35,3 +35,19 @@ bashrc: bashrc.in Makefile
 
 profile: profile.in Makefile
 	$(edit) < $(srcdir)/profile.in > profile
+
+install-data-local:
+	test ! -e $(homedir)/.bash_profile.orig && \
+	  test -e $(homedir)/.bash_profile && \
+	  cp $(homedir)/.bash_profile $(homedir)/.bash_profile.orig || true
+	test ! -e $(homedir)/.bashrc.orig && \
+	  test -e $(homedir)/.bashrc && \
+	  cp $(homedir)/.bashrc $(homedir)/.bashrc.orig || true
+
+uninstall-hook:
+	test -e $(homedir)/.bash_profile.orig && \
+	  test ! -e $(homedir)/.bash_profile && \
+	  mv $(homedir)/.bash_profile.orig $(homedir)/.bash_profile || true
+	test -e $(homedir)/.bashrc.orig && \
+	  test ! -e $(homedir)/.bashrc && \
+	  mv $(homedir)/.bashrc.orig $(homedir)/.bashrc || true
