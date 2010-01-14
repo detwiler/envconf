@@ -71,15 +71,32 @@ AM_COND_IF([HAVE_EGREP],
 
 # TODO write custom m4 macro for this, or AC_PATH_PROGS_FEATURE_CHECK?
 # admittedly we're not using portable bourne shell here, but we know we're bash
-AM_CONDITIONAL([MULTI_BASH], [(( $(type -ap bash | wc --lines) > 1 ))])
+AM_CONDITIONAL([MULTI_BASH],
+               [if (( $(type -ap bash | wc --lines) > 1 )); then
+                  exp="s:^.*(@<:@0-9@:>@+\.@<:@0-9@:>@+\.@<:@0-9@:>@+).*$:\1:"
+                  multibash=no
+                  maxver=""
+                  maxbash=""
+                  for cmd in $(type -ap bash); do
+                    version=$(${cmd} --version | head --lines=1 | \
+                              sed --regexp-extended --expression="${exp}")
+                    if test "x${maxver}" = x; then
+                      maxver=${version}
+                      maxbash=${cmd}
+                    elif test "x${version}" != "x${maxver}"; then
+                      multibash=yes
+                      if test "x${version}" \> "x${maxver}"; then
+                        maxver=${version}
+                        maxbash=${cmd}
+                      fi
+                    fi
+                  done
+                  test "x${multibash}" = xyes
+                else
+                  false
+                fi])
 AM_COND_IF([MULTI_BASH],
-           [for cmd in $(type -ap bash); do
-              if test -z ${maxbash} || \
-                  test '$(${cmd} --version)' \> '$(${maxbash} --version)'; then
-                maxbash=${cmd}
-              fi
-            done
-            AC_SUBST([LATEST_BASH], [${maxbash}])
+           [AC_SUBST([LATEST_BASH], [${maxbash}])
             AC_CONFIG_FILES([data/bash/common/bashrc.d/0-multi-bash-hack.sh])])
 
 AM_CONDITIONAL([MULTI_SVN], [(( $(type -ap svn | wc --lines) > 1 ))])
