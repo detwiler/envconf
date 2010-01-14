@@ -1,7 +1,7 @@
 #                                               -*- Autoconf -*-
 # Process this file with autoconf to produce a configure script.
 
-AC_INIT([homeconfig], [0.0.1], [mike.detwiler@gmail.com])
+AC_INIT([homeconfig], [0.0.2], [mike.detwiler@gmail.com])
 AC_PREREQ([2.63])
 AC_CONFIG_AUX_DIR([build-aux])
 AC_CONFIG_MACRO_DIR([m4])
