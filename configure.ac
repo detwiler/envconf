@@ -99,26 +99,60 @@ AM_COND_IF([MULTI_BASH],
            [AC_SUBST([LATEST_BASH], [${maxbash}])
             AC_CONFIG_FILES([data/bash/common/bashrc.d/0-multi-bash-hack.sh])])
 
-AM_CONDITIONAL([MULTI_SVN], [(( $(type -ap svn | wc --lines) > 1 ))])
+AM_CONDITIONAL([MULTI_SVN],
+               [if (( $(type -ap svn | wc --lines) > 1 )); then
+                  exp="s:^.*(@<:@0-9@:>@+\.@<:@0-9@:>@+\.@<:@0-9@:>@+).*$:\1:"
+                  multisvn=no
+                  maxver=""
+                  maxsvn=""
+                  for cmd in $(type -ap svn); do
+                    version=$(${cmd} --version | head --lines=1 | \
+                              sed --regexp-extended --expression="${exp}")
+                    if test "x${maxver}" = x; then
+                      maxver=${version}
+                      maxsvn=${cmd}
+                    elif test "x${version}" != "x${maxver}"; then
+                      multisvn=yes
+                      if test "x${version}" \> "x${maxver}"; then
+                        maxver=${version}
+                        maxsvn=${cmd}
+                      fi
+                    fi
+                  done
+                  test "x${multisvn}" = xyes
+                else
+                  false
+                fi])
 AM_COND_IF([MULTI_SVN],
-           [for cmd in $(type -ap svn); do
-              if test -z ${maxsvn} || \
-                  test '$(${cmd} --version)' \> '$(${maxsvn} --version)'; then
-                maxsvn=${cmd}
-              fi
-            done
-            AC_SUBST([LATEST_SVN], [${maxsvn}])
+           [AC_SUBST([LATEST_SVN], [${maxsvn}])
             AC_CONFIG_FILES([data/bash/common/bashrc.d/svn.sh])])
 
-AM_CONDITIONAL([MULTI_VIM], [(( $(type -ap vim | wc --lines) > 1 ))])
+AM_CONDITIONAL([MULTI_VIM],
+               [if (( $(type -ap vim | wc --lines) > 1 )); then
+                  exp="s:^.*(@<:@0-9@:>@+\.@<:@0-9@:>@+).*$:\1:"
+                  multivim=no
+                  maxver=""
+                  maxvim=""
+                  for cmd in $(type -ap vim); do
+                    version=$(${cmd} --version | head --lines=1 | \
+                              sed --regexp-extended --expression="${exp}")
+                    if test "x${maxver}" = x; then
+                      maxver=${version}
+                      maxvim=${cmd}
+                    elif test "x${version}" != "x${maxver}"; then
+                      multivim=yes
+                      if test "x${version}" \> "x${maxver}"; then
+                        maxver=${version}
+                        maxvim=${cmd}
+                      fi
+                    fi
+                  done
+                  test "x${multivim}" = xyes
+                else
+                  false
+                fi])
 AM_COND_IF([MULTI_VIM],
-           [for cmd in $(type -ap vim); do
-              if test -z ${maxvim} || \
-                  test '$(${cmd} --version)' \> '$(${maxvim} --version)'; then
-                maxvim=${cmd}
-              fi
-            done
-            AC_SUBST([LATEST_VIM], [${maxvim}])
+           [AC_SUBST([LATEST_VIM], [${maxvim}])
             AC_CONFIG_FILES([data/bash/common/bashrc.d/vim.sh])])
 
 AM_CONDITIONAL([HC_LSCOLOR], [ls --color &> /dev/null])
