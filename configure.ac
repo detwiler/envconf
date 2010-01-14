@@ -165,7 +165,7 @@ AC_SUBST_FILE([LS_ALIASES])
 
 # Checks for files.
 
-AC_CHECK_FILE([${HOME}/usr/etc/profile.d/bash_completion.sh],
+AC_CHECK_FILE([${prefix}/etc/profile.d/bash_completion.sh],
               [have_bash_comp=yes])
 AM_CONDITIONAL([HAVE_BASH_COMP], [test "x${have_bash_comp}" = xyes])
 
