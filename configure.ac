@@ -71,86 +71,111 @@ AM_COND_IF([HAVE_EGREP],
 
 # TODO write custom m4 macro for this, or AC_PATH_PROGS_FEATURE_CHECK?
 # admittedly we're not using portable bourne shell here, but we know we're bash
-AM_CONDITIONAL([MULTI_BASH],
-               [if (( $(type -ap bash | wc --lines) > 1 )); then
-                  exp="s:^.*(@<:@0-9@:>@+\.@<:@0-9@:>@+\.@<:@0-9@:>@+).*$:\1:"
-                  multibash=no
-                  maxver=""
-                  maxbash=""
-                  for cmd in $(type -ap bash); do
-                    version=$(${cmd} --version | head --lines=1 | \
-                              sed --regexp-extended --expression="${exp}")
-                    if test "x${maxver}" = x; then
-                      maxver=${version}
-                      maxbash=${cmd}
-                    elif test "x${version}" != "x${maxver}"; then
-                      multibash=yes
-                      if test "x${version}" \> "x${maxver}"; then
-                        maxver=${version}
-                        maxbash=${cmd}
-                      fi
-                    fi
-                  done
-                  test "x${multibash}" = xyes
-                else
-                  false
-                fi])
+
+AC_MSG_CHECKING([for multiple versions of bash])
+if (( $(type -ap bash | wc --lines) > 1 )); then
+  exp="s:^.*(@<:@0-9@:>@+\.@<:@0-9@:>@+\.@<:@0-9@:>@+).*$:\1:"
+  multibash=no
+  maxver=""
+  maxbash=""
+  for cmd in $(type -ap bash); do
+    version=$(${cmd} --version | head --lines=1 | \
+              sed --regexp-extended --expression="${exp}")
+    if test "x${maxver}" = x; then
+      maxver=${version}
+      maxbash=${cmd}
+    elif test "x${version}" != "x${maxver}"; then
+      multibash=yes
+      if test "x${version}" \> "x${maxver}"; then
+        maxver=${version}
+        maxbash=${cmd}
+      fi
+    fi
+  done
+  if test "x${multibash}" = xyes; then
+    AC_MSG_RESULT([yes])
+  else
+    AC_MSG_RESULT([no])
+    false
+  fi
+else
+  AC_MSG_RESULT([no])
+  false
+fi
+
+AM_CONDITIONAL([MULTI_BASH], [test "x${multibash}" = xyes])
 AM_COND_IF([MULTI_BASH],
            [AC_SUBST([LATEST_BASH], [${maxbash}])
             AC_CONFIG_FILES([data/bash/common/bashrc.d/0-multi-bash-hack.sh])])
 
-AM_CONDITIONAL([MULTI_SVN],
-               [if (( $(type -ap svn | wc --lines) > 1 )); then
-                  exp="s:^.*(@<:@0-9@:>@+\.@<:@0-9@:>@+\.@<:@0-9@:>@+).*$:\1:"
-                  multisvn=no
-                  maxver=""
-                  maxsvn=""
-                  for cmd in $(type -ap svn); do
-                    version=$(${cmd} --version | head --lines=1 | \
-                              sed --regexp-extended --expression="${exp}")
-                    if test "x${maxver}" = x; then
-                      maxver=${version}
-                      maxsvn=${cmd}
-                    elif test "x${version}" != "x${maxver}"; then
-                      multisvn=yes
-                      if test "x${version}" \> "x${maxver}"; then
-                        maxver=${version}
-                        maxsvn=${cmd}
-                      fi
-                    fi
-                  done
-                  test "x${multisvn}" = xyes
-                else
-                  false
-                fi])
+AC_MSG_CHECKING([for multiple versions of subversion])
+if (( $(type -ap svn | wc --lines) > 1 )); then
+  exp="s:^.*(@<:@0-9@:>@+\.@<:@0-9@:>@+\.@<:@0-9@:>@+).*$:\1:"
+  multisvn=no
+  maxver=""
+  maxsvn=""
+  for cmd in $(type -ap svn); do
+    version=$(${cmd} --version 2> /dev/null | head --lines=1 | \
+              sed --regexp-extended --expression="${exp}")
+    if test "x${maxver}" = x; then
+      maxver=${version}
+      maxsvn=${cmd}
+    elif test "x${version}" != "x${maxver}"; then
+      multisvn=yes
+      if test "x${version}" \> "x${maxver}"; then
+        maxver=${version}
+        maxsvn=${cmd}
+      fi
+    fi
+  done
+  if test "x${multisvn}" = xyes; then
+    AC_MSG_RESULT([yes])
+  else
+    AC_MSG_RESULT([no])
+    false
+  fi
+else
+  AC_MSG_RESULT([no])
+  false
+fi
+
+AM_CONDITIONAL([MULTI_SVN], [test "x${multisvn}" = xyes])
 AM_COND_IF([MULTI_SVN],
            [AC_SUBST([LATEST_SVN], [${maxsvn}])
-            AC_CONFIG_FILES([data/bash/common/bashrc.d/svn.sh])])
+           AC_CONFIG_FILES([data/bash/common/bashrc.d/svn.sh])])
 
-AM_CONDITIONAL([MULTI_VIM],
-               [if (( $(type -ap vim | wc --lines) > 1 )); then
-                  exp="s:^.*(@<:@0-9@:>@+\.@<:@0-9@:>@+).*$:\1:"
-                  multivim=no
-                  maxver=""
-                  maxvim=""
-                  for cmd in $(type -ap vim); do
-                    version=$(${cmd} --version | head --lines=1 | \
-                              sed --regexp-extended --expression="${exp}")
-                    if test "x${maxver}" = x; then
-                      maxver=${version}
-                      maxvim=${cmd}
-                    elif test "x${version}" != "x${maxver}"; then
-                      multivim=yes
-                      if test "x${version}" \> "x${maxver}"; then
-                        maxver=${version}
-                        maxvim=${cmd}
-                      fi
-                    fi
-                  done
-                  test "x${multivim}" = xyes
-                else
-                  false
-                fi])
+AC_MSG_CHECKING([for multiple versions of vim])
+if (( $(type -ap vim | wc --lines) > 1 )); then
+  exp="s:^.*(@<:@0-9@:>@+\.@<:@0-9@:>@+).*$:\1:"
+  multivim=no
+  maxver=""
+  maxvim=""
+  for cmd in $(type -ap vim); do
+    version=$(${cmd} --version | head --lines=1 | \
+              sed --regexp-extended --expression="${exp}")
+    if test "x${maxver}" = x; then
+      maxver=${version}
+      maxvim=${cmd}
+    elif test "x${version}" != "x${maxver}"; then
+      multivim=yes
+      if test "x${version}" \> "x${maxver}"; then
+        maxver=${version}
+        maxvim=${cmd}
+      fi
+    fi
+  done
+  if test "x${multivim}" = xyes; then
+    AC_MSG_RESULT([yes])
+  else
+    AC_MSG_RESULT([no])
+    false
+  fi
+else
+  AC_MSG_RESULT([no])
+  false
+fi
+
+AM_CONDITIONAL([MULTI_VIM], [test "x${multivim}" = xyes])
 AM_COND_IF([MULTI_VIM],
            [AC_SUBST([LATEST_VIM], [${maxvim}])
             AC_CONFIG_FILES([data/bash/common/bashrc.d/vim.sh])])
