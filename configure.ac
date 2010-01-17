@@ -194,22 +194,24 @@ AC_CHECK_FILE([${prefix}/etc/profile.d/bash_completion.sh],
               [have_bash_comp=yes])
 AM_CONDITIONAL([HAVE_BASH_COMP], [test "x${have_bash_comp}" = xyes])
 
+AC_CHECK_FILE([/opt/eldk],
+              [have_eldk=yes])
+AM_CONDITIONAL([HAVE_ELDK], [test "x${have_eldk}" = xyes])
+
 # umbc systems
 AC_CHECK_FILE([/afs/umbc.edu], [umbc=true])
 AM_CONDITIONAL([UMBC], [test "x${umbc}" = xtrue])
 
 AM_COND_IF([UMBC],
            [AC_CHECK_FILE([/usr/local/oracle/oracle.profile],
-                          [umbc_oracle=true])
-           ])
+                          [umbc_oracle=true])])
 
 # every AM_CONDITIONAL must run when configure is run
 AM_CONDITIONAL([UMBC_ORACLE], [test "x${umbc_oracle}" = xtrue])
 
 AM_COND_IF([UMBC],
            [AC_CHECK_FILE([/afs/umbc.edu/software/cadence/etc/license.dat],
-                          [umbc_cadence=true])
-           ])
+                          [umbc_cadence=true])])
 AM_CONDITIONAL([UMBC_CADENCE], [test "x${umbc_cadence}" = xtrue])
 
 # enable customization for root user
