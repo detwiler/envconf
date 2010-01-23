@@ -33,7 +33,7 @@ dos2unix=""
 newline=""
 quiet="--quiet"
 maxdepth=""
-prunes="-name .svn -o -name CVS"
+prunes="-name .git -o -name .svn -o -name CVS"
 
 # process command line options
 while getopts ":m:p:cvdn" opt; do
