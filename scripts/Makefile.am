@@ -18,7 +18,8 @@ dist_bin_SCRIPTS = fics \
 		   nixify \
 		   pattmv \
 		   rbackup \
-		   space2hyphen
+		   space2hyphen \
+		   weather
 
 DISTCLEANFILES = $(bin_SCRIPTS)
 
