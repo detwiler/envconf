@@ -5,6 +5,7 @@ autom4te.cache/
 autoscan.log
 build-aux/
 aclocal.m4
+ChangeLog
 config.*
 configure
 configure.scan

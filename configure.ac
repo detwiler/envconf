@@ -1,14 +1,13 @@
 #                                               -*- Autoconf -*-
 # Process this file with autoconf to produce a configure script.
 
-AC_INIT([homeconfig], [0.1.0], [mike.detwiler@gmail.com])
+AC_INIT([envconf], [0.2.0], [mike.detwiler@gmail.com])
 AC_PREREQ([2.63])
 AC_CONFIG_AUX_DIR([build-aux])
 AC_CONFIG_MACRO_DIR([m4])
 AC_CONFIG_SRCDIR([data/bash/common/bashrc.in])
 
-AM_INIT_AUTOMAKE([-Wall -Werror])
-AM_SILENT_RULES
+AM_INIT_AUTOMAKE([-Wall -Werror silent-rules dist-bzip2])
 
 AC_SUBST([homedir], [${HOME}])
 AC_SUBST([bashrcdir], ["\$(pkgdatadir)/bashrc.d"])
@@ -53,15 +52,27 @@ AC_ARG_VAR([WGET], [path to wget])
 AC_PATH_PROG([WGET], [wget])
 AM_CONDITIONAL([HAVE_WGET], [test "x${WGET}" != x])
 
-AC_PATH_PROGS_FEATURE_CHECK([GREP_COLOR], [grep],
+AC_CACHE_CHECK([for grep that supports --color], [ac_cv_path_GREP_COLOR],
+  [AC_PATH_PROGS_FEATURE_CHECK([GREP_COLOR], [grep],
     [if echo color | ${ac_path_GREP_COLOR} --color color &> /dev/null; then
-       ac_cv_path_GREP_COLOR=${ac_path_GREP_COLOR}
-       ac_path_GREP_COLOR_found=:
-     fi])
+      ac_cv_path_GREP_COLOR=${ac_path_GREP_COLOR}
+      ac_path_GREP_COLOR_found=:
+     fi])])
 AM_CONDITIONAL([HAVE_GREP_COLOR], [test -n ${ac_cv_path_GREP_COLOR}])
 AM_COND_IF([HAVE_GREP_COLOR],
            [AC_SUBST([GREP_COLOR], [${ac_cv_path_GREP_COLOR}])
             AC_CONFIG_FILES([data/bash/common/bashrc.d/grep.sh])])
+
+AC_CACHE_CHECK([for exuberant ctags], [ac_cv_path_EXUBERANT_CTAGS],
+  [AC_PATH_PROGS_FEATURE_CHECK([EXUBERANT_CTAGS], [ctags],
+    [if ${ac_path_EXUBERANT_CTAGS} --version | grep --silent Exuberant; then
+      ac_cv_path_EXUBERANT_CTAGS=${ac_path_EXUBERANT_CTAGS}
+      ac_path_EXUBERANT_CTAGS_found=:
+     fi])])
+AM_CONDITIONAL([HAVE_EXUBERANT_CTAGS], [test -n ${ac_cv_path_EXUBERANT_CTAGS}])
+AM_COND_IF([HAVE_EXUBERANT_CTAGS],
+           [AC_SUBST([EXUBERANT_CTAGS], [${ac_cv_path_EXUBERANT_CTAGS}])
+            AC_CONFIG_FILES([data/bash/common/bashrc.d/ctags-alias.sh])])
 
 AC_ARG_VAR([EGREP], [path to egrep])
 AC_PATH_PROG([EGREP], [egrep])

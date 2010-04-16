@@ -1,0 +1,5 @@
+#! /bin/bash
+
+# hack to force us to use exuberant ctags
+
+alias ctags="@EXUBERANT_CTAGS@" 
