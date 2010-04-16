@@ -1,13 +1,17 @@
 #                                               -*- Autoconf -*-
 # Process this file with autoconf to produce a configure script.
 
-AC_INIT([envconf], [0.2.0], [mike.detwiler@gmail.com])
+AC_INIT([envconf],
+        [m4_esyscmd([build-aux/git-version-gen .tarball-version])],
+        [mike.detwiler@gmail.com])
+
 AC_PREREQ([2.63])
 AC_CONFIG_AUX_DIR([build-aux])
 AC_CONFIG_MACRO_DIR([m4])
 AC_CONFIG_SRCDIR([data/bash/common/bashrc.in])
 
-AM_INIT_AUTOMAKE([-Wall -Werror silent-rules dist-bzip2])
+AM_INIT_AUTOMAKE([-Wall -Werror dist-bzip2])
+AM_SILENT_RULES([yes])
 
 AC_SUBST([homedir], [${HOME}])
 AC_SUBST([bashrcdir], ["\$(pkgdatadir)/bashrc.d"])

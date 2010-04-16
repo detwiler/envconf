@@ -28,4 +28,4 @@ EXTRA_DIST = .vimrc.in \
 edit = $(SED) -e 's:@vimdatadir[@]:$(vimdatadir):g'
 
 .vimrc: .vimrc.in Makefile
-	$(edit) < $(srcdir)/.vimrc.in > .vimrc
+	$(AM_V_GEN)$(edit) < $(srcdir)/.vimrc.in > .vimrc

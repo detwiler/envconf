@@ -1,12 +1,5 @@
 #! /bin/sh
 
-echo
-echo "Generating ChangeLog..."
-
-git2cl >|ChangeLog
-
-echo
-echo "Running autoreconf..."
-echo
+touch ChangeLog || exit 1
 
 autoreconf --verbose --install --force
