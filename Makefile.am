@@ -3,11 +3,12 @@
 SUBDIRS = data \
 	  scripts
 
-EXTRA_DIST = .version
+pkgdata_DATA = $(PACKAGE)-release
 
-ACLOCAL_AMFLAGS = -I m4
+CLEANFILES = $(pkgdata_DATA)
 
-DISTCHECK_CONFIGURE_FLAGS = HOME=$(pkgdatadir)
+$(PACKAGE)-release:
+	$(AM_V_GEN)echo "$(PACKAGE) release $(VERSION)" > $@-t && mv $@-t $@
 
 BUILT_SOURCES = $(top_srcdir)/.version
 
@@ -24,3 +25,9 @@ gen-ChangeLog:
 	  rm -f $(distdir)/ChangeLog;					\
 	  mv $(distdir)/cl-t $(distdir)/ChangeLog;			\
 	fi
+
+EXTRA_DIST = .version
+
+ACLOCAL_AMFLAGS = -I m4
+
+DISTCHECK_CONFIGURE_FLAGS = HOME=$(top_distdir)

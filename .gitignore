@@ -9,6 +9,7 @@ ChangeLog
 config.*
 configure
 configure.scan
+envconf-release
 libtool
 Makefile
 Makefile.in
