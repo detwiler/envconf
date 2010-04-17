@@ -7,6 +7,7 @@ pkgdata_DATA = $(PACKAGE)-release
 
 CLEANFILES = $(pkgdata_DATA)
 
+.PHONY: $(PACKAGE)-release
 $(PACKAGE)-release:
 	$(AM_V_GEN)echo "$(PACKAGE) release $(VERSION)" > $@-t && mv $@-t $@
 
