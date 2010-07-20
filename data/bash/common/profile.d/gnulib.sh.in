@@ -1,0 +1,3 @@
+#! /bin/bash
+
+GNULIB_SRCDIR=@GNULIB_SRCDIR@

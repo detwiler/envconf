@@ -6,6 +6,6 @@ if UMBC
 SUBDIRS += umbc
 endif
 
-if HCCYGWIN
+if ECCYGWIN
 SUBDIRS += cygwin
 endif

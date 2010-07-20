@@ -13,7 +13,9 @@ AC_CONFIG_SRCDIR([data/bash/common/bashrc.in])
 AM_INIT_AUTOMAKE([-Wall -Werror dist-bzip2])
 AM_SILENT_RULES([yes])
 
-AC_SUBST([homedir], [${HOME}])
+AC_PREFIX_DEFAULT([$HOME/usr])
+
+AC_SUBST([homedir], [$HOME])
 AC_SUBST([bashrcdir], ["\$(pkgdatadir)/bashrc.d"])
 AC_SUBST([profiledir], ["\$(pkgdatadir)/profile.d"])
 AC_SUBST([seddatadir], ["\$(pkgdatadir)/sed"])
@@ -21,12 +23,12 @@ AC_SUBST([vimdatadir], ["\$(pkgdatadir)/vim"])
 
 AC_CANONICAL_HOST
 # cygwin systems
-AM_CONDITIONAL([HCCYGWIN],
-               [case "${host_os}" in
+AM_CONDITIONAL([ECCYGWIN],
+               [case "$host_os" in
                   *cygwin* ) true;;
                          * ) false;;
                 esac])
-AM_COND_IF([HCCYGWIN],
+AM_COND_IF([ECCYGWIN],
            [UPPER2LOWER=scripts/upper2lower.cygwin],
            [UPPER2LOWER=scripts/upper2lower.linux])
 AC_SUBST_FILE([UPPER2LOWER])
@@ -34,53 +36,53 @@ AC_SUBST_FILE([UPPER2LOWER])
 # Checks for programs.
 AC_PROG_INSTALL
 AC_PROG_SED
-AM_CONDITIONAL([HAVE_SED], [test "x${SED}" != x])
+AM_CONDITIONAL([HAVE_SED], [test "x$SED" != x])
 
 AC_ARG_VAR([EDITOR], [default text editor])
 AC_CHECK_PROG([EDITOR], [vim], [vim], [vi])
-AM_CONDITIONAL([HAVE_VIM], [test "x${EDITOR}" = xvim])
+AM_CONDITIONAL([HAVE_VIM], [test "x$EDITOR" = xvim])
 
-AM_COND_IF([HAVE_VIM], [AM_COND_IF([HCCYGWIN],
+AM_COND_IF([HAVE_VIM], [AM_COND_IF([ECCYGWIN],
            [GVIM_FONT=/dev/null],
            [GVIM_FONT=data/vim/gvimrc.linux])
            AC_SUBST_FILE([GVIM_FONT])
            AC_CONFIG_FILES([data/vim/.gvimrc])])
 
 AC_CHECK_PROG([have_dircolors], [dircolors], [yes])
-AM_CONDITIONAL([HAVE_DIRCOLORS], [test "x${have_dircolors}" = xyes])
+AM_CONDITIONAL([HAVE_DIRCOLORS], [test "x$have_dircolors" = xyes])
 
 AC_CHECK_PROG([have_svn], [svn], [yes])
-AM_CONDITIONAL([HAVE_SVN], [test "x${have_svn}" = xyes])
+AM_CONDITIONAL([HAVE_SVN], [test "x$have_svn" = xyes])
 
 AC_ARG_VAR([WGET], [path to wget])
 AC_PATH_PROG([WGET], [wget])
-AM_CONDITIONAL([HAVE_WGET], [test "x${WGET}" != x])
+AM_CONDITIONAL([HAVE_WGET], [test "x$WGET" != x])
 
 AC_CACHE_CHECK([for grep that supports --color], [ac_cv_path_GREP_COLOR],
   [AC_PATH_PROGS_FEATURE_CHECK([GREP_COLOR], [grep],
-    [if echo color | ${ac_path_GREP_COLOR} --color color &> /dev/null; then
-      ac_cv_path_GREP_COLOR=${ac_path_GREP_COLOR}
+    [if echo color | $ac_path_GREP_COLOR --color color &> /dev/null; then
+      ac_cv_path_GREP_COLOR=$ac_path_GREP_COLOR
       ac_path_GREP_COLOR_found=:
      fi])])
-AM_CONDITIONAL([HAVE_GREP_COLOR], [test -n ${ac_cv_path_GREP_COLOR}])
+AM_CONDITIONAL([HAVE_GREP_COLOR], [test -n $ac_cv_path_GREP_COLOR])
 AM_COND_IF([HAVE_GREP_COLOR],
-           [AC_SUBST([GREP_COLOR], [${ac_cv_path_GREP_COLOR}])
+           [AC_SUBST([GREP_COLOR], [$ac_cv_path_GREP_COLOR])
             AC_CONFIG_FILES([data/bash/common/bashrc.d/grep.sh])])
 
 AC_CACHE_CHECK([for exuberant ctags], [ac_cv_path_EXUBERANT_CTAGS],
   [AC_PATH_PROGS_FEATURE_CHECK([EXUBERANT_CTAGS], [ctags],
-    [if ${ac_path_EXUBERANT_CTAGS} --version | grep --silent Exuberant; then
-      ac_cv_path_EXUBERANT_CTAGS=${ac_path_EXUBERANT_CTAGS}
+    [if $ac_path_EXUBERANT_CTAGS --version | grep --silent Exuberant; then
+      ac_cv_path_EXUBERANT_CTAGS=$ac_path_EXUBERANT_CTAGS
       ac_path_EXUBERANT_CTAGS_found=:
      fi])])
-AM_CONDITIONAL([HAVE_EXUBERANT_CTAGS], [test -n ${ac_cv_path_EXUBERANT_CTAGS}])
+AM_CONDITIONAL([HAVE_EXUBERANT_CTAGS], [test -n $ac_cv_path_EXUBERANT_CTAGS])
 AM_COND_IF([HAVE_EXUBERANT_CTAGS],
-           [AC_SUBST([EXUBERANT_CTAGS], [${ac_cv_path_EXUBERANT_CTAGS}])
+           [AC_SUBST([EXUBERANT_CTAGS], [$ac_cv_path_EXUBERANT_CTAGS])
             AC_CONFIG_FILES([data/bash/common/bashrc.d/ctags-alias.sh])])
 
 AC_ARG_VAR([EGREP], [path to egrep])
 AC_PATH_PROG([EGREP], [egrep])
-AM_CONDITIONAL([HAVE_EGREP], [test "x${EGREP}" != x])
+AM_CONDITIONAL([HAVE_EGREP], [test "x$EGREP" != x])
 AM_COND_IF([HAVE_EGREP],
            [AC_CONFIG_FILES([data/bash/common/functions])])
 
@@ -94,20 +96,20 @@ if (( $(type -ap bash | wc --lines) > 1 )); then
   maxver=""
   maxbash=""
   for cmd in $(type -ap bash); do
-    version=$(${cmd} --version | head --lines=1 | \
-              sed --regexp-extended --expression="${exp}")
-    if test "x${maxver}" = x; then
-      maxver=${version}
-      maxbash=${cmd}
-    elif test "x${version}" != "x${maxver}"; then
+    version=$($cmd --version | head --lines=1 | \
+              sed --regexp-extended --expression="$exp")
+    if test "x$maxver" = x; then
+      maxver=$version
+      maxbash=$cmd
+    elif test "x$version" != "x$maxver"; then
       multibash=yes
-      if test "x${version}" \> "x${maxver}"; then
-        maxver=${version}
-        maxbash=${cmd}
+      if test "x$version" \> "x$maxver"; then
+        maxver=$version
+        maxbash=$cmd
       fi
     fi
   done
-  if test "x${multibash}" = xyes; then
+  if test "x$multibash" = xyes; then
     AC_MSG_RESULT([yes])
   else
     AC_MSG_RESULT([no])
@@ -118,9 +120,9 @@ else
   false
 fi
 
-AM_CONDITIONAL([MULTI_BASH], [test "x${multibash}" = xyes])
+AM_CONDITIONAL([MULTI_BASH], [test "x$multibash" = xyes])
 AM_COND_IF([MULTI_BASH],
-           [AC_SUBST([LATEST_BASH], [${maxbash}])
+           [AC_SUBST([LATEST_BASH], [$maxbash])
             AC_CONFIG_FILES([data/bash/common/bashrc.d/0-multi-bash-hack.sh])])
 
 AC_MSG_CHECKING([for multiple versions of subversion])
@@ -130,20 +132,20 @@ if (( $(type -ap svn | wc --lines) > 1 )); then
   maxver=""
   maxsvn=""
   for cmd in $(type -ap svn); do
-    version=$(${cmd} --version 2> /dev/null | head --lines=1 | \
-              sed --regexp-extended --expression="${exp}")
-    if test "x${maxver}" = x; then
-      maxver=${version}
-      maxsvn=${cmd}
-    elif test "x${version}" != "x${maxver}"; then
+    version=$($cmd --version 2> /dev/null | head --lines=1 | \
+              sed --regexp-extended --expression="$exp")
+    if test "x$maxver" = x; then
+      maxver=$version
+      maxsvn=$cmd
+    elif test "x$version" != "x$maxver"; then
       multisvn=yes
-      if test "x${version}" \> "x${maxver}"; then
-        maxver=${version}
-        maxsvn=${cmd}
+      if test "x$version" \> "x$maxver"; then
+        maxver=$version
+        maxsvn=$cmd
       fi
     fi
   done
-  if test "x${multisvn}" = xyes; then
+  if test "x$multisvn" = xyes; then
     AC_MSG_RESULT([yes])
   else
     AC_MSG_RESULT([no])
@@ -154,9 +156,9 @@ else
   false
 fi
 
-AM_CONDITIONAL([MULTI_SVN], [test "x${multisvn}" = xyes])
+AM_CONDITIONAL([MULTI_SVN], [test "x$multisvn" = xyes])
 AM_COND_IF([MULTI_SVN],
-           [AC_SUBST([LATEST_SVN], [${maxsvn}])
+           [AC_SUBST([LATEST_SVN], [$maxsvn])
            AC_CONFIG_FILES([data/bash/common/bashrc.d/svn.sh])])
 
 AC_MSG_CHECKING([for multiple versions of vim])
@@ -166,20 +168,20 @@ if (( $(type -ap vim | wc --lines) > 1 )); then
   maxver=""
   maxvim=""
   for cmd in $(type -ap vim); do
-    version=$(${cmd} --version | head --lines=1 | \
-              sed --regexp-extended --expression="${exp}")
-    if test "x${maxver}" = x; then
-      maxver=${version}
-      maxvim=${cmd}
-    elif test "x${version}" != "x${maxver}"; then
+    version=$($cmd --version | head --lines=1 | \
+              sed --regexp-extended --expression="$exp")
+    if test "x$maxver" = x; then
+      maxver=$version
+      maxvim=$cmd
+    elif test "x$version" != "x$maxver"; then
       multivim=yes
-      if test "x${version}" \> "x${maxver}"; then
-        maxver=${version}
-        maxvim=${cmd}
+      if test "x$version" \> "x$maxver"; then
+        maxver=$version
+        maxvim=$cmd
       fi
     fi
   done
-  if test "x${multivim}" = xyes; then
+  if test "x$multivim" = xyes; then
     AC_MSG_RESULT([yes])
   else
     AC_MSG_RESULT([no])
@@ -190,13 +192,13 @@ else
   false
 fi
 
-AM_CONDITIONAL([MULTI_VIM], [test "x${multivim}" = xyes])
+AM_CONDITIONAL([MULTI_VIM], [test "x$multivim" = xyes])
 AM_COND_IF([MULTI_VIM],
-           [AC_SUBST([LATEST_VIM], [${maxvim}])
+           [AC_SUBST([LATEST_VIM], [$maxvim])
             AC_CONFIG_FILES([data/bash/common/bashrc.d/vim.sh])])
 
-AM_CONDITIONAL([HC_LSCOLOR], [ls --color &> /dev/null])
-AM_COND_IF([HC_LSCOLOR],
+AM_CONDITIONAL([EC_LSCOLOR], [ls --color &> /dev/null])
+AM_COND_IF([EC_LSCOLOR],
            [LS_ALIASES=data/bash/common/bashrc.d/ls-color.aliases],
            [LS_ALIASES=data/bash/common/bashrc.d/ls.aliases])
 AC_SUBST_FILE([LS_ALIASES])
@@ -205,34 +207,34 @@ AC_SUBST_FILE([LS_ALIASES])
 
 # Checks for files.
 
-AC_CHECK_FILE([${prefix}/etc/profile.d/bash_completion.sh],
+AC_CHECK_FILE([$prefix/etc/profile.d/bash_completion.sh],
               [have_bash_comp=yes])
-AM_CONDITIONAL([HAVE_BASH_COMP], [test "x${have_bash_comp}" = xyes])
+AM_CONDITIONAL([HAVE_BASH_COMP], [test "x$have_bash_comp" = xyes])
 
 AC_CHECK_FILE([/opt/eldk],
               [have_eldk=yes])
-AM_CONDITIONAL([HAVE_ELDK], [test "x${have_eldk}" = xyes])
+AM_CONDITIONAL([HAVE_ELDK], [test "x$have_eldk" = xyes])
 
 # umbc systems
 AC_CHECK_FILE([/afs/umbc.edu], [umbc=true])
-AM_CONDITIONAL([UMBC], [test "x${umbc}" = xtrue])
+AM_CONDITIONAL([UMBC], [test "x$umbc" = xtrue])
 
 AM_COND_IF([UMBC],
            [AC_CHECK_FILE([/usr/local/oracle/oracle.profile],
                           [umbc_oracle=true])])
 
 # every AM_CONDITIONAL must run when configure is run
-AM_CONDITIONAL([UMBC_ORACLE], [test "x${umbc_oracle}" = xtrue])
+AM_CONDITIONAL([UMBC_ORACLE], [test "x$umbc_oracle" = xtrue])
 
 AM_COND_IF([UMBC],
            [AC_CHECK_FILE([/afs/umbc.edu/software/cadence/etc/license.dat],
                           [umbc_cadence=true])])
-AM_CONDITIONAL([UMBC_CADENCE], [test "x${umbc_cadence}" = xtrue])
+AM_CONDITIONAL([UMBC_CADENCE], [test "x$umbc_cadence" = xtrue])
 
 # enable customization for root user
-AM_CONDITIONAL([HCROOT], [(( $(id -u) == 0 ))])
-AM_COND_IF([HCROOT], [user_color=31], [user_color=32])
-AC_SUBST([USER_COLOR], [${user_color}])
+AM_CONDITIONAL([ECROOT], [(( $(id -u) == 0 ))])
+AM_COND_IF([ECROOT], [user_color=31], [user_color=32])
+AC_SUBST([USER_COLOR], [$user_color])
 
 # umiacs 
 AM_CONDITIONAL([UMIACS_HOST], [hostname | grep umiacs &> /dev/null])
@@ -244,35 +246,40 @@ AM_CONDITIONAL([UMIACS_HOST], [hostname | grep umiacs &> /dev/null])
 # Checks for library functions.
 
 # Additional options
+AC_DEFUN([EC_ARG_ENABLE],
+         [AC_ARG_ENABLE([m4_translit([$1], [_], [-])],
+                        [AS_HELP_STRING([--enable-m4_translit([$1], [_], [-])],
+                                        [enable $1 (default=$2)])],
+                        [enable_[]$1=$enableval],
+                        [enable_[]$1=$2])])
+
+AC_DEFUN([EC_ARG_WITH],
+         [AC_ARG_WITH([m4_translit([$1], [_], [-])],
+                        [AS_HELP_STRING([--with-m4_translit([$1], [_], [-])],
+                                        [with $1 (default=$2)])],
+                        [with_[]$1=$withval],
+                        [with_[]$1=$2])])
+
+# option to specify path to gnulib clone
+EC_ARG_WITH([gnulib_srcdir], [no])
+AM_CONDITIONAL([WITH_GNULIB_SRCDIR], [test "x$with_gnulib_srcdir" != xno])
+
+AM_COND_IF([WITH_GNULIB_SRCDIR],
+           [AC_SUBST([GNULIB_SRCDIR], [$with_gnulib_srcdir])
+            AC_CONFIG_FILES([data/bash/common/profile.d/gnulib.sh])])
 
 # option to conditionally include ssh hosts
-AC_ARG_ENABLE([ssh-hosts],
-              [AS_HELP_STRING([--enable-ssh-hosts],
-                              [enable ssh hosts (default no)])],
-              [case "${enableval}" in
-                 yes) ssh_hosts="true" ;;
-                 no) ssh_hosts="false" ;;
-                 *) AC_MSG_ERROR(
-                      [bad value ${enableval} for --enable-ssh-hosts]) ;;
-              esac], [ssh_hosts="false"])
-AM_CONDITIONAL([SSH_HOSTS], [test "x${ssh_hosts}" = xtrue])
+EC_ARG_ENABLE([ssh_hosts], [no])
+AM_CONDITIONAL([SSH_HOSTS], [test "x$enable_ssh_hosts" = xyes])
 
 # option to enable proxy check
-AC_ARG_ENABLE([proxy-check],
-              [AS_HELP_STRING([--enable-proxy-check],
-                              [enable proxy check (default no)])],
-              [case "${enableval}" in
-                 yes) proxy_check="true" ;;
-                 no) proxy_check="false" ;;
-                 *) AC_MSG_ERROR(
-                      [bad value ${enableval} for --enable-proxy-check]) ;;
-              esac], [proxy_check="false"])
-AM_CONDITIONAL([PROXY_CHECK], [test "x${proxy_check}" = xtrue])
+EC_ARG_ENABLE([proxy_check], [no])
+AM_CONDITIONAL([PROXY_CHECK], [test "x$enable_proxy_check" = xyes])
 AM_COND_IF([PROXY_CHECK], [AM_COND_IF([HAVE_WGET],
            [AC_CONFIG_FILES([data/bash/common/bashrc.d/proxy.sh])],
            [AC_MSG_ERROR([must have wget for --enable-proxy-check])])])
 
-AM_CONDITIONAL([HCREADLINE], [test "x${INPUTRC}" != x])
+AM_CONDITIONAL([ECREADLINE], [test "x$INPUTRC" != x])
 
 AC_CONFIG_FILES([Makefile
                  data/Makefile
