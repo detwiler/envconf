@@ -1,0 +1,13 @@
+# hack to force use of most recent version of bash
+
+# only do this in interactive shells
+if echo $- | grep i &> /dev/null; then
+  [[ $BASH == @LATEST_BASH@ ]] || @LATEST_BASH@ --login
+fi
+
+# Source global definitions
+if  [[ $BASH == @LATEST_BASH@ ]]; then
+  if [ -f /etc/bashrc ]; then
+    source /etc/bashrc
+  fi
+fi

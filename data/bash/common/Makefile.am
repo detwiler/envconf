@@ -8,6 +8,7 @@ home_DATA = .bash_profile \
 
 pkgdata_DATA = bashrc \
 	       functions \
+	       global-bash \
 	       profile
 
 CLEANFILES = $(home_DATA) \

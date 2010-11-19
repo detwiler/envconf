@@ -10,10 +10,6 @@ dist_bashrc_DATA = files.sh \
 		   set.sh \
 		   shopt.sh
 
-if MULTI_BASH
-bashrc_DATA += 0-multi-bash-hack.sh
-endif
-
 if HAVE_EXUBERANT_CTAGS
 bashrc_DATA += ctags-alias.sh
 dist_bashrc_DATA += ctags.sh

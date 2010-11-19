@@ -123,7 +123,10 @@ fi
 AM_CONDITIONAL([MULTI_BASH], [test "x$multibash" = xyes])
 AM_COND_IF([MULTI_BASH],
            [AC_SUBST([LATEST_BASH], [$maxbash])
-            AC_CONFIG_FILES([data/bash/common/bashrc.d/0-multi-bash-hack.sh])])
+            MULTI_BASH_HACK=data/bash/common/multi-bash-hack.sh
+            AC_CONFIG_FILES([data/bash/common/multi-bash-hack.sh])],
+            [MULTI_BASH_HACK=data/bash/common/single-bash.sh])
+AC_SUBST_FILE([MULTI_BASH_HACK])
 
 AC_MSG_CHECKING([for multiple versions of subversion])
 if (( $(type -ap svn | wc --lines) > 1 )); then
@@ -285,6 +288,7 @@ AC_CONFIG_FILES([Makefile
                  data/Makefile
                  data/bash/Makefile
                  data/bash/common/Makefile
+                 data/bash/common/global-bash
                  data/bash/common/bashrc.d/Makefile
                  data/bash/common/bashrc.d/ls.sh
                  data/bash/common/bashrc.d/ps1.sh

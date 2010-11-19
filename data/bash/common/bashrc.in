@@ -6,8 +6,8 @@
 
 for file in $(command ls @bashrcdir@/*.sh); do
 
-  if [[ -r "${file}" ]]; then
-    source "${file}"
+  if [[ -r "$file" ]]; then
+    source "$file"
   fi
 done
 
