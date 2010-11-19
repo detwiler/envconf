@@ -13,4 +13,8 @@ if HAVE_ELDK
 dist_profile_DATA += eldk.sh
 endif HAVE_ELDK
 
+if HAVE_ANDROID
+dist_profile_DATA += android.sh
+endif HAVE_ANDROID
+
 DISTCLEANFILES = $(profile_DATA)
