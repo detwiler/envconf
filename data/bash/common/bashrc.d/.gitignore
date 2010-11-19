@@ -1,7 +1,6 @@
 # .gitignore
 
 # generated data files
-0-multi-bash-hack.sh
 ctags-alias.sh
 grep.sh
 ls.sh
