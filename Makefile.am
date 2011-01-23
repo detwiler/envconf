@@ -31,4 +31,9 @@ EXTRA_DIST = .version
 
 ACLOCAL_AMFLAGS = -I m4
 
-DISTCHECK_CONFIGURE_FLAGS = HOME=$(top_distdir)
+DISTCHECK_CONFIGURE_FLAGS = HOME=$(top_distdir) \
+			    --with-vimrc-example=@VIMRC_EXAMPLE@
+
+if WITH_GNULIB_SRCDIR
+DISTCHECK_CONFIGURE_FLAGS += --with-gnulib-srcdir=@GNULIB_SRCDIR@
+endif # WITH_GNULIB_SRCDIR

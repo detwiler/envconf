@@ -262,6 +262,10 @@ AM_COND_IF([WITH_GNULIB_SRCDIR],
            [AC_SUBST([GNULIB_SRCDIR], [$with_gnulib_srcdir])
             AC_CONFIG_FILES([data/bash/common/profile.d/gnulib.sh])])
 
+# option to specify path to vimrc example
+EC_ARG_WITH([vimrc_example], [/dev/null])
+AC_SUBST([VIMRC_EXAMPLE], [$with_vimrc_example])
+
 # option to conditionally include ssh hosts
 EC_ARG_ENABLE([ssh_hosts], [no])
 AM_CONDITIONAL([SSH_HOSTS], [test "x$enable_ssh_hosts" = xyes])
