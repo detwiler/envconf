@@ -206,8 +206,6 @@ AM_COND_IF([EC_LSCOLOR],
            [LS_ALIASES=data/bash/common/bashrc.d/ls.aliases])
 AC_SUBST_FILE([LS_ALIASES])
 
-# Checks for libraries.
-
 # Checks for files.
 
 AC_CHECK_FILE([$HOME/usr/share/android/tools],
@@ -238,21 +236,20 @@ AM_COND_IF([UMBC],
                           [umbc_cadence=true])])
 AM_CONDITIONAL([UMBC_CADENCE], [test "x$umbc_cadence" = xtrue])
 
-# enable customization for root user
-AM_CONDITIONAL([ECROOT], [(( $(id -u) == 0 ))])
-AM_COND_IF([ECROOT], [user_color=31], [user_color=32])
-AC_SUBST([USER_COLOR], [$user_color])
-
 # umiacs 
 AM_CONDITIONAL([UMIACS_HOST], [hostname | grep umiacs &> /dev/null])
 
-# Checks for header files.
-
-# Checks for typedefs, structures, and compiler characteristics.
-
-# Checks for library functions.
-
 # Additional options
+
+# enable customization of user/host/pwd PS1 color
+# Text color codes:
+# 30=black 31=red 32=green 33=yellow 34=blue 35=magenta 36=cyan 37=white
+EC_ARG_WITH([user_color], [32])
+AC_SUBST([USER_COLOR], [$with_user_color])
+EC_ARG_WITH([host_color], [33])
+AC_SUBST([HOST_COLOR], [$with_host_color])
+EC_ARG_WITH([pwd_color], [0])
+AC_SUBST([PWD_COLOR], [$with_pwd_color])
 
 # option to specify path to gnulib clone
 EC_ARG_WITH([gnulib_srcdir], [no])
