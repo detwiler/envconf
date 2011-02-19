@@ -17,4 +17,8 @@ if HAVE_ANDROID
 dist_profile_DATA += android.sh
 endif HAVE_ANDROID
 
+if ARCH_BIN
+dist_profile_DATA += arch-bin.sh
+endif ARCH_BIN
+
 DISTCLEANFILES = $(profile_DATA)

@@ -263,9 +263,13 @@ AM_COND_IF([WITH_GNULIB_SRCDIR],
 EC_ARG_WITH([vimrc_example], [/dev/null])
 AC_SUBST([VIMRC_EXAMPLE], [$with_vimrc_example])
 
-# option to conditionally include ssh hosts
+# option to include ssh hosts
 EC_ARG_ENABLE([ssh_hosts], [no])
 AM_CONDITIONAL([SSH_HOSTS], [test "x$enable_ssh_hosts" = xyes])
+
+# option to enable architecture specific bindir
+EC_ARG_ENABLE([arch_bin], [no])
+AM_CONDITIONAL([ARCH_BIN], [test "x$enable_arch_bin" = xyes])
 
 # option to enable proxy check
 EC_ARG_ENABLE([proxy_check], [no])
