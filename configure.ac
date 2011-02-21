@@ -86,120 +86,6 @@ AM_CONDITIONAL([HAVE_EGREP], [test "x$EGREP" != x])
 AM_COND_IF([HAVE_EGREP],
            [AC_CONFIG_FILES([data/bash/common/functions])])
 
-# TODO write custom m4 macro for this, or AC_PATH_PROGS_FEATURE_CHECK?
-# admittedly we're not using portable bourne shell here, but we know we're bash
-
-AC_MSG_CHECKING([for multiple versions of bash])
-if (( $(type -ap bash | wc --lines) > 1 )); then
-  exp="s:^.*(@<:@0-9@:>@+\.@<:@0-9@:>@+\.@<:@0-9@:>@+).*$:\1:"
-  multibash=no
-  maxver=""
-  maxbash=""
-  for cmd in $(type -ap bash); do
-    version=$($cmd --version | head --lines=1 | \
-              sed --regexp-extended --expression="$exp")
-    if test "x$maxver" = x; then
-      maxver=$version
-      maxbash=$cmd
-    elif test "x$version" != "x$maxver"; then
-      multibash=yes
-      if test "x$version" \> "x$maxver"; then
-        maxver=$version
-        maxbash=$cmd
-      fi
-    fi
-  done
-  if test "x$multibash" = xyes; then
-    AC_MSG_RESULT([yes])
-  else
-    AC_MSG_RESULT([no])
-    false
-  fi
-else
-  AC_MSG_RESULT([no])
-  false
-fi
-
-AM_CONDITIONAL([MULTI_BASH], [test "x$multibash" = xyes])
-AM_COND_IF([MULTI_BASH],
-           [AC_SUBST([LATEST_BASH], [$maxbash])
-            MULTI_BASH_HACK=data/bash/common/multi-bash-hack.sh
-            AC_CONFIG_FILES([data/bash/common/multi-bash-hack.sh])],
-            [MULTI_BASH_HACK=data/bash/common/single-bash.sh])
-AC_SUBST_FILE([MULTI_BASH_HACK])
-
-AC_MSG_CHECKING([for multiple versions of subversion])
-if (( $(type -ap svn | wc --lines) > 1 )); then
-  exp="s:^.*(@<:@0-9@:>@+\.@<:@0-9@:>@+\.@<:@0-9@:>@+).*$:\1:"
-  multisvn=no
-  maxver=""
-  maxsvn=""
-  for cmd in $(type -ap svn); do
-    version=$($cmd --version 2> /dev/null | head --lines=1 | \
-              sed --regexp-extended --expression="$exp")
-    if test "x$maxver" = x; then
-      maxver=$version
-      maxsvn=$cmd
-    elif test "x$version" != "x$maxver"; then
-      multisvn=yes
-      if test "x$version" \> "x$maxver"; then
-        maxver=$version
-        maxsvn=$cmd
-      fi
-    fi
-  done
-  if test "x$multisvn" = xyes; then
-    AC_MSG_RESULT([yes])
-  else
-    AC_MSG_RESULT([no])
-    false
-  fi
-else
-  AC_MSG_RESULT([no])
-  false
-fi
-
-AM_CONDITIONAL([MULTI_SVN], [test "x$multisvn" = xyes])
-AM_COND_IF([MULTI_SVN],
-           [AC_SUBST([LATEST_SVN], [$maxsvn])
-           AC_CONFIG_FILES([data/bash/common/bashrc.d/svn.sh])])
-
-AC_MSG_CHECKING([for multiple versions of vim])
-if (( $(type -ap vim | wc --lines) > 1 )); then
-  exp="s:^.*(@<:@0-9@:>@+\.@<:@0-9@:>@+).*$:\1:"
-  multivim=no
-  maxver=""
-  maxvim=""
-  for cmd in $(type -ap vim); do
-    version=$($cmd --version | head --lines=1 | \
-              sed --regexp-extended --expression="$exp")
-    if test "x$maxver" = x; then
-      maxver=$version
-      maxvim=$cmd
-    elif test "x$version" != "x$maxver"; then
-      multivim=yes
-      if test "x$version" \> "x$maxver"; then
-        maxver=$version
-        maxvim=$cmd
-      fi
-    fi
-  done
-  if test "x$multivim" = xyes; then
-    AC_MSG_RESULT([yes])
-  else
-    AC_MSG_RESULT([no])
-    false
-  fi
-else
-  AC_MSG_RESULT([no])
-  false
-fi
-
-AM_CONDITIONAL([MULTI_VIM], [test "x$multivim" = xyes])
-AM_COND_IF([MULTI_VIM],
-           [AC_SUBST([LATEST_VIM], [$maxvim])
-            AC_CONFIG_FILES([data/bash/common/bashrc.d/vim.sh])])
-
 AM_CONDITIONAL([EC_LSCOLOR], [ls --color &> /dev/null])
 AM_COND_IF([EC_LSCOLOR],
            [LS_ALIASES=data/bash/common/bashrc.d/ls-color.aliases],
@@ -254,10 +140,33 @@ AC_SUBST([PWD_COLOR], [$with_pwd_color])
 # option to specify path to gnulib clone
 EC_ARG_WITH([gnulib_srcdir], [no])
 AM_CONDITIONAL([WITH_GNULIB_SRCDIR], [test "x$with_gnulib_srcdir" != xno])
-
 AM_COND_IF([WITH_GNULIB_SRCDIR],
            [AC_SUBST([GNULIB_SRCDIR], [$with_gnulib_srcdir])
             AC_CONFIG_FILES([data/bash/common/profile.d/gnulib.sh])])
+
+# option to specify path to bash
+EC_ARG_WITH([bash_alias], [no])
+AM_CONDITIONAL([WITH_BASH_ALIAS], [test "x$with_bash_alias" != xno])
+AM_COND_IF([WITH_BASH_ALIAS],
+           [AC_SUBST([BASH_ALIAS], [$with_bash_alias])
+            MULTI_BASH_HACK=data/bash/common/multi-bash-hack.sh
+            AC_CONFIG_FILES([data/bash/common/multi-bash-hack.sh])],
+            [MULTI_BASH_HACK=data/bash/common/single-bash.sh])
+AC_SUBST_FILE([MULTI_BASH_HACK])
+
+# option to specify path to subversion
+EC_ARG_WITH([subversion_alias], [no])
+AM_CONDITIONAL([WITH_SVN_ALIAS], [test "x$with_subversion_alias" != xno])
+AM_COND_IF([WITH_SVN_ALIAS],
+           [AC_SUBST([SVN_ALIAS], [$with_subversion_alias])
+           AC_CONFIG_FILES([data/bash/common/bashrc.d/svn.sh])])
+
+# option to specify path to vim
+EC_ARG_WITH([vim_alias], [no])
+AM_CONDITIONAL([WITH_VIM_ALIAS], [test "x$with_vim_alias" != xno])
+AM_COND_IF([WITH_VIM_ALIAS],
+           [AC_SUBST([VIM_ALIAS], [$with_vim_alias])
+           AC_CONFIG_FILES([data/bash/common/bashrc.d/vim.sh])])
 
 # option to specify path to vimrc example
 EC_ARG_WITH([vimrc_example], [/dev/null])

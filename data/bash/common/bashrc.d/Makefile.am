@@ -15,11 +15,11 @@ bashrc_DATA += ctags-alias.sh
 dist_bashrc_DATA += ctags.sh
 endif
 
-if MULTI_SVN
+if WITH_SVN_ALIAS
 bashrc_DATA += svn.sh
 endif
 
-if MULTI_VIM
+if WITH_VIM_ALIAS
 bashrc_DATA += vim.sh
 endif
 

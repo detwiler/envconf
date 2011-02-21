@@ -1,5 +1,3 @@
 #! /bin/bash
 
-# hack to force us to use the most recent version of svn
-
-alias svn="@LATEST_SVN@" 
+alias svn='@SVN_ALIAS@'
