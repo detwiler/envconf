@@ -178,7 +178,7 @@ AM_CONDITIONAL([SSH_HOSTS], [test "x$enable_ssh_hosts" = xyes])
 
 # option to enable architecture specific bindir
 EC_ARG_ENABLE([arch_bin], [no])
-AM_CONDITIONAL([ARCH_BIN], [test "x$enable_arch_bin" = xyes])
+AM_CONDITIONAL([ENABLE_ARCH_BIN], [test "x$enable_arch_bin" = xyes])
 
 # option to enable proxy check
 EC_ARG_ENABLE([proxy_check], [no])
