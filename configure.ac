@@ -98,22 +98,6 @@ AC_CHECK_FILE([$prefix/etc/profile.d/bash_completion.sh],
               [have_bash_comp=yes])
 AM_CONDITIONAL([HAVE_BASH_COMP], [test "x$have_bash_comp" = xyes])
 
-# umbc systems
-AC_CHECK_FILE([/afs/umbc.edu], [umbc=true])
-AM_CONDITIONAL([UMBC], [test "x$umbc" = xtrue])
-
-AM_COND_IF([UMBC],
-           [AC_CHECK_FILE([/usr/local/oracle/oracle.profile],
-                          [umbc_oracle=true])])
-
-# every AM_CONDITIONAL must run when configure is run
-AM_CONDITIONAL([UMBC_ORACLE], [test "x$umbc_oracle" = xtrue])
-
-AM_COND_IF([UMBC],
-           [AC_CHECK_FILE([/afs/umbc.edu/software/cadence/etc/license.dat],
-                          [umbc_cadence=true])])
-AM_CONDITIONAL([UMBC_CADENCE], [test "x$umbc_cadence" = xtrue])
-
 # Additional options
 
 # enable customization of user/host/pwd PS1 color
@@ -187,8 +171,6 @@ AC_CONFIG_FILES([Makefile
                  data/bash/common/profile.d/editor.sh
                  data/bash/cygwin/Makefile
                  data/bash/cygwin/bashrc.d/Makefile
-                 data/bash/umbc/Makefile
-                 data/bash/umbc/profile.d/Makefile
                  data/dircolors/Makefile
                  data/git/Makefile
                  data/git/.gitconfig
