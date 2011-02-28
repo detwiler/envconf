@@ -1,1 +1,1 @@
-    mv --force ${filename} ${lcasename}
+    mv --force $filename $lcasename

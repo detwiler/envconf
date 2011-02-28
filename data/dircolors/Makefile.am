@@ -11,4 +11,4 @@ EXTRA_DIST = dircolors.sh.in
 edit = $(SED) -e 's:@pkgdatadir[@]:$(pkgdatadir):g'
 
 dircolors.sh: dircolors.sh.in Makefile
-	$(AM_V_GEN)$(edit) < $(srcdir)/dircolors.sh.in > dircolors.sh
+	$(AM_V_GEN)$(edit) < $(srcdir)/$< > $@

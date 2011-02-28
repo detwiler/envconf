@@ -4,9 +4,9 @@
 
 # source environment variables 
 
-for file in $(command ls @profiledir@/*.sh); do
-  if [ -r "${file}" ]; then
-    source "${file}"
+for file in @profiledir@/*.sh; do
+  if [ -r "$file" ]; then
+    source "$file"
   fi
 done
 

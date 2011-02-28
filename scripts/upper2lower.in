@@ -1,9 +1,9 @@
 #! /bin/bash
 
 for filename in "$@"; do
-  lcasename=$(echo ${filename} | tr [:upper:] [:lower:])
+  lcasename=$(echo $filename | tr [:upper:] [:lower:])
 
-  if [[ "${filename}" != "${lcasename}" ]]; then
+  if [[ "$filename" != "$lcasename" ]]; then
 
     @UPPER2LOWER@
 

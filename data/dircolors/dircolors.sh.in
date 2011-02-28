@@ -1,10 +1,9 @@
 #! /bin/bash
 
-if [[ -z "${LS_COLORS}" ]]; then
+if [[ -z "$LS_COLORS" ]]; then
   if [[ -f @pkgdatadir@/dircolors ]]; then 
     eval "$(dircolors -b @pkgdatadir@/dircolors)"
   elif [[ -f "/etc/DIR_COLORS" ]]; then
     eval "$(dircolors -b /etc/DIR_COLORS)"
   fi
 fi
-

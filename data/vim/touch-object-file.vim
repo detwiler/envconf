@@ -9,4 +9,3 @@ function! <SID>TouchObjectFile()
     execute "!touch -m " . l:object_file
     execute "make"
 endfunction
-

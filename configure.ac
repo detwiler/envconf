@@ -126,6 +126,14 @@ AC_SUBST([HOST_COLOR], [$with_host_color])
 EC_ARG_WITH([pwd_color], [0])
 AC_SUBST([PWD_COLOR], [$with_pwd_color])
 
+# option to specify user name
+EC_ARG_WITH([user_name], [$USER])
+AC_SUBST([USER_NAME], [$with_user_name])
+
+# option to specify user email
+EC_ARG_WITH([user_email], [$USER@$HOSTNAME])
+AC_SUBST([USER_EMAIL], [$with_user_email])
+
 # option to specify path to gnulib clone
 EC_ARG_WITH([gnulib_srcdir], [no])
 AM_CONDITIONAL([WITH_GNULIB_SRCDIR], [test "x$with_gnulib_srcdir" != xno])

@@ -17,7 +17,6 @@ dist_bin_SCRIPTS = fics \
 		   mini \
 		   nixify \
 		   pattmv \
-		   rbackup \
 		   space2hyphen \
 		   weather
 

@@ -7,7 +7,7 @@
 # only do this in interactive shells
 echo $- | grep i &> /dev/null || return
 
-case "${TERM}" in
+case "$TERM" in
 
   xterm | cygwin)
     PS1='\[\e]0;\u@\h \w\a\]\n\[\e[@USER_COLOR@m\]\u\[\e[0m\]@\[\e[@HOST_COLOR@m\]\h \[\e[@PWD_COLOR@m\]\w\[\e[0m\]\n\$ ';;

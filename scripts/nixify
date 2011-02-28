@@ -37,52 +37,52 @@ prunes="-name .git -o -name .svn -o -name CVS"
 
 # process command line options
 while getopts ":m:p:cvdn" opt; do
-  case ${opt} in
+  case $opt in
     c ) verbose="--changes"; quiet="";;
     v ) verbose="--verbose"; quiet="";;
     d ) dos2unix="true";;
     n ) newline="true";;
-    m ) maxdepth="-maxdepth ${OPTARG}";;
-    p ) prunes="${prunes} -o -name ${OPTARG}";;
+    m ) maxdepth="-maxdepth $OPTARG";;
+    p ) prunes="$prunes -o -name $OPTARG";;
     \? ) usage; exit 1;;
   esac
 done
 
-shift $((${OPTIND} - 1))
+shift $(($OPTIND - 1))
 
-dirs="${@}"
+dirs="$@"
 
-if [[ -z ${dirs} ]]; then
+if [[ -z $dirs ]]; then
   dirs="."
 fi
 
 for file in \
-  $(find ${dirs} ${maxdepth} \( ${prunes} \) -prune -o -type f -print); do
+  $(find $dirs $maxdepth \( $prunes \) -prune -o -type f -print); do
 
   # FIXME this is a hack to get around filenames with spaces
-  if [[ ! -e ${file} ]]; then continue; fi
+  if [[ ! -e $file ]]; then continue; fi
 
-  file_type="$(file --brief ${file})"
+  file_type="$(file --brief $file)"
 
-  if echo ${file_type} | grep "executable" &> /dev/null; then
-    chmod 755 ${verbose} ${file}
+  if echo $file_type | grep "executable" &> /dev/null; then
+    chmod 755 $verbose $file
   else
-    chmod 644 ${verbose} ${file}
+    chmod 644 $verbose $file
   fi
 
-  if [[ -n ${dos2unix} ]]; then
-    if echo ${file_type} | grep "CRLF" &> /dev/null; then
-      dos2unix ${quiet} ${file}
+  if [[ -n $dos2unix ]]; then
+    if echo $file_type | grep "CRLF" &> /dev/null; then
+      dos2unix $quiet $file
     fi
   fi
 
-  if [[ -n ${newline} ]]; then
-    if echo ${file_type} | grep "text" &> /dev/null; then
-      if (( $(tail --bytes=1 ${file} | wc --lines) == 0 )); then
-        if [[ -n ${verbose} ]]; then
-          echo "Adding newline to ${file}"
+  if [[ -n $newline ]]; then
+    if echo $file_type | grep "text" &> /dev/null; then
+      if (( $(tail --bytes=1 $file | wc --lines) == 0 )); then
+        if [[ -n $verbose ]]; then
+          echo "Adding newline to $file"
         fi
-        sed --in-place '$ s/^.*$/&\n/' ${file}
+        sed --in-place '$ s/^.*$/&\n/' $file
       fi
     fi
   fi

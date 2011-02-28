@@ -1,6 +1,6 @@
 [user]
-	name = Mike Detwiler
-	email = mike.detwiler@gmail.com
+	name = @USER_NAME@
+	email = @USER_EMAIL@
 [core]
 	editor = vim
 	excludesfile = @homedir@/.gitignore-core

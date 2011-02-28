@@ -28,38 +28,38 @@ directory=""
 
 # process command line options
 while getopts ":p:d:" opt; do
-  case ${opt} in
-    p ) port="${OPTARG}";;
-    d ) directory="${OPTARG}";;
+  case $opt in
+    p ) port="$OPTARG";;
+    d ) directory="$OPTARG";;
     \? ) usage; exit 1;;
   esac
 done
 
-shift $((${OPTIND} - 1))
+shift $(($OPTIND - 1))
 
-if [[ -z ${port} ]]; then
+if [[ -z $port ]]; then
 
   echo "You must specify a port with -p"
   usage
   exit 1;
 fi
 
-if [[ -z ${directory} ]]; then
+if [[ -z $directory ]]; then
 
   echo "You must specify a log directory with -d"
   usage
   exit 1;
 fi
 
-if [[ ! -d ${directory} ]]; then
+if [[ ! -d $directory ]]; then
 
-  echo "${directory} is not a directory"
+  echo "$directory is not a directory"
   usage
   exit 1;
 fi
 
-capturefile="${directory%/}/${port}-$(date ${date_format})${suffix}"
+capturefile="${directory%/}/$port-$(date $date_format)$suffix"
 
-options="${options} --capturefile=${capturefile}"
+options="$options --capturefile=$capturefile"
 
-minicom ${options} ${port}
+minicom $options $port

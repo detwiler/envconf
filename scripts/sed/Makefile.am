@@ -14,7 +14,7 @@ EXTRA_DIST = ccproto.in \
 edit = $(SED) -e 's:@seddatadir[@]:$(seddatadir):g'
 
 skiperror: skiperror.in Makefile
-	$(AM_V_GEN)$(edit) < $(srcdir)/skiperror.in > skiperror
+	$(AM_V_GEN)$(edit) < $(srcdir)/$< > $@
 
 ccproto: ccproto.in Makefile
-	$(AM_V_GEN)$(edit) < $(srcdir)/ccproto.in > ccproto
+	$(AM_V_GEN)$(edit) < $(srcdir)/$< > $@

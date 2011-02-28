@@ -1,3 +1,3 @@
 #! /bin/bash
 
-bind -f ${HOME}/.inputrc
+bind -f $HOME/.inputrc

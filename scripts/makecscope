@@ -17,13 +17,13 @@ function usage()
 
 dirs="$@"
 
-if [[ -z ${dirs} ]]; then
+if [[ -z $dirs ]]; then
   dirs="."
 fi
 
 bad="-name SCCS -o -name BitKeeper -o -name .svn -o -name CVS -o -name .pc"
 
-( find ${dirs} -follow \( ${bad} \) -prune -o \( -name "*.[ch]" -o \
+( find $dirs -follow \( $bad \) -prune -o \( -name "*.[ch]" -o \
   -name "*.[ch]pp" -o -name "*.cc" -o -name "*.hh" \) -print ) >| cscope.files
 
 cscope -b -q
