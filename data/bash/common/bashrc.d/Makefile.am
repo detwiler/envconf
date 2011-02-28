@@ -31,11 +31,22 @@ if HAVE_VIM
 dist_bashrc_DATA += vi.sh
 endif HAVE_VIM
 
-if HAVE_BASH_COMP
-dist_bashrc_DATA += bash-completion.sh
-endif HAVE_BASH_COMP
+bash_completion = bash-completion.sh
+
+if ENABLE_LOCAL_BASH_COMP
+bashrc_DATA += $(bash_completion)
+endif ENABLE_LOCAL_BASH_COMP
+
+edit = $(SED) \
+       -e 's:@sysconfdir[@]:$(sysconfdir):g'
+
+$(bash_completion): $(bash_completion).in Makefile
+	$(AM_V_GEN)$(edit) < $< > $@
+
+CLEANFILES = $(bash_completion)
 
 DISTCLEANFILES = $(bashrc_DATA)
 
-EXTRA_DIST = ls.aliases \
+EXTRA_DIST = $(bash_completion).in \
+	     ls.aliases \
 	     ls-color.aliases

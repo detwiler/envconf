@@ -1,6 +1,7 @@
 # .gitignore
 
 # generated data files
+bash-completion.sh
 ctags-alias.sh
 grep.sh
 ls.sh

@@ -1,0 +1,6 @@
+#! /bin/bash
+
+BASH_COMPLETION_DIR=@sysconfdir@/bash_completion.d
+BASH_COMPLETION_COMPAT_DIR=@sysconfdir@/bash_completion.d
+
+source @sysconfdir@/profile.d/bash_completion.sh
