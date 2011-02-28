@@ -114,9 +114,6 @@ AM_COND_IF([UMBC],
                           [umbc_cadence=true])])
 AM_CONDITIONAL([UMBC_CADENCE], [test "x$umbc_cadence" = xtrue])
 
-# umiacs 
-AM_CONDITIONAL([UMIACS_HOST], [hostname | grep umiacs &> /dev/null])
-
 # Additional options
 
 # enable customization of user/host/pwd PS1 color
@@ -163,10 +160,6 @@ AM_COND_IF([WITH_VIM_ALIAS],
 # option to specify path to vimrc example
 EC_ARG_WITH([vimrc_example], [/dev/null])
 AC_SUBST([VIMRC_EXAMPLE], [$with_vimrc_example])
-
-# option to include ssh hosts
-EC_ARG_ENABLE([ssh_hosts], [no])
-AM_CONDITIONAL([SSH_HOSTS], [test "x$enable_ssh_hosts" = xyes])
 
 # option to enable architecture specific bindir
 EC_ARG_ENABLE([arch_bin], [no])

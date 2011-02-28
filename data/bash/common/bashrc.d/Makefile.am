@@ -27,18 +27,6 @@ if HAVE_GREP_COLOR
 bashrc_DATA += grep.sh
 endif
 
-if SSH_HOSTS
-dist_bashrc_DATA += ssh-home.sh \
-		    ssh-umbc.sh \
-		    ssh-umd-cs.sh \
-		    ssh-umiacs.sh
-
-if UMIACS_HOST
-dist_bashrc_DATA += ssh-umiacs-local.sh
-endif UMIACS_HOST
-
-endif SSH_HOSTS
-
 if HAVE_VIM
 dist_bashrc_DATA += vi.sh
 endif HAVE_VIM
