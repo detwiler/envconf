@@ -98,10 +98,6 @@ AC_CHECK_FILE([$prefix/etc/profile.d/bash_completion.sh],
               [have_bash_comp=yes])
 AM_CONDITIONAL([HAVE_BASH_COMP], [test "x$have_bash_comp" = xyes])
 
-AC_CHECK_FILE([/opt/eldk],
-              [have_eldk=yes])
-AM_CONDITIONAL([HAVE_ELDK], [test "x$have_eldk" = xyes])
-
 # umbc systems
 AC_CHECK_FILE([/afs/umbc.edu], [umbc=true])
 AM_CONDITIONAL([UMBC], [test "x$umbc" = xtrue])
