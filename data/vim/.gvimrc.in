@@ -3,6 +3,6 @@
 
 @GVIM_FONT@
 
-set guioptions=aegi
+set guioptions=aei
 
 colorscheme desert
