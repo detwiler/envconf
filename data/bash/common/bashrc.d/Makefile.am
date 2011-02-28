@@ -27,12 +27,6 @@ if HAVE_GREP_COLOR
 bashrc_DATA += grep.sh
 endif
 
-if PROXY_CHECK
-if HAVE_WGET
-bashrc_DATA += proxy.sh
-endif HAVE_WGET
-endif PROXY_CHECK
-
 if SSH_HOSTS
 dist_bashrc_DATA += ssh-home.sh \
 		    ssh-umbc.sh \

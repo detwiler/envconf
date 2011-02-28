@@ -54,10 +54,6 @@ AM_CONDITIONAL([HAVE_DIRCOLORS], [test "x$have_dircolors" = xyes])
 AC_CHECK_PROG([have_svn], [svn], [yes])
 AM_CONDITIONAL([HAVE_SVN], [test "x$have_svn" = xyes])
 
-AC_ARG_VAR([WGET], [path to wget])
-AC_PATH_PROG([WGET], [wget])
-AM_CONDITIONAL([HAVE_WGET], [test "x$WGET" != x])
-
 AC_CACHE_CHECK([for grep that supports --color], [ac_cv_path_GREP_COLOR],
   [AC_PATH_PROGS_FEATURE_CHECK([GREP_COLOR], [grep],
     [if echo color | $ac_path_GREP_COLOR --color color &> /dev/null; then
@@ -179,13 +175,6 @@ AM_CONDITIONAL([SSH_HOSTS], [test "x$enable_ssh_hosts" = xyes])
 # option to enable architecture specific bindir
 EC_ARG_ENABLE([arch_bin], [no])
 AM_CONDITIONAL([ENABLE_ARCH_BIN], [test "x$enable_arch_bin" = xyes])
-
-# option to enable proxy check
-EC_ARG_ENABLE([proxy_check], [no])
-AM_CONDITIONAL([PROXY_CHECK], [test "x$enable_proxy_check" = xyes])
-AM_COND_IF([PROXY_CHECK], [AM_COND_IF([HAVE_WGET],
-           [AC_CONFIG_FILES([data/bash/common/bashrc.d/proxy.sh])],
-           [AC_MSG_ERROR([must have wget for --enable-proxy-check])])])
 
 AM_CONDITIONAL([ECREADLINE], [test "x$INPUTRC" != x])
 
