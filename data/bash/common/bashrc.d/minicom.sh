@@ -6,7 +6,7 @@ log_dir="/tmp"
 # this needs to be set for shell pattern below to work
 shopt -s extglob
 
-for file in $minicom_dir/minirc.!(dfl) 2> /dev/null; do
+for file in $(command ls $minicom_dir/minirc.!(dfl) 2>/dev/null); do
 
   device=${file##*.}
 
