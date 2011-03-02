@@ -29,14 +29,14 @@ makejobs=""
 bashcomp=""
 srcbashcomp="contrib/completion/git-completion.bash"
 
-while getopts "v:p:e:f:j:" opt; do
+while getopts "v:p:e:f:j:b:" opt; do
   case $opt in
     v ) version=$OPTARG ;;
     p ) prefix="--prefix=$OPTARG" ;;
     e ) exec_prefix="--exec-prefix=$OPTARG" ;;
     f ) flags="$flags $OPTARG" ;;
     j ) makejobs="--jobs=$OPTARG" ;;
-    j ) bashcomp=$OPTARG ;;
+    b ) bashcomp=$OPTARG ;;
     \? ) usage; exit 1 ;;
   esac
 done
@@ -96,8 +96,8 @@ if ! make $makejobs install; then
 fi
 
 if [[ -n $bashcomp ]]; then
-  if ! cp -vf $srcbashcomp $bashcomp; then
-    echo "Failed to copy $srcbashcomp to $bashcomp"
+  if ! install -vCT $srcbashcomp $bashcomp; then
+    echo "Failed to install $srcbashcomp to $bashcomp"
   fi
 fi
 
