@@ -39,7 +39,7 @@ if [[ -z $version ]]; then
   exit 1
 fi
 
-baseurl="http://www.kernel.org/pub/software/scm/git"
+baseurl="http://www.kernel.org/pub/software/scm"
 extra_args="--without-iconv"
 
 tmpdir=$(mktemp -d)
@@ -49,7 +49,8 @@ if ! pushd $tmpdir; then
   exit 1
 fi
 
-toolname="git-$version"
+tool="git"
+toolname="$tool-$version"
 archive="$toolname.tar.bz2"
 url="$baseurl/$tool/$archive"
 
@@ -68,7 +69,7 @@ if ! pushd $toolname; then
   exit 1
 fi
 
-echo "Running ./configure $prefix_arg $exec_prefix_arg"
+echo "Running ./configure $prefix_arg $exec_prefix_arg $extra_args"
 
 if ! ./configure $prefix_arg $exec_prefix_arg $extra_args; then
   echo "Failed to configure $toolname"
