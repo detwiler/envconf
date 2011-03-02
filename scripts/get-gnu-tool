@@ -26,7 +26,7 @@ exec_prefix=""
 flags=""
 makejobs=""
 
-while getopts ":v:p:e:f:j:" opt; do
+while getopts "v:p:e:f:j:" opt; do
   case $opt in
     v ) version=$OPTARG ;;
     p ) prefix="--prefix=$OPTARG" ;;

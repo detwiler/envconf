@@ -31,7 +31,7 @@ exec_prefix=""
 flags=""
 makejobs=""
 
-while getopts ":m:c:k:l:p:e:f:j:" opt; do
+while getopts "m:c:k:l:p:e:f:j:" opt; do
   case $opt in
     m ) version[m4]=$OPTARG ;;
     c ) version[autoconf]=$OPTARG ;;
