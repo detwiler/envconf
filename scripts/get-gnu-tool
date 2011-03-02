@@ -12,24 +12,27 @@ function usage()
 	  -p prefix
 	  -e exec-prefix
 	  -f extra configure flags
+	  -j make jobs
 
 	Examples:
 
-	$(basename $0) -v 2.68 -p $HOME/usr -e $HOME/usr/$(arch) autoconf
+	$(basename $0) -v 2.68 -p $HOME/usr -e $HOME/usr/$(arch) -j 4 autoconf
 
 	eof
 } # usage()
 
-prefix_arg=""
-exec_prefix_arg=""
+prefix=""
+exec_prefix=""
 flags=""
+makejobs=""
 
-while getopts ":v:p:e:" opt; do
+while getopts ":v:p:e:f:j:" opt; do
   case $opt in
     v ) version=$OPTARG ;;
-    p ) prefix_arg="--prefix=$OPTARG" ;;
-    e ) exec_prefix_arg="--exec-prefix=$OPTARG" ;;
+    p ) prefix="--prefix=$OPTARG" ;;
+    e ) exec_prefix="--exec-prefix=$OPTARG" ;;
     f ) flags="$flags $OPTARG" ;;
+    j ) makejobs="--jobs=$OPTARG" ;;
     \? ) usage; exit 1 ;;
   esac
 done
@@ -78,19 +81,21 @@ if ! pushd $toolname; then
   exit 1
 fi
 
-echo "Running ./configure $prefix_arg $exec_prefix_arg"
+echo
+echo "Running ./configure $prefix $exec_prefix $flags"
+echo
 
-if ! ./configure $prefix_arg $exec_prefix_arg; then
+if ! ./configure $prefix $exec_prefix $flags; then
   echo "Failed to configure $toolname"
   exit 1
 fi
 
-if ! make; then
+if ! make $makejobs; then
   echo "Failed to make $toolname"
   exit 1
 fi
 
-if ! make install; then
+if ! make $makejobs install; then
   echo "Failed to install $toolname"
   exit 1
 fi
@@ -106,4 +111,7 @@ echo "Successfully installed $toolname"
 
 popd
 
-rm -rf $tmpdir
+if ! rm -rf $tmpdir; then
+  echo "Failed to clean $tmpdir"
+  exit 1
+fi

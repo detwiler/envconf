@@ -14,6 +14,8 @@ function usage()
 	  -l libtool version
 	  -p prefix
 	  -e exec-prefix
+	  -f extra configure flags
+	  -j make jobs
 
 	Examples:
 
@@ -24,31 +26,26 @@ function usage()
 
 declare -A version
 
-prefix_arg=""
-exec_prefix_arg=""
+prefix=""
+exec_prefix=""
+flags=""
+makejobs=""
 
-while getopts ":m:c:k:l:p:e:" opt; do
+while getopts ":m:c:k:l:p:e:f:j:" opt; do
   case $opt in
     m ) version[m4]=$OPTARG ;;
     c ) version[autoconf]=$OPTARG ;;
     k ) version[automake]=$OPTARG ;;
     l ) version[libtool]=$OPTARG ;;
-    p ) prefix_arg="--prefix=$OPTARG" ;;
-    e ) exec_prefix_arg="--exec-prefix=$OPTARG" ;;
+    p ) prefix="-p $OPTARG" ;;
+    e ) exec_prefix="-e $OPTARG" ;;
+    f ) flags="-f $OPTARG" ;;
+    j ) makejobs="-j $OPTARG" ;;
     \? ) usage; exit 1 ;;
   esac
 done
 
 shift $(($OPTIND - 1))
-
-baseurl="http://ftp.gnu.org/gnu"
-
-tmpdir=$(mktemp -d)
-
-if ! pushd $tmpdir; then
-  echo "Failed to create temporary directory"
-  exit 1
-fi
 
 for tool in m4 autoconf automake libtool; do
 
@@ -56,52 +53,11 @@ for tool in m4 autoconf automake libtool; do
     continue
   fi
 
-  toolname="$tool-${version[$tool]}"
-  archive="$toolname.tar.gz"
-  url="$baseurl/$tool/$archive"
-
-  if ! wget $url; then
-    echo "Failed to donwload $url"
+  if ! get-gnu-tool -v ${version[$tool]} $prefix $exec_prefix $flags $makejobs \
+    $tool; then
+    echo "Failed to install $tool"
     exit 1
   fi
 
-  if ! tar -xzf $archive; then
-    echo "Failed to extract $archive"
-    exit 1
-  fi
-
-  if ! pushd $toolname; then
-    echo "Failed to change directory to $toolname"
-    exit 1
-  fi
-
-  echo "Running ./configure $prefix_arg $exec_prefix_arg"
-
-  if ! ./configure $prefix_arg $exec_prefix_arg; then
-    echo "Failed to configure $toolname"
-    exit 1
-  fi
-
-  if ! make; then
-    echo "Failed to make $toolname"
-    exit 1
-  fi
-
-  if ! make install; then
-    echo "Failed to install $toolname"
-    exit 1
-  fi
-
-  popd
-
-  if ! rm -rf $toolname $archive; then
-    echo "Failed to clean $toolname"
-    exit 1
-  fi
-
-  echo "Successfully installed $toolname"
+  echo "Successfully installed $tool"
 done
-
-popd
-
-rm -rf $tmpdir
