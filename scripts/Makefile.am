@@ -14,6 +14,7 @@ bin_SCRIPTS = upper2lower
 
 dist_bin_SCRIPTS = fics \
 		   get-autotools \
+		   get-git \
 		   makecscope \
 		   mini \
 		   nixify \

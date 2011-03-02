@@ -1,0 +1,99 @@
+#! /bin/bash
+
+# functions
+
+function usage()
+{
+	cat <<- eof
+
+	Usage: $(basename $0) [OPTIONS]
+
+	  -v git version
+	  -p prefix
+	  -e exec-prefix
+
+	Examples:
+
+	$(basename $0) -v 1.7.4.1 -p $HOME/usr -e $HOME/usr/$(arch)
+
+	eof
+} # usage()
+
+prefix_arg=""
+exec_prefix_arg=""
+
+while getopts ":v:p:e:" opt; do
+  case $opt in
+    v ) version=$OPTARG ;;
+    p ) prefix_arg="--prefix=$OPTARG" ;;
+    e ) exec_prefix_arg="--exec-prefix=$OPTARG" ;;
+    \? ) usage; exit 1 ;;
+  esac
+done
+
+shift $(($OPTIND - 1))
+
+if [[ -z $version ]]; then
+  echo "Must specify version with -v"
+  usage
+  exit 1
+fi
+
+baseurl="http://www.kernel.org/pub/software/scm/git"
+extra_args="--without-iconv"
+
+tmpdir=$(mktemp -d)
+
+if ! pushd $tmpdir; then
+  echo "Failed to create temporary directory"
+  exit 1
+fi
+
+toolname="git-$version"
+archive="$toolname.tar.bz2"
+url="$baseurl/$tool/$archive"
+
+if ! wget $url; then
+  echo "Failed to donwload $url"
+  exit 1
+fi
+
+if ! tar -xjf $archive; then
+  echo "Failed to extract $archive"
+  exit 1
+fi
+
+if ! pushd $toolname; then
+  echo "Failed to change directory to $toolname"
+  exit 1
+fi
+
+echo "Running ./configure $prefix_arg $exec_prefix_arg"
+
+if ! ./configure $prefix_arg $exec_prefix_arg $extra_args; then
+  echo "Failed to configure $toolname"
+  exit 1
+fi
+
+if ! make; then
+  echo "Failed to make $toolname"
+  exit 1
+fi
+
+if ! make install; then
+  echo "Failed to install $toolname"
+  exit 1
+fi
+
+popd
+
+if ! rm -rf $toolname $archive; then
+  echo "Failed to clean $toolname"
+  exit 1
+fi
+
+echo "Successfully installed $toolname"
+
+popd
+
+rm -rf $tmpdir
