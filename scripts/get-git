@@ -13,6 +13,7 @@ function usage()
 	  -e exec-prefix
 	  -f extra configure flags
 	  -j make jobs
+	  -b bash completion path
 
 	Examples:
 
@@ -25,6 +26,8 @@ prefix=""
 exec_prefix=""
 flags=""
 makejobs=""
+bashcomp=""
+srcbashcomp="contrib/completion/git-completion.bash"
 
 while getopts "v:p:e:f:j:" opt; do
   case $opt in
@@ -33,6 +36,7 @@ while getopts "v:p:e:f:j:" opt; do
     e ) exec_prefix="--exec-prefix=$OPTARG" ;;
     f ) flags="$flags $OPTARG" ;;
     j ) makejobs="--jobs=$OPTARG" ;;
+    j ) bashcomp=$OPTARG ;;
     \? ) usage; exit 1 ;;
   esac
 done
@@ -89,6 +93,12 @@ fi
 if ! make $makejobs install; then
   echo "Failed to install $toolname"
   exit 1
+fi
+
+if [[ -n $bashcomp ]]; then
+  if ! cp -vf $srcbashcomp $bashcomp; then
+    echo "Failed to copy $srcbashcomp to $bashcomp"
+  fi
 fi
 
 popd
