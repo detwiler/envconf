@@ -1,4 +1,3 @@
-#! /bin/bash
 
 # show grep matches in color
 alias grep="@GREP_COLOR@ --color"

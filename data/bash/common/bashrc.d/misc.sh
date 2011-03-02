@@ -1,4 +1,3 @@
-#! /bin/bash
 
 # Misc :)
 alias less='less -r'                          # raw control characters

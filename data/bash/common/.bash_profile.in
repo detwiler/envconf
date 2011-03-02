@@ -1,4 +1,3 @@
-#! /bin/bash
 
 # source the system wide bashrc if it exists
 if [ -f /etc/bash.bashrc ] ; then

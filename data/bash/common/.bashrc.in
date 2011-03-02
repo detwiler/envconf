@@ -1,4 +1,3 @@
-#! /bin/bash
 
 # Source global definitions
 if [ -f "@pkgdatadir@/global-bash" ]; then

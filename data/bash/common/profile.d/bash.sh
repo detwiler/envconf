@@ -1,4 +1,3 @@
-#! /bin/bash
 
 # History Options
 # ###############

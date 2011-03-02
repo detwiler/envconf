@@ -1,3 +1,2 @@
-#! /bin/bash
 
 alias svn='@SVN_ALIAS@'

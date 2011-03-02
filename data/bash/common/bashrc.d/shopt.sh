@@ -1,4 +1,3 @@
-#! /bin/bash
 
 # shopt shell options
 

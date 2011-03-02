@@ -1,4 +1,3 @@
-#! /bin/bash
 
 # TODO make java tags
 

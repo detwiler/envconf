@@ -1,4 +1,3 @@
-#! /bin/bash
 
 minicom_dir="/etc"
 log_dir="/tmp"
