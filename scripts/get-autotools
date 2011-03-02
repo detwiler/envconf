@@ -1,0 +1,107 @@
+#! /bin/bash
+
+# functions
+
+function usage()
+{
+	cat <<- eof
+
+	Usage: $(basename $0) [OPTIONS]
+
+	  -m m4 version
+	  -c autoconf version
+	  -k automake version
+	  -l libtool version
+	  -p prefix
+	  -e exec-prefix
+
+	Examples:
+
+	$(basename $0) -m 1.4.16 -c 2.68 -k 1.11.1 -l 2.4 -p $HOME/usr
+
+	eof
+} # usage()
+
+declare -A version
+
+prefix_arg=""
+exec_prefix_arg=""
+
+while getopts ":m:c:k:l:p:e:" opt; do
+  case $opt in
+    m ) version[m4]=$OPTARG ;;
+    c ) version[autoconf]=$OPTARG ;;
+    k ) version[automake]=$OPTARG ;;
+    l ) version[libtool]=$OPTARG ;;
+    p ) prefix_arg="--prefix=$OPTARG" ;;
+    e ) exec_prefix_arg="--exec-prefix=$OPTARG" ;;
+    \? ) usage; exit 1 ;;
+  esac
+done
+
+shift $(($OPTIND - 1))
+
+baseurl="http://ftp.gnu.org/gnu"
+
+tmpdir=$(mktemp -d)
+
+if ! pushd $tmpdir; then
+  echo "Failed to create temporary directory"
+  exit 1
+fi
+
+for tool in m4 autoconf automake libtool; do
+
+  if [[ -z ${version[$tool]} ]]; then
+    continue
+  fi
+
+  toolname="$tool-${version[$tool]}"
+  archive="$toolname.tar.gz"
+  url="$baseurl/$tool/$archive"
+
+  if ! wget $url; then
+    echo "Failed to donwload $url"
+    exit 1
+  fi
+
+  if ! tar -xzf $archive; then
+    echo "Failed to extract $archive"
+    exit 1
+  fi
+
+  if ! pushd $toolname; then
+    echo "Failed to change directory to $toolname"
+    exit 1
+  fi
+
+  echo "Running ./configure $prefix_arg $exec_prefix_arg"
+
+  if ! ./configure $prefix_arg $exec_prefix_arg; then
+    echo "Failed to configure $toolname"
+    exit 1
+  fi
+
+  if ! make; then
+    echo "Failed to make $toolname"
+    exit 1
+  fi
+
+  if ! make install; then
+    echo "Failed to install $toolname"
+    exit 1
+  fi
+
+  popd
+
+  if ! rm -rf $toolname $archive; then
+    echo "Failed to clean $toolname"
+    exit 1
+  fi
+
+  echo "Successfully installed $toolname"
+done
+
+popd
+
+rm -rf $tmpdir
