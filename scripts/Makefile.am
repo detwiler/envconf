@@ -16,6 +16,7 @@ dist_bin_SCRIPTS = fics \
 		   get-autotools \
 		   get-bash \
 		   get-git \
+		   get-gnu-tool \
 		   makecscope \
 		   mini \
 		   nixify \
