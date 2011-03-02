@@ -1,4 +1,4 @@
-#! /bin/bash
+#! /bin/env bash
 
 # functions
 
@@ -11,6 +11,8 @@ function usage()
 	  -v git version
 	  -p prefix
 	  -e exec-prefix
+	  -f extra configure flags
+	  -j make jobs
 
 	Examples:
 
@@ -19,14 +21,18 @@ function usage()
 	eof
 } # usage()
 
-prefix_arg=""
-exec_prefix_arg=""
+prefix=""
+exec_prefix=""
+flags=""
+makejobs=""
 
-while getopts ":v:p:e:" opt; do
+while getopts "v:p:e:f:j:" opt; do
   case $opt in
     v ) version=$OPTARG ;;
-    p ) prefix_arg="--prefix=$OPTARG" ;;
-    e ) exec_prefix_arg="--exec-prefix=$OPTARG" ;;
+    p ) prefix="--prefix=$OPTARG" ;;
+    e ) exec_prefix="--exec-prefix=$OPTARG" ;;
+    f ) flags="$flags $OPTARG" ;;
+    j ) makejobs="--jobs=$OPTARG" ;;
     \? ) usage; exit 1 ;;
   esac
 done
@@ -40,7 +46,6 @@ if [[ -z $version ]]; then
 fi
 
 baseurl="http://www.kernel.org/pub/software/scm"
-extra_args="--without-iconv"
 
 tmpdir=$(mktemp -d)
 
@@ -69,19 +74,19 @@ if ! pushd $toolname; then
   exit 1
 fi
 
-echo "Running ./configure $prefix_arg $exec_prefix_arg $extra_args"
+echo "Running ./configure $prefix $exec_prefix $flags"
 
-if ! ./configure $prefix_arg $exec_prefix_arg $extra_args; then
+if ! ./configure $prefix $exec_prefix $flags; then
   echo "Failed to configure $toolname"
   exit 1
 fi
 
-if ! make; then
+if ! make $makejobs; then
   echo "Failed to make $toolname"
   exit 1
 fi
 
-if ! make install; then
+if ! make $makejobs install; then
   echo "Failed to install $toolname"
   exit 1
 fi
@@ -97,4 +102,7 @@ echo "Successfully installed $toolname"
 
 popd
 
-rm -rf $tmpdir
+if ! rm -rf $tmpdir; then
+  echo "Failed to clean $tmpdir"
+  exit 1
+fi
