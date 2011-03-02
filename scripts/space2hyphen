@@ -1,4 +1,4 @@
-#! /bin/bash
+#! /bin/env bash
 
 # replace spaces with hyphens in filename arguments
 
