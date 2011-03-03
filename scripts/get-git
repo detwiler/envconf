@@ -93,7 +93,7 @@ if ! wget $signurl; then
   exit 1
 fi
 
-if ! gpg --verify $signature $archive; then
+if ! gpg --keyserver-options auto-key-retrieve --verify $signature; then
   echo "Failed to verfiy signature $signature"
   popd
   cleanup $tmpdir
@@ -114,7 +114,9 @@ if ! pushd $toolname; then
   exit 1
 fi
 
+echo
 echo "Running ./configure $prefix $exec_prefix $flags"
+echo
 
 if ! ./configure $prefix $exec_prefix $flags; then
   echo "Failed to configure $toolname"
@@ -144,13 +146,6 @@ if [[ -n $bashcomp ]]; then
 fi
 
 popd
-
-if ! rm -rf $toolname $archive; then
-  echo "Failed to clean $toolname"
-  popd
-  cleanup $tmpdir
-  exit 1
-fi
 
 echo "Successfully installed $toolname"
 
