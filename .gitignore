@@ -12,6 +12,7 @@ configure
 configure.scan
 envconf-release
 libtool
+INSTALL
 Makefile
 Makefile.in
 stamp-h1
