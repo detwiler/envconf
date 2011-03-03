@@ -22,6 +22,19 @@ function usage()
 	eof
 } # usage()
 
+function cleanup()
+{
+  local dir=$1
+
+  if [[ -d $dir ]]; then
+    if rm -rf $dir; then
+      echo "Removed $dir"
+    else
+      echo "Failed to clean $dir"
+    fi
+  fi
+}
+
 prefix=""
 exec_prefix=""
 flags=""
@@ -55,26 +68,49 @@ tmpdir=$(mktemp -d)
 
 if ! pushd $tmpdir; then
   echo "Failed to create temporary directory"
+  cleanup $tmpdir
   exit 1
 fi
 
 tool="git"
 toolname="$tool-$version"
 archive="$toolname.tar.bz2"
+signature="$archive.sign"
 url="$baseurl/$tool/$archive"
+signurl="$baseurl/$tool/$signature"
 
 if ! wget $url; then
-  echo "Failed to donwload $url"
+  echo "Failed to download $url"
+  popd
+  cleanup $tmpdir
+  exit 1
+fi
+
+if ! wget $signurl; then
+  echo "Failed to download $signurl"
+  popd
+  cleanup $tmpdir
+  exit 1
+fi
+
+if ! gpg --verify $signature $archive; then
+  echo "Failed to verfiy signature $signature"
+  popd
+  cleanup $tmpdir
   exit 1
 fi
 
 if ! tar -xjf $archive; then
   echo "Failed to extract $archive"
+  popd
+  cleanup $tmpdir
   exit 1
 fi
 
 if ! pushd $toolname; then
   echo "Failed to change directory to $toolname"
+  popd
+  cleanup $tmpdir
   exit 1
 fi
 
@@ -82,16 +118,22 @@ echo "Running ./configure $prefix $exec_prefix $flags"
 
 if ! ./configure $prefix $exec_prefix $flags; then
   echo "Failed to configure $toolname"
+  popd
+  cleanup $tmpdir
   exit 1
 fi
 
 if ! make $makejobs; then
   echo "Failed to make $toolname"
+  popd
+  cleanup $tmpdir
   exit 1
 fi
 
 if ! make $makejobs install; then
   echo "Failed to install $toolname"
+  popd
+  cleanup $tmpdir
   exit 1
 fi
 
@@ -105,14 +147,12 @@ popd
 
 if ! rm -rf $toolname $archive; then
   echo "Failed to clean $toolname"
+  popd
+  cleanup $tmpdir
   exit 1
 fi
 
 echo "Successfully installed $toolname"
 
 popd
-
-if ! rm -rf $tmpdir; then
-  echo "Failed to clean $tmpdir"
-  exit 1
-fi
+cleanup $tmpdir
