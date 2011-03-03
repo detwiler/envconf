@@ -3,6 +3,7 @@
 # generated data files
 bash-completion.sh
 ctags-alias.sh
+gpg2.sh
 grep.sh
 ls.sh
 proxy.sh

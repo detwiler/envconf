@@ -10,12 +10,12 @@ if HAVE_VIM
 SUBDIRS += vim
 endif HAVE_VIM
 
-pkgdata_SCRIPTS = upper2lower
+pkgdata_SCRIPTS = get-git \
+		  get-gnu-tool \
+		  upper2lower
 
 dist_pkgdata_SCRIPTS = fics \
 		       get-autotools \
-		       get-git \
-		       get-gnu-tool \
 		       makecscope \
 		       mini \
 		       nixify \

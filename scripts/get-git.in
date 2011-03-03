@@ -93,7 +93,7 @@ if ! wget $signurl; then
   exit 1
 fi
 
-if ! gpg --keyserver-options auto-key-retrieve --verify $signature; then
+if ! @GPG@ --keyserver-options auto-key-retrieve --verify $signature; then
   echo "Failed to verfiy signature $signature"
   popd
   cleanup $tmpdir

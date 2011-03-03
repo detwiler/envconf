@@ -1,4 +1,6 @@
 # .gitignore
 
 # generated scripts
+get-git
+get-gnu-tool
 upper2lower

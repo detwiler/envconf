@@ -15,16 +15,20 @@ bashrc_DATA += ctags-alias.sh
 dist_bashrc_DATA += ctags.sh
 endif
 
+if HAVE_GPG2
+bashrc_DATA += gpg2.sh
+endif
+
+if HAVE_GREP_COLOR
+bashrc_DATA += grep.sh
+endif
+
 if WITH_SVN_ALIAS
 bashrc_DATA += svn.sh
 endif
 
 if WITH_VIM_ALIAS
 bashrc_DATA += vim.sh
-endif
-
-if HAVE_GREP_COLOR
-bashrc_DATA += grep.sh
 endif
 
 if HAVE_VIM

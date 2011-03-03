@@ -42,7 +42,6 @@ AM_CONDITIONAL([HAVE_SED], [test "x$SED" != x])
 AC_ARG_VAR([EDITOR], [default text editor])
 AC_CHECK_PROG([EDITOR], [vim], [vim], [vi])
 AM_CONDITIONAL([HAVE_VIM], [test "x$EDITOR" = xvim])
-
 AM_COND_IF([HAVE_VIM], [AM_COND_IF([ECCYGWIN],
            [GVIM_FONT=/dev/null],
            [GVIM_FONT=data/vim/gvimrc.linux])
@@ -78,16 +77,20 @@ AM_COND_IF([HAVE_EXUBERANT_CTAGS],
             AC_CONFIG_FILES([data/bash/common/bashrc.d/ctags-alias.sh])])
 
 AC_ARG_VAR([EGREP], [path to egrep])
-AC_PATH_PROG([EGREP], [egrep])
-AM_CONDITIONAL([HAVE_EGREP], [test "x$EGREP" != x])
-AM_COND_IF([HAVE_EGREP],
-           [AC_CONFIG_FILES([data/bash/common/functions])])
+AC_PATH_PROG([EGREP], [egrep], [no])
+AS_IF([test "x$EGREP" = xno],
+      [AC_MSG_ERROR([could not find egrep])])
 
 AM_CONDITIONAL([EC_LSCOLOR], [ls --color &> /dev/null])
 AM_COND_IF([EC_LSCOLOR],
            [LS_ALIASES=data/bash/common/bashrc.d/ls-color.aliases],
            [LS_ALIASES=data/bash/common/bashrc.d/ls.aliases])
 AC_SUBST_FILE([LS_ALIASES])
+
+AC_ARG_VAR([GPG], [path to gpg])
+AC_CHECK_PROGS([GPG], [gpg2 gpg], [gpg])
+AM_CONDITIONAL([HAVE_GPG2], [test "x$GPG" = xgpg2])
+AM_COND_IF([HAVE_GPG2], [AC_CONFIG_FILES([data/bash/common/bashrc.d/gpg2.sh])])
 
 # Checks for files.
 
@@ -163,6 +166,7 @@ AC_CONFIG_FILES([Makefile
                  data/autoconf/config.site
                  data/bash/Makefile
                  data/bash/common/Makefile
+                 data/bash/common/functions
                  data/bash/common/global-bash
                  data/bash/common/bashrc.d/Makefile
                  data/bash/common/bashrc.d/ls.sh
@@ -178,6 +182,8 @@ AC_CONFIG_FILES([Makefile
                  data/svn/Makefile
                  data/vim/Makefile
                  scripts/Makefile
+                 scripts/get-git
+                 scripts/get-gnu-tool
                  scripts/upper2lower
                  scripts/sed/Makefile
                  scripts/vim/Makefile

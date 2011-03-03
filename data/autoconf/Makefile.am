@@ -2,4 +2,4 @@
 
 data_DATA = config.site
 
-CLEANFILES = $(data_DATA)
+DISTCLEANFILES = $(data_DATA)
