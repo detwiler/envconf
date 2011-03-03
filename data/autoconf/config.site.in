@@ -1,0 +1,15 @@
+# vim:ft=sh
+
+# make --exec-prefix architecture-specific
+p=@prefix@
+ep="$p/`/bin/arch`"
+idir=$p/include
+ldir=$ep/lib
+
+# we don't set prefix since we don't set CONFIG_SITE, so we wouldn't be here
+# unless prefix was specified as @prefix@
+test "x$exec_prefix" = xNONE && exec_prefix=$ep
+
+# set FLAGS accordingly
+test "x$CPPFLAGS" = x && CPPFLAGS=-I$idir
+test "x$LDFLAGS" = x && LDFLAGS="-L$ldir -Wl,-rpath,$ldir"

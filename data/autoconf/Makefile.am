@@ -1,3 +1,5 @@
 # Makefile.am
 
-dist_data_DATA = config.site
+data_DATA = config.site
+
+CLEANFILES = $(data_DATA)

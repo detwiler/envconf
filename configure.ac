@@ -163,6 +163,7 @@ AM_CONDITIONAL([ECREADLINE], [test "x$INPUTRC" != x])
 AC_CONFIG_FILES([Makefile
                  data/Makefile
                  data/autoconf/Makefile
+                 data/autoconf/config.site
                  data/bash/Makefile
                  data/bash/common/Makefile
                  data/bash/common/global-bash

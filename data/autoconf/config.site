@@ -1,8 +1,0 @@
-# vim:ft=sh
-
-# make --exec-prefix architecture-specific
-test "x$exec_prefix" = xNONE && exec_prefix="$HOME/usr/`/bin/arch`"
-
-# set FLAGS accordingly
-test "x$CPPFLAGS" = x && CPPFLAGS='-I${includedir}'
-test "x$LDFLAGS" = x && LDFLAGS='-L${libdir} -Wl,-rpath,${libdir}'
