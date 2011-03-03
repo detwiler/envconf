@@ -16,10 +16,10 @@ EXTRA_DIST = beautify.in \
 edit = $(SED) -e 's:@vimdatadir[@]:$(vimdatadir):g'
 
 beautify: beautify.in Makefile
-	$(AM_V_GEN)$(edit) < $(srcdir)/$< > $@
+	$(AM_V_GEN)$(edit) < $< > $@
 
 kr2allman: kr2allman.in Makefile
-	$(AM_V_GEN)$(edit) < $(srcdir)/$< > $@
+	$(AM_V_GEN)$(edit) < $< > $@
 
 install-data-hook:
 	$(AM_V_GEN)test -e $(DESTDIR)$(bindir) || mkdir -p $(DESTDIR)$(bindir)
