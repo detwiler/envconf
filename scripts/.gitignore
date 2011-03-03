@@ -1,6 +1,7 @@
 # .gitignore
 
-# generated scripts
+# generated files
+config-bash
 get-git
 get-gnu-tool
 upper2lower

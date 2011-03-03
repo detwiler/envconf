@@ -1,0 +1,3 @@
+--with-bash-malloc=no
+--with-afs
+CPPFLAGS="-I@prefix@/include -D_GNU_SOURCE -DRECYCLES_PIDS `getconf LFS_CFLAGS`"

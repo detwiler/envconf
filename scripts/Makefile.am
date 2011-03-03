@@ -10,6 +10,8 @@ if HAVE_VIM
 SUBDIRS += vim
 endif HAVE_VIM
 
+pkgdata_DATA = config-bash
+
 pkgdata_SCRIPTS = get-git \
 		  get-gnu-tool \
 		  upper2lower
@@ -26,7 +28,8 @@ dist_pkgdata_SCRIPTS = fics \
 scripts = $(pkgdata_SCRIPTS) \
 	  $(dist_pkgdata_SCRIPTS) 
 
-DISTCLEANFILES = $(pkgdata_SCRIPTS)
+DISTCLEANFILES = $(pkgdata_DATA) \
+		 $(pkgdata_SCRIPTS)
 
 EXTRA_DIST = upper2lower.cygwin \
 	     upper2lower.linux

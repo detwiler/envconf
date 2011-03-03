@@ -11,7 +11,10 @@ function usage()
 	  -v version
 	  -p prefix
 	  -e exec-prefix
-	  -f extra configure flags
+	  -c extra configure flags
+	  -C file with extra configure flags
+	  -m extra make flags
+	  -M file with extra make flags
 	  -j make jobs
 
 	Examples:
@@ -36,15 +39,19 @@ function cleanup()
 
 prefix=""
 exec_prefix=""
-flags=""
+configflags=""
+makeflags=""
 makejobs=""
 
-while getopts "v:p:e:f:j:" opt; do
+while getopts "v:p:e:c:C:m:M:j:" opt; do
   case $opt in
     v ) version=$OPTARG ;;
     p ) prefix="--prefix=$OPTARG" ;;
     e ) exec_prefix="--exec-prefix=$OPTARG" ;;
-    f ) flags="$flags $OPTARG" ;;
+    c ) configflags="$configflags $OPTARG" ;;
+    C ) configflags="$configflags $(cat $OPTARG | tr '\n' ' ')" ;;
+    m ) makeflags="$makeflags $OPTARG" ;;
+    M ) makeflags="$makeflags $(cat $OPTARG | tr '\n' ' ')" ;;
     j ) makejobs="--jobs=$OPTARG" ;;
     \? ) usage; exit 1 ;;
   esac
@@ -118,24 +125,32 @@ if ! pushd $toolname; then
 fi
 
 echo
-echo "Running ./configure $prefix $exec_prefix $flags"
+echo "Running ./configure $prefix $exec_prefix $configflags"
 echo
 
-if ! ./configure $prefix $exec_prefix $flags; then
+if ! eval ./configure $prefix $exec_prefix $configflags; then
   echo "Failed to configure $toolname"
   popd
   cleanup $tmpdir
   exit 1
 fi
 
-if ! make $makejobs; then
+echo
+echo "Running make $makejobs $makeflags"
+echo
+
+if ! eval make $makejobs $makeflags; then
   echo "Failed to make $toolname"
   popd
   cleanup $tmpdir
   exit 1
 fi
 
-if ! make $makejobs install; then
+echo
+echo "Running make $makejobs $makeflags install"
+echo
+
+if ! eval make $makejobs $makeflags install; then
   echo "Failed to install $toolname"
   popd
   cleanup $tmpdir
