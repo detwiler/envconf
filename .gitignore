@@ -6,7 +6,8 @@ autoscan.log
 build-aux/
 aclocal.m4
 ChangeLog
-config.*
+config.log
+config.status
 configure
 configure.scan
 envconf-release

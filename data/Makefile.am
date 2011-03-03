@@ -1,6 +1,7 @@
 # Makefile.am
 
-SUBDIRS = bash \
+SUBDIRS = autoconf \
+	  bash \
 	  git \
 	  readline
 
