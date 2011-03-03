@@ -10,20 +10,34 @@ if HAVE_VIM
 SUBDIRS += vim
 endif HAVE_VIM
 
-bin_SCRIPTS = upper2lower
+pkgdata_SCRIPTS = upper2lower
 
-dist_bin_SCRIPTS = fics \
-		   get-autotools \
-		   get-git \
-		   get-gnu-tool \
-		   makecscope \
-		   mini \
-		   nixify \
-		   pattmv \
-		   space2hyphen \
-		   weather
+dist_pkgdata_SCRIPTS = fics \
+		       get-autotools \
+		       get-git \
+		       get-gnu-tool \
+		       makecscope \
+		       mini \
+		       nixify \
+		       pattmv \
+		       space2hyphen \
+		       weather
 
-DISTCLEANFILES = $(bin_SCRIPTS)
+scripts = $(pkgdata_SCRIPTS) \
+	  $(dist_pkgdata_SCRIPTS) 
+
+DISTCLEANFILES = $(pkgdata_SCRIPTS)
 
 EXTRA_DIST = upper2lower.cygwin \
 	     upper2lower.linux
+
+install-data-hook:
+	$(AM_V_GEN)test -e $(DESTDIR)$(bindir) || mkdir -p $(DESTDIR)$(bindir)
+	$(AM_V_GEN)cd $(DESTDIR)$(bindir) && \
+	  for s in $(scripts); do \
+	    test -e $$s || $(LN_S) $(DESTDIR)$(pkgdatadir)/$$s; \
+	  done
+
+uninstall-hook:
+	$(AM_V_GEN)cd $(DESTDIR)$(bindir) && \
+	  rm -f $(scripts)

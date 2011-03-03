@@ -3,10 +3,12 @@
 dist_seddata_DATA = ccproto.sed \
 		    get-make-error-file.sed
 
-bin_SCRIPTS = ccproto \
-	      skiperror
+pkgdata_SCRIPTS = ccproto \
+		  skiperror
 
-CLEANFILES = $(bin_SCRIPTS)
+scripts = $(pkgdata_SCRIPTS)
+
+CLEANFILES = $(pkgdata_SCRIPTS)
 
 EXTRA_DIST = ccproto.in \
 	     skiperror.in
@@ -18,3 +20,14 @@ skiperror: skiperror.in Makefile
 
 ccproto: ccproto.in Makefile
 	$(AM_V_GEN)$(edit) < $(srcdir)/$< > $@
+
+install-data-hook:
+	$(AM_V_GEN)test -e $(DESTDIR)$(bindir) || mkdir -p $(DESTDIR)$(bindir)
+	$(AM_V_GEN)cd $(DESTDIR)$(bindir) && \
+	  for s in $(scripts); do \
+	    test -e $$s || $(LN_S) $(DESTDIR)$(pkgdatadir)/$$s; \
+	  done
+
+uninstall-hook:
+	$(AM_V_GEN)cd $(DESTDIR)$(bindir) && \
+	  rm -f $(scripts)

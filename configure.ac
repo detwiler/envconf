@@ -35,6 +35,7 @@ AC_SUBST_FILE([UPPER2LOWER])
 
 # Checks for programs.
 AC_PROG_INSTALL
+AC_PROG_LN_S
 AC_PROG_SED
 AM_CONDITIONAL([HAVE_SED], [test "x$SED" != x])
 
