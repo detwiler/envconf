@@ -149,10 +149,6 @@ AM_COND_IF([WITH_VIM_ALIAS],
 EC_ARG_WITH([vimrc_example], [/dev/null])
 AC_SUBST([VIMRC_EXAMPLE], [$with_vimrc_example])
 
-# option to enable architecture specific bindir
-EC_ARG_ENABLE([arch_bin], [no])
-AM_CONDITIONAL([ENABLE_ARCH_BIN], [test "x$enable_arch_bin" = xyes])
-
 # option to enable local bash-completion
 EC_ARG_ENABLE([local_bash_comp], [no])
 AM_CONDITIONAL([ENABLE_LOCAL_BASH_COMP],
