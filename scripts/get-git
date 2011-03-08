@@ -86,22 +86,8 @@ signature="$archive.sign"
 url="$baseurl/$tool/$archive"
 signurl="$baseurl/$tool/$signature"
 
-if ! wget $url; then
-  echo "Failed to download $url"
-  popd
-  cleanup $tmpdir
-  exit 1
-fi
-
-if ! wget $signurl; then
-  echo "Failed to download $signurl"
-  popd
-  cleanup $tmpdir
-  exit 1
-fi
-
-if ! @GPG@ --keyserver-options auto-key-retrieve --verify $signature; then
-  echo "Failed to verfiy signature $signature"
+if ! dl-git -v $version; then
+  echo "Failed to download $toolname"
   popd
   cleanup $tmpdir
   exit 1

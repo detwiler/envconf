@@ -183,7 +183,7 @@ AC_CONFIG_FILES([Makefile
                  data/vim/Makefile
                  scripts/Makefile
                  scripts/config-bash
-                 scripts/get-git
+                 scripts/dl-git
                  scripts/dl-gnu-tool
                  scripts/upper2lower
                  scripts/sed/Makefile

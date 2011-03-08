@@ -12,12 +12,13 @@ endif HAVE_VIM
 
 pkgdata_DATA = config-bash
 
-pkgdata_SCRIPTS = get-git \
+pkgdata_SCRIPTS = dl-git \
 		  dl-gnu-tool \
 		  upper2lower
 
 dist_pkgdata_SCRIPTS = fics \
 		       get-autotools \
+		       get-git \
 		       get-gnu-tool \
 		       makecscope \
 		       mini \
