@@ -184,7 +184,7 @@ AC_CONFIG_FILES([Makefile
                  scripts/Makefile
                  scripts/config-bash
                  scripts/get-git
-                 scripts/get-gnu-tool
+                 scripts/dl-gnu-tool
                  scripts/upper2lower
                  scripts/sed/Makefile
                  scripts/vim/Makefile

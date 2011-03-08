@@ -1,0 +1,66 @@
+#! /bin/env bash
+
+# functions
+
+function usage()
+{
+	cat <<- eof
+
+	Usage: $(basename $0) -v <version> <tool>
+
+	  -v version
+
+	Examples:
+
+	$(basename $0) -v 2.68 autoconf
+
+	eof
+} # usage()
+
+while getopts "v:" opt; do
+  case $opt in
+    v ) version=$OPTARG ;;
+    \? ) usage; exit 1 ;;
+  esac
+done
+
+shift $(($OPTIND - 1))
+
+if [[ -z $version ]]; then
+  echo "Must specify version with -v"
+  usage
+  exit 1
+fi
+
+tool=$1
+
+if [[ -z $tool ]]; then
+  echo "Must specify tool argument"
+  usage
+  exit 1
+fi
+
+baseurl="http://ftp.gnu.org/gnu"
+
+toolname="$tool-$version"
+archive="$toolname.tar.gz"
+signature="$archive.sig"
+url="$baseurl/$tool/$archive"
+signurl="$baseurl/$tool/$signature"
+
+if ! wget $url; then
+  echo "Failed to download $url"
+  exit 1
+fi
+
+if ! wget $signurl; then
+  echo "Failed to download $signurl"
+  exit 1
+fi
+
+if ! @GPG@ --keyserver-options auto-key-retrieve --verify $signature; then
+  echo "Failed to verfiy signature $signature"
+  exit 1
+fi
+
+echo "Successfully downloaded $toolname"

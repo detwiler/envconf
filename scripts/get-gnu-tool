@@ -73,8 +73,6 @@ if [[ -z $tool ]]; then
   exit 1
 fi
 
-baseurl="http://ftp.gnu.org/gnu"
-
 tmpdir=$(mktemp -d)
 
 if ! pushd $tmpdir; then
@@ -85,26 +83,9 @@ fi
 
 toolname="$tool-$version"
 archive="$toolname.tar.gz"
-signature="$archive.sig"
-url="$baseurl/$tool/$archive"
-signurl="$baseurl/$tool/$signature"
 
-if ! wget $url; then
-  echo "Failed to download $url"
-  popd
-  cleanup $tmpdir
-  exit 1
-fi
-
-if ! wget $signurl; then
-  echo "Failed to download $signurl"
-  popd
-  cleanup $tmpdir
-  exit 1
-fi
-
-if ! @GPG@ --keyserver-options auto-key-retrieve --verify $signature; then
-  echo "Failed to verfiy signature $signature"
+if ! dl-gnu-tool -v $version $tool; then
+  echo "Failed to download $tool"
   popd
   cleanup $tmpdir
   exit 1
