@@ -25,7 +25,7 @@ EXTRA_DIST = $(bash_profile_h).in \
 	     $(profile).in
 
 edit = $(SED) \
-       -e 's:@bindir[@]:$(bindir):g' \
+       -e 's:@homedir[@]:$(homedir):g' \
        -e 's:@pkgdatadir[@]:$(pkgdatadir):g' \
        -e 's:@bashrcdir[@]:$(bashrcdir):g' \
        -e 's:@profiledir[@]:$(profiledir):g'

@@ -1,4 +1,3 @@
-
 # Source global definitions
 if [ -f "@pkgdatadir@/global-bash" ]; then
   source "@pkgdatadir@/global-bash"
@@ -9,9 +8,8 @@ if [ -f "@pkgdatadir@/functions" ]; then
   source "@pkgdatadir@/functions"
 fi
 
-# FIXME set architecture-dependant bindir
 # Set PATH so it includes user's private bin if it exists
-pathmung @bindir@
+pathmung @homedir@/usr/$(arch)/bin
 
 if [ -f "@pkgdatadir@/bashrc" ]; then
   source "@pkgdatadir@/bashrc"
