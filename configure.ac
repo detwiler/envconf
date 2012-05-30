@@ -107,6 +107,8 @@ EC_ARG_WITH([user_color], [32])
 AC_SUBST([USER_COLOR], [$with_user_color])
 EC_ARG_WITH([host_color], [33])
 AC_SUBST([HOST_COLOR], [$with_host_color])
+EC_ARG_WITH([git_color], [32])
+AC_SUBST([GIT_COLOR], [$with_git_color])
 EC_ARG_WITH([pwd_color], [0])
 AC_SUBST([PWD_COLOR], [$with_pwd_color])
 

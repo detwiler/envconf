@@ -9,10 +9,10 @@ echo $- | grep i &> /dev/null || return
 case "$TERM" in
 
   xterm | cygwin)
-    PS1='\[\e]0;\u@\h \w\a\]\n\[\e[1;@USER_COLOR@m\]\u\[\e[0m\]@\[\e[1;@HOST_COLOR@m\]\h \[\e[@PWD_COLOR@m\]\w\[\e[0m\]\n\$ ';;
+    PS1="\[\e]0;\u@\h \w\a\]\n\[\e[1;@USER_COLOR@m\]\u\[\e[0m\]@\[\e[1;@HOST_COLOR@m\]\h\[\e[1;@GIT_COLOR@m\]\$(__git_ps1)\n\[\e[@PWD_COLOR@m\]\w\[\e[0m\]\n\$ ";;
 
   linux)
-    PS1='\n\[\e[1;@USER_COLOR@m\]\u\[\e[0m\]@\[\e[1;@HOST_COLOR@m\]\h \[\e[@PWD_COLOR@m\]\w\[\e[0m\]\n\$ ';;
+    PS1="\n\[\e[1;@USER_COLOR@m\]\u\[\e[0m\]@\[\e[1;@HOST_COLOR@m\]\h\[\e[1;@GIT_COLOR@m\]\$(__git_ps1)\n\[\e[@PWD_COLOR@m\]\w\[\e[0m\]\n\$ ";;
 
   *) 
     PS1='\n\u@\h \w\n\$ ';;
