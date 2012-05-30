@@ -1,7 +1,7 @@
 " .gvimrc
 " vim: set ft=vim :
 
-@GVIM_FONT@
+@GVIM_FONT_FILE@
 
 set guioptions=aei
 

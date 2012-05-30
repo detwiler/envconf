@@ -7,10 +7,11 @@ vimindentdir = $(vimdir)/indent
 vimsyntaxdir = $(vimdir)/syntax
 
 vimrc = .vimrc
+gvimrc = .gvimrc
 customvim = custom.vim
 
 home_DATA = $(vimrc) \
-	    .gvimrc
+	    $(gvimrc)
 
 dist_vimdata_DATA = $(customvim)
 
@@ -23,9 +24,10 @@ dist_vimftdetect_DATA = scala-ftdetect.vim
 dist_vimindent_DATA = scala-indent.vim
 dist_vimsyntax_DATA = scala-syntax.vim
 
-CLEANFILES = $(home_DATA)
+CLEANFILES = $(vimrc)
 
-EXTRA_DIST = gvimrc.linux
+DISTCLEANFILES = $(gvimrc) \
+		 gvimrc.linux
 
 edit = $(SED) -e 's:@vimdatadir[@]:$(vimdatadir):g'
 

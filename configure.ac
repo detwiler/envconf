@@ -43,9 +43,10 @@ AC_ARG_VAR([EDITOR], [default text editor])
 AC_CHECK_PROG([EDITOR], [vim], [vim], [vi])
 AM_CONDITIONAL([HAVE_VIM], [test "x$EDITOR" = xvim])
 AM_COND_IF([HAVE_VIM], [AM_COND_IF([ECCYGWIN],
-           [GVIM_FONT=/dev/null],
-           [GVIM_FONT=data/vim/gvimrc.linux])
-           AC_SUBST_FILE([GVIM_FONT])
+           [GVIM_FONT_FILE=/dev/null],
+           [GVIM_FONT_FILE=data/vim/gvimrc.linux
+            AC_CONFIG_FILES([data/vim/gvimrc.linux])])
+           AC_SUBST_FILE([GVIM_FONT_FILE])
            AC_CONFIG_FILES([data/vim/.gvimrc])])
 
 AC_CHECK_PROG([have_dircolors], [dircolors], [yes])
@@ -99,6 +100,12 @@ AC_CHECK_FILE([$HOME/usr/share/android/tools],
 AM_CONDITIONAL([HAVE_ANDROID], [test "x$have_android" = xyes])
 
 # Additional options
+
+# option to specify gvim font/size
+EC_ARG_WITH([gvim_font], [Monospace])
+AC_SUBST([GVIM_FONT], [$with_gvim_font])
+EC_ARG_WITH([gvim_font_size], [11])
+AC_SUBST([GVIM_FONT_SIZE], [$with_gvim_font_size])
 
 # enable customization of user/host/pwd PS1 color
 # Text color codes:
