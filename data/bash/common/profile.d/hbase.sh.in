@@ -1,0 +1,3 @@
+HBASE_HOME=@HBASE_HOME@
+
+pathmung @HBASE_HOME@ after

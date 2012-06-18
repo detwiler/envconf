@@ -137,6 +137,13 @@ AM_COND_IF([WITH_HADOOP_HOME],
            [AC_SUBST([HADOOP_HOME], [$with_hadoop_home])
             AC_CONFIG_FILES([data/bash/common/profile.d/hadoop.sh])])
 
+# option to specify path to hbase home
+EC_ARG_WITH([hbase_home], [no])
+AM_CONDITIONAL([WITH_HBASE_HOME], [test "x$with_hbase_home" != xno])
+AM_COND_IF([WITH_HBASE_HOME],
+           [AC_SUBST([HBASE_HOME], [$with_hbase_home])
+            AC_CONFIG_FILES([data/bash/common/profile.d/hbase.sh])])
+
 # option to specify path to android bindir
 EC_ARG_WITH([android_bindir], [no])
 AM_CONDITIONAL([WITH_ANDROID_BINDIR], [test "x$with_android_bindir" != xno])
