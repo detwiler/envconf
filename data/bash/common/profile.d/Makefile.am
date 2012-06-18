@@ -9,8 +9,8 @@ endif
 dist_profile_DATA = bash-completion.sh \
 		    bash.sh
 
-if HAVE_ANDROID
-dist_profile_DATA += android.sh
-endif HAVE_ANDROID
+if WITH_ANDROID_BINDIR
+profile_DATA += android.sh
+endif WITH_ANDROID_BINDIR
 
 DISTCLEANFILES = $(profile_DATA)

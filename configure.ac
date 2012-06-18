@@ -95,10 +95,6 @@ AM_COND_IF([HAVE_GPG2], [AC_CONFIG_FILES([data/bash/common/bashrc.d/gpg2.sh])])
 
 # Checks for files.
 
-AC_CHECK_FILE([$HOME/usr/share/android/tools],
-              [have_android=yes])
-AM_CONDITIONAL([HAVE_ANDROID], [test "x$have_android" = xyes])
-
 # Additional options
 
 # option to specify gvim font/size
@@ -133,6 +129,13 @@ AM_CONDITIONAL([WITH_GNULIB_SRCDIR], [test "x$with_gnulib_srcdir" != xno])
 AM_COND_IF([WITH_GNULIB_SRCDIR],
            [AC_SUBST([GNULIB_SRCDIR], [$with_gnulib_srcdir])
             AC_CONFIG_FILES([data/bash/common/profile.d/gnulib.sh])])
+
+# option to specify path to android bindir
+EC_ARG_WITH([android_bindir], [no])
+AM_CONDITIONAL([WITH_ANDROID_BINDIR], [test "x$with_android_bindir" != xno])
+AM_COND_IF([WITH_ANDROID_BINDIR],
+           [AC_SUBST([ANDROID_BINDIR], [$with_android_bindir])
+            AC_CONFIG_FILES([data/bash/common/profile.d/android.sh])])
 
 # option to specify path to bash
 EC_ARG_WITH([bash_alias], [no])
