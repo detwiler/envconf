@@ -13,4 +13,8 @@ if WITH_ANDROID_BINDIR
 profile_DATA += android.sh
 endif WITH_ANDROID_BINDIR
 
+if WITH_HADOOP_HOME
+profile_DATA += hadoop.sh
+endif WITH_HADOOP_HOME
+
 DISTCLEANFILES = $(profile_DATA)

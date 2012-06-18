@@ -130,6 +130,13 @@ AM_COND_IF([WITH_GNULIB_SRCDIR],
            [AC_SUBST([GNULIB_SRCDIR], [$with_gnulib_srcdir])
             AC_CONFIG_FILES([data/bash/common/profile.d/gnulib.sh])])
 
+# option to specify path to hadoop home
+EC_ARG_WITH([hadoop_home], [no])
+AM_CONDITIONAL([WITH_HADOOP_HOME], [test "x$with_hadoop_home" != xno])
+AM_COND_IF([WITH_HADOOP_HOME],
+           [AC_SUBST([HADOOP_HOME], [$with_hadoop_home])
+            AC_CONFIG_FILES([data/bash/common/profile.d/hadoop.sh])])
+
 # option to specify path to android bindir
 EC_ARG_WITH([android_bindir], [no])
 AM_CONDITIONAL([WITH_ANDROID_BINDIR], [test "x$with_android_bindir" != xno])
