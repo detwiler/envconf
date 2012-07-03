@@ -1,0 +1,3 @@
+IDEA_HOME=@IDEA_HOME@
+
+pathmung @IDEA_HOME@/bin after

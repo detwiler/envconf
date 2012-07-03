@@ -130,6 +130,13 @@ AM_COND_IF([WITH_GNULIB_SRCDIR],
            [AC_SUBST([GNULIB_SRCDIR], [$with_gnulib_srcdir])
             AC_CONFIG_FILES([data/bash/common/profile.d/gnulib.sh])])
 
+# option to specify path to idea home
+EC_ARG_WITH([idea_home], [no])
+AM_CONDITIONAL([WITH_IDEA_HOME], [test "x$with_idea_home" != xno])
+AM_COND_IF([WITH_IDEA_HOME],
+           [AC_SUBST([IDEA_HOME], [$with_idea_home])
+            AC_CONFIG_FILES([data/bash/common/profile.d/idea.sh])])
+
 # option to specify path to hadoop home
 EC_ARG_WITH([hadoop_home], [no])
 AM_CONDITIONAL([WITH_HADOOP_HOME], [test "x$with_hadoop_home" != xno])
