@@ -137,6 +137,14 @@ AM_COND_IF([WITH_IDEA_HOME],
            [AC_SUBST([IDEA_HOME], [$with_idea_home])
             AC_CONFIG_FILES([data/bash/common/profile.d/idea.sh])])
 
+# option to specify path to hadoop daemon version
+EC_ARG_WITH([hadoop_daemon_version], [no])
+AM_CONDITIONAL([WITH_HADOOP_DAEMON_VERSION],
+               [test "x$with_hadoop_daemon_version" != xno])
+AM_COND_IF([WITH_HADOOP_DAEMON_VERSION],
+           [AC_SUBST([HADOOP_DAEMON_VERSION], [$with_hadoop_daemon_version])
+            AC_CONFIG_FILES([scripts/mapred-restart])])
+
 # option to specify path to hadoop home
 EC_ARG_WITH([hadoop_home], [no])
 AM_CONDITIONAL([WITH_HADOOP_HOME], [test "x$with_hadoop_home" != xno])

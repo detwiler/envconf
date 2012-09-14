@@ -21,6 +21,7 @@ dist_pkgdata_SCRIPTS = fics \
 		       get-git \
 		       get-gnu-tool \
 		       makecscope \
+		       mapred-restart \
 		       mini \
 		       nixify \
 		       pattmv \

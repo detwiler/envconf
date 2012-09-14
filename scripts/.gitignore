@@ -4,4 +4,5 @@
 config-bash
 dl-git
 dl-gnu-tool
+mapred-restart
 upper2lower

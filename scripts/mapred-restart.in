@@ -1,0 +1,12 @@
+#! /bin/env bash
+
+daemons='jobtracker tasktracker'
+
+for daemon in $daemons; do 
+  if ! sudo systemctl restart hadoop@HADOOP_DAEMON_VERSION@-$daemon.service; then
+    echo "Failed to restart $daemon daemon!"
+    exit 1
+  else
+    echo "Restarted $daemon"
+  fi
+done
