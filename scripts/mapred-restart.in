@@ -3,10 +3,22 @@
 daemons='jobtracker tasktracker'
 
 for daemon in $daemons; do 
-  if ! sudo systemctl restart hadoop@HADOOP_DAEMON_VERSION@-$daemon.service; then
-    echo "Failed to restart $daemon daemon!"
+  if ! sudo systemctl stop hadoop@HADOOP_DAEMON_VERSION@-$daemon.service; then
+    echo "Failed to stop $daemon daemon!"
     exit 1
   else
-    echo "Restarted $daemon"
+    echo "Stopped $daemon"
   fi
+done
+
+sleep 2
+
+daemons='tasktracker jobtracker'
+
+for daemon in $daemons; do 
+  until sudo systemctl start hadoop@HADOOP_DAEMON_VERSION@-$daemon.service; do
+    echo "Failed to start $daemon daemon! Waiting..."
+    sleep 1
+  done
+  echo "Started $daemon"
 done
