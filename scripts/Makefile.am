@@ -21,12 +21,15 @@ dist_pkgdata_SCRIPTS = fics \
 		       get-git \
 		       get-gnu-tool \
 		       makecscope \
-		       mapred-restart \
 		       mini \
 		       nixify \
 		       pattmv \
 		       space2hyphen \
 		       weather
+
+if WITH_HADOOP_DAEMON_VERSION
+dist_pkgdata_SCRIPTS += mapred-restart
+endif WITH_HADOOP_DAEMON_VERSION
 
 scripts = $(pkgdata_SCRIPTS) \
 	  $(dist_pkgdata_SCRIPTS) 
