@@ -1,0 +1,35 @@
+#! /bin/env bash
+
+package="$1"
+
+redowl_libdir='/usr/lib/hadoop/lib/redowl'
+
+# stop jobtracker on master node
+echo "Stopping jobtracker on master node"
+sudo systemctl stop hadoop@HADOOP_DAEMON_VERSION@-jobtracker.service
+
+# install new package on master node
+echo "Installing $package on master node"
+sudo rm -rf $redowl_libdir
+sudo mkdir $redowl_libdir
+sudo tar -xvzf $package -C $redowl_libdir
+
+# stop tasktrackers, install package, restart tasktrackers on slave nodes
+for slave in $(seq --equal-width 05 09); do
+  echo "Updating redowl-slave-$slave"
+  rsync --verbose $package redowl-slave-$slave:~/
+  ssh redowl-slave-$slave <<- EOF
+    echo "Stopping tasktracker"
+    sudo systemctl stop hadoop@HADOOP_DAEMON_VERSION@-tasktracker.service;
+    echo "Installing $package"
+    sudo rm -rf $redowl_libdir
+    sudo mkdir $redowl_libdir
+    sudo tar -xvzf $package -C $redowl_libdir
+    echo "Starting tasktracker"
+    sudo systemctl start hadoop@HADOOP_DAEMON_VERSION@-tasktracker.service;
+  EOF
+done
+
+# start jobtracker on master node
+echo "Starting jobtracker on master node"
+sudo systemctl start hadoop@HADOOP_DAEMON_VERSION@-jobtracker.service

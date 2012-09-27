@@ -29,6 +29,7 @@ dist_pkgdata_SCRIPTS = fics \
 
 if WITH_HADOOP_DAEMON_VERSION
 dist_pkgdata_SCRIPTS += mapred-restart
+dist_pkgdata_SCRIPTS += update-hadoop-cluster
 endif WITH_HADOOP_DAEMON_VERSION
 
 scripts = $(pkgdata_SCRIPTS) \

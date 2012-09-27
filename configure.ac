@@ -143,7 +143,8 @@ AM_CONDITIONAL([WITH_HADOOP_DAEMON_VERSION],
                [test "x$with_hadoop_daemon_version" != xno])
 AM_COND_IF([WITH_HADOOP_DAEMON_VERSION],
            [AC_SUBST([HADOOP_DAEMON_VERSION], [$with_hadoop_daemon_version])
-            AC_CONFIG_FILES([scripts/mapred-restart])])
+            AC_CONFIG_FILES([scripts/mapred-restart
+                             scripts/update-hadoop-cluster])])
 
 # option to specify path to hadoop home
 EC_ARG_WITH([hadoop_home], [no])
