@@ -55,6 +55,9 @@ AM_CONDITIONAL([HAVE_DIRCOLORS], [test "x$have_dircolors" = xyes])
 AC_CHECK_PROG([have_svn], [svn], [yes])
 AM_CONDITIONAL([HAVE_SVN], [test "x$have_svn" = xyes])
 
+AC_CHECK_PROG([have_s3cmd], [s3cmd], [yes])
+AM_CONDITIONAL([HAVE_S3CMD], [test "x$have_s3cmd" = xyes])
+
 AC_CACHE_CHECK([for grep that supports --color], [ac_cv_path_GREP_COLOR],
   [AC_PATH_PROGS_FEATURE_CHECK([GREP_COLOR], [grep],
     [if echo color | $ac_path_GREP_COLOR --color color &> /dev/null; then
