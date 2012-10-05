@@ -2,7 +2,6 @@
 # shell options
 
 set -o noclobber
-set -o allexport
 
 # Don't use ^D to exit
 set -o ignoreeof
