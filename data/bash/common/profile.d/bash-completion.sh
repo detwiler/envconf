@@ -1,4 +1,3 @@
-
 # Completion options
 # ##################
 
@@ -6,7 +5,7 @@
 # bash_completion:
 
 # Define to access remotely checked-out files over passwordless ssh for CVS
-COMP_CVS_REMOTE=1
+export COMP_CVS_REMOTE=1
 
 # Define to avoid flattening internal contents of tar files
-COMP_TAR_INTERNAL_PATHS=1
+export COMP_TAR_INTERNAL_PATHS=1

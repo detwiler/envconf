@@ -1,2 +1,3 @@
+# gnulib settings
 
-GNULIB_SRCDIR=@GNULIB_SRCDIR@
+export GNULIB_SRCDIR=@GNULIB_SRCDIR@
