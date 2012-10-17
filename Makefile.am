@@ -27,7 +27,7 @@ gen-ChangeLog:
 	  mv $(distdir)/cl-t $(distdir)/ChangeLog;			\
 	fi
 
-EXTRA_DIST = .version
+EXTRA_DIST = $(top_srcdir)/.version
 
 ACLOCAL_AMFLAGS = -I m4
 

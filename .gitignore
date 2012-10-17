@@ -21,7 +21,6 @@ stamp-h1
 *.l[oa]
 *.gz
 *.bz2
-.tarball-version
 .version
 
 # vim config files
