@@ -41,13 +41,29 @@ DISTCLEANFILES = $(pkgdata_DATA) \
 EXTRA_DIST = upper2lower.cygwin \
 	     upper2lower.linux
 
-install-data-hook:
+mk-bindir:
 	$(AM_V_GEN)test -e $(DESTDIR)$(bindir) || mkdir -p $(DESTDIR)$(bindir)
+
+mk-script-links: mk-bindir
 	$(AM_V_GEN)cd $(DESTDIR)$(bindir) && \
 	  for s in $(scripts); do \
 	    test -e $$s || $(LN_S) $(DESTDIR)$(pkgdatadir)/$$s; \
 	  done
 
+gnulib_tool = gnulib-tool
+
+$(gnulib_tool): mk-bindir
+	$(AM_V_GEN)cd $(DESTDIR)$(bindir) && \
+	  test -e $@ || $(LN_S) $(GNULIB_SRCDIR)/$@
+
+if WITH_GNULIB_SRCDIR
+install-data-hook: $(gnulib_tool) mk-script-links
+uninstall_files = $(scripts) $(gnulib_tool)
+else
+install-data-hook: mk-script-links
+uninstall_files = $(scripts)
+endif
+
 uninstall-hook:
 	$(AM_V_GEN)cd $(DESTDIR)$(bindir) && \
-	  rm -f $(scripts)
+	  rm -f $(uninstall_files)
