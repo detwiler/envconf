@@ -1,4 +1,4 @@
-# .gitignore
+# .gitignore-core
 
 # vim backup files
 .*.sw[op]
@@ -9,3 +9,9 @@
 *.bz2
 *.gz
 *.tgz
+
+# ctags
+tags
+
+# cscope
+cscope.*
