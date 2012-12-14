@@ -55,9 +55,6 @@ AM_CONDITIONAL([HAVE_DIRCOLORS], [test "x$have_dircolors" = xyes])
 AC_CHECK_PROG([have_svn], [svn], [yes])
 AM_CONDITIONAL([HAVE_SVN], [test "x$have_svn" = xyes])
 
-AC_CHECK_PROG([have_s3cmd], [s3cmd], [yes])
-AM_CONDITIONAL([HAVE_S3CMD], [test "x$have_s3cmd" = xyes])
-
 AC_CACHE_CHECK([for grep that supports --color], [ac_cv_path_GREP_COLOR],
   [AC_PATH_PROGS_FEATURE_CHECK([GREP_COLOR], [grep],
     [if echo color | $ac_path_GREP_COLOR --color color &> /dev/null; then
@@ -96,6 +93,11 @@ AC_CHECK_PROGS([GPG], [gpg2 gpg], [gpg])
 AM_CONDITIONAL([HAVE_GPG2], [test "x$GPG" = xgpg2])
 AM_COND_IF([HAVE_GPG2], [AC_CONFIG_FILES([data/bash/common/bashrc.d/gpg2.sh])])
 
+AC_ARG_VAR([S3CMD], [path to s3cmd])
+AC_PATH_PROG([S3CMD], [s3cmd], [no])
+AM_CONDITIONAL([HAVE_S3CMD], [test "x$S3CMD" != xno])
+AM_COND_IF([HAVE_S3CMD], [AC_CONFIG_FILES([scripts/s3])])
+
 # Checks for files.
 
 # Additional options
@@ -117,6 +119,8 @@ EC_ARG_WITH([git_color], [32])
 AC_SUBST([GIT_COLOR], [$with_git_color])
 EC_ARG_WITH([pwd_color], [0])
 AC_SUBST([PWD_COLOR], [$with_pwd_color])
+EC_ARG_WITH([aws_color], [33])
+AC_SUBST([AWS_COLOR], [$with_aws_color])
 
 # option to specify user name
 EC_ARG_WITH([user_name], [$USER])
@@ -198,6 +202,18 @@ AM_COND_IF([WITH_VIM_ALIAS],
 EC_ARG_WITH([vimrc_example], [/dev/null])
 AC_SUBST([VIMRC_EXAMPLE], [$with_vimrc_example])
 
+# option to specify path to AWS config file
+EC_ARG_WITH([aws_config_file], [$HOME/.aws-cmdrc])
+AC_SUBST([AWS_CONFIG_FILE], [$with_aws_config_file])
+
+# option to specify path to AWS account directory
+EC_ARG_WITH([aws_account_dir], [$HOME/.aws])
+AC_SUBST([AWS_ACCOUNT_DIR], [$with_aws_account_dir])
+AM_CONDITIONAL([WITH_AWS_ACCOUNT_DIR], [test "x$with_aws_account_dir" != xno])
+AM_COND_IF([WITH_AWS_ACCOUNT_DIR],
+           [AC_SUBST([AWS_ACCOUNT_DIR], [$with_aws_account_dir])
+           AC_CONFIG_FILES([data/bash/common/bashrc.d/aws-aliases.sh])])
+
 # option to enable local bash-completion
 EC_ARG_ENABLE([local_bash_comp], [no])
 AM_CONDITIONAL([ENABLE_LOCAL_BASH_COMP],
@@ -214,6 +230,7 @@ AC_CONFIG_FILES([Makefile
                  data/bash/common/functions
                  data/bash/common/global-bash
                  data/bash/common/bashrc.d/Makefile
+                 data/bash/common/bashrc.d/aws-functions.sh
                  data/bash/common/bashrc.d/ls.sh
                  data/bash/common/bashrc.d/ps1.sh
                  data/bash/common/profile.d/Makefile

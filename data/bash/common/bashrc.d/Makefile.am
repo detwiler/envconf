@@ -1,6 +1,7 @@
 # Makefile.am
 
-bashrc_DATA = ls.sh \
+bashrc_DATA = aws-functions.sh \
+	      ls.sh \
 	      ps1.sh
 
 dist_bashrc_DATA = files.sh \
@@ -38,6 +39,10 @@ endif
 if HAVE_VIM
 dist_bashrc_DATA += vi.sh
 endif HAVE_VIM
+
+if WITH_AWS_ACCOUNT_DIR
+bashrc_DATA += aws-aliases.sh
+endif
 
 bash_completion = bash-completion.sh
 

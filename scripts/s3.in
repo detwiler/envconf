@@ -1,0 +1,8 @@
+#! /bin/env bash
+
+# Load user configuration
+if [ -e '@AWS_CONFIG_FILE@' ]; then
+  source '@AWS_CONFIG_FILE@'
+fi
+
+@S3CMD@ $@

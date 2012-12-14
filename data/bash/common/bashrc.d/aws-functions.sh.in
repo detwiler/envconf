@@ -1,0 +1,9 @@
+# AWS functions
+
+function __aws_acct()
+{
+  if [[ -h @AWS_CONFIG_FILE@ ]]; then
+    account="$(basename $(readlink --canonicalize @AWS_CONFIG_FILE@))"
+    printf "(aws:$account)"
+  fi
+} # __aws_acct()
