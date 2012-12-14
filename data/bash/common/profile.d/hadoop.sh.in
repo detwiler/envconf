@@ -1,5 +1,0 @@
-# hadoop settings
-
-export HADOOP_HOME=@HADOOP_HOME@
-
-pathmung @HADOOP_HOME@/bin after

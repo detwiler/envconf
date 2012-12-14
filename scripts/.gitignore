@@ -4,7 +4,5 @@
 config-bash
 dl-git
 dl-gnu-tool
-mapred-restart
 s3
-update-hadoop-cluster
 upper2lower

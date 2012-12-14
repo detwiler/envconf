@@ -113,7 +113,7 @@ AC_SUBST([GVIM_FONT_SIZE], [$with_gvim_font_size])
 # 30=black 31=red 32=green 33=yellow 34=blue 35=magenta 36=cyan 37=white
 EC_ARG_WITH([user_color], [32])
 AC_SUBST([USER_COLOR], [$with_user_color])
-EC_ARG_WITH([host_color], [33])
+EC_ARG_WITH([host_color], [34])
 AC_SUBST([HOST_COLOR], [$with_host_color])
 EC_ARG_WITH([git_color], [32])
 AC_SUBST([GIT_COLOR], [$with_git_color])
@@ -143,29 +143,6 @@ AM_CONDITIONAL([WITH_IDEA_HOME], [test "x$with_idea_home" != xno])
 AM_COND_IF([WITH_IDEA_HOME],
            [AC_SUBST([IDEA_HOME], [$with_idea_home])
             AC_CONFIG_FILES([data/bash/common/profile.d/idea.sh])])
-
-# option to specify path to hadoop daemon version
-EC_ARG_WITH([hadoop_daemon_version], [no])
-AM_CONDITIONAL([WITH_HADOOP_DAEMON_VERSION],
-               [test "x$with_hadoop_daemon_version" != xno])
-AM_COND_IF([WITH_HADOOP_DAEMON_VERSION],
-           [AC_SUBST([HADOOP_DAEMON_VERSION], [$with_hadoop_daemon_version])
-            AC_CONFIG_FILES([scripts/mapred-restart
-                             scripts/update-hadoop-cluster])])
-
-# option to specify path to hadoop home
-EC_ARG_WITH([hadoop_home], [no])
-AM_CONDITIONAL([WITH_HADOOP_HOME], [test "x$with_hadoop_home" != xno])
-AM_COND_IF([WITH_HADOOP_HOME],
-           [AC_SUBST([HADOOP_HOME], [$with_hadoop_home])
-            AC_CONFIG_FILES([data/bash/common/profile.d/hadoop.sh])])
-
-# option to specify path to hbase home
-EC_ARG_WITH([hbase_home], [no])
-AM_CONDITIONAL([WITH_HBASE_HOME], [test "x$with_hbase_home" != xno])
-AM_COND_IF([WITH_HBASE_HOME],
-           [AC_SUBST([HBASE_HOME], [$with_hbase_home])
-            AC_CONFIG_FILES([data/bash/common/profile.d/hbase.sh])])
 
 # option to specify path to android bindir
 EC_ARG_WITH([android_bindir], [no])

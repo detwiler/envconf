@@ -17,12 +17,4 @@ if WITH_IDEA_HOME
 profile_DATA += idea.sh
 endif WITH_IDEA_HOME
 
-if WITH_HADOOP_HOME
-profile_DATA += hadoop.sh
-endif WITH_HADOOP_HOME
-
-if WITH_HBASE_HOME
-profile_DATA += hbase.sh
-endif WITH_HBASE_HOME
-
 DISTCLEANFILES = $(profile_DATA)

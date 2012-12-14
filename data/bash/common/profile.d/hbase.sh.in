@@ -1,5 +1,0 @@
-# hbase settings
-
-export HBASE_HOME=@HBASE_HOME@
-
-pathmung @HBASE_HOME@/bin after

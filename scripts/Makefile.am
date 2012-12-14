@@ -29,11 +29,6 @@ dist_pkgdata_SCRIPTS = fics \
 		       space2hyphen \
 		       weather
 
-if WITH_HADOOP_DAEMON_VERSION
-pkgdata_SCRIPTS += mapred-restart
-pkgdata_SCRIPTS += update-hadoop-cluster
-endif WITH_HADOOP_DAEMON_VERSION
-
 if HAVE_S3CMD
 pkgdata_SCRIPTS += s3
 endif HAVE_S3CMD
