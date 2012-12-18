@@ -1,4 +1,4 @@
-" $Id:$
+" custom.vim
 
 " option settings
 set shiftwidth=2

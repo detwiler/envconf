@@ -2,9 +2,6 @@
 
 vimdir = $(homedir)/.vim
 vimplugindir = $(vimdir)/plugin
-vimftdetectdir = $(vimdir)/ftdetect
-vimindentdir = $(vimdir)/indent
-vimsyntaxdir = $(vimdir)/syntax
 
 vimrc = .vimrc
 gvimrc = .gvimrc
@@ -20,10 +17,6 @@ dist_vimplugin_DATA = greputil.vim \
 		      touch-object-file.vim \
 		      yankinclude.vim
 
-dist_vimftdetect_DATA = scala-ftdetect.vim
-dist_vimindent_DATA = scala-indent.vim
-dist_vimsyntax_DATA = scala-syntax.vim
-
 CLEANFILES = $(vimrc)
 
 DISTCLEANFILES = $(gvimrc) \
@@ -31,6 +24,15 @@ DISTCLEANFILES = $(gvimrc) \
 
 edit = $(SED) -e 's:@vimdatadir[@]:$(vimdatadir):g'
 
+head_end = $(shell grep -n -m 1 nocompatible @VIMRC_EXAMPLE@ | cut -d ':' -f 1)
+
+tail_start = $(shell echo '$(head_end) + 1' | bc -l)
+
 $(vimrc): @VIMRC_EXAMPLE@ Makefile
-	$(AM_V_GEN)cp $< $@ && \
-	  echo -e "\nsource $(vimdatadir)/$(customvim)" >> $@
+	$(AM_V_GEN)grep -n -m 1 nocompatible $< | cut -d ':' -f 1 >$@-head && \
+	  echo "$$(cat $@-head) + 1" | bc -l >y && \
+	  head -n $$(cat $@-head) $< >$@ && \
+	  cat $(srcdir)/pathogen.vim >>$@ && \
+	  tail -n +$$(cat $@-tail) >>$@ && \
+	  echo -e "\nsource $(vimdatadir)/$(customvim)" >>$@ && \
+	  rm $@-head $@-tail
