@@ -1,3 +1,4 @@
+
 " set up pathogen
 runtime bundle/vim-pathogen/autoload/pathogen.vim
 

@@ -6,6 +6,7 @@ vimplugindir = $(vimdir)/plugin
 vimrc = .vimrc
 gvimrc = .gvimrc
 customvim = custom.vim
+pathogen = pathogen.vim
 
 home_DATA = $(vimrc) \
 	    $(gvimrc)
@@ -17,22 +18,21 @@ dist_vimplugin_DATA = greputil.vim \
 		      touch-object-file.vim \
 		      yankinclude.vim
 
+EXTRA_DIST = $(pathogen)
+
 CLEANFILES = $(vimrc)
 
 DISTCLEANFILES = $(gvimrc) \
 		 gvimrc.linux
 
-edit = $(SED) -e 's:@vimdatadir[@]:$(vimdatadir):g'
+grep = $(GREP_COLOR) --line-number --max-count=1 --regexp=nocompatible
+cut = cut --delimiter=':' --fields=1
 
-head_end = $(shell grep -n -m 1 nocompatible @VIMRC_EXAMPLE@ | cut -d ':' -f 1)
-
-tail_start = $(shell echo '$(head_end) + 1' | bc -l)
-
-$(vimrc): @VIMRC_EXAMPLE@ Makefile
-	$(AM_V_GEN)grep -n -m 1 nocompatible $< | cut -d ':' -f 1 >$@-head && \
-	  echo "$$(cat $@-head) + 1" | bc -l >y && \
-	  head -n $$(cat $@-head) $< >$@ && \
-	  cat $(srcdir)/pathogen.vim >>$@ && \
-	  tail -n +$$(cat $@-tail) >>$@ && \
-	  echo -e "\nsource $(vimdatadir)/$(customvim)" >>$@ && \
-	  rm $@-head $@-tail
+$(vimrc): @VIMRC_EXAMPLE@ $(pathogen) Makefile
+	$(AM_V_GEN) \
+	  ( \
+	    head --lines=$$($(grep) $< | $(cut)) $<; \
+	    cat $(srcdir)/$(pathogen); \
+	    tail --lines=+$$(echo "$$($(grep) $< | $(cut)) + 1" | bc -l) $<; \
+	    echo -e '\nsource $(vimdatadir)/$(customvim)' \
+	  ) >$@-t && mv $@-t $@
