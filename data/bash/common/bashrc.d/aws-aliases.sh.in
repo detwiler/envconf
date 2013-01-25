@@ -1,6 +1,6 @@
 # set up AWS account aliases
 
-for account in $(ls @AWS_ACCOUNT_DIR@/*); do
+for account in $(command ls @AWS_ACCOUNT_DIR@/* 2>/dev/null); do
   acct=$(basename $account)
   alias aws-$acct="@LN_S@ --force $account @AWS_CONFIG_FILE@"
 done
