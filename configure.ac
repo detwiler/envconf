@@ -78,9 +78,44 @@ AM_COND_IF([HAVE_EXUBERANT_CTAGS],
             AC_CONFIG_FILES([data/bash/common/bashrc.d/ctags-alias.sh])])
 
 AC_ARG_VAR([EGREP], [path to egrep])
-AC_PATH_PROG([EGREP], [egrep], [no])
+AC_PROG_EGREP
 AS_IF([test "x$EGREP" = xno],
       [AC_MSG_ERROR([could not find egrep])])
+
+AC_ARG_VAR([SHA1SUM], [path to sha1sum])
+AC_PATH_PROG([SHA1SUM], [sha1sum], [no])
+AS_IF([test "x$SHA1SUM" = xno],
+      [AC_MSG_ERROR([could not find sha1sum])])
+
+AC_ARG_VAR([SHA224SUM], [path to sha224sum])
+AC_PATH_PROG([SHA224SUM], [sha224sum], [no])
+AS_IF([test "x$SHA224SUM" = xno],
+      [AC_MSG_ERROR([could not find sha224sum])])
+
+AC_ARG_VAR([SHA256SUM], [path to sha256sum])
+AC_PATH_PROG([SHA256SUM], [sha256sum], [no])
+AS_IF([test "x$SHA256SUM" = xno],
+      [AC_MSG_ERROR([could not find sha256sum])])
+
+AC_ARG_VAR([SHA384SUM], [path to sha384sum])
+AC_PATH_PROG([SHA384SUM], [sha384sum], [no])
+AS_IF([test "x$SHA384SUM" = xno],
+      [AC_MSG_ERROR([could not find sha384sum])])
+
+AC_ARG_VAR([SHA512SUM], [path to sha512sum])
+AC_PATH_PROG([SHA512SUM], [sha512sum], [no])
+AS_IF([test "x$SHA512SUM" = xno],
+      [AC_MSG_ERROR([could not find sha512sum])])
+
+AC_ARG_VAR([XXD], [path to xxd])
+AC_PATH_PROG([XXD], [xxd], [no])
+AS_IF([test "x$XXD" = xno],
+      [AC_MSG_ERROR([could not find xxd; install vim-common])])
+
+AC_ARG_VAR([UUENCODE], [path to uuencode])
+AC_PATH_PROG([UUENCODE], [uuencode], [no])
+AS_IF([test "x$UUENCODE" = xno],
+      [AC_MSG_ERROR([could not find uuencode; install GNU sharutils])])
 
 AM_CONDITIONAL([EC_LSCOLOR], [ls --color &> /dev/null])
 AM_COND_IF([EC_LSCOLOR],
@@ -224,6 +259,7 @@ AC_CONFIG_FILES([Makefile
                  scripts/config-bash
                  scripts/dl-git
                  scripts/dl-gnu-tool
+                 scripts/gen-pass
                  scripts/upper2lower
                  scripts/sed/Makefile
                  scripts/vim/Makefile

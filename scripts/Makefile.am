@@ -15,6 +15,7 @@ pkgdata_DATA = config-bash
 
 pkgdata_SCRIPTS = dl-git \
 		  dl-gnu-tool \
+		  gen-pass \
 		  upper2lower
 
 # others must explicitly be distributed

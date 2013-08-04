@@ -1,0 +1,117 @@
+#! /bin/env bash
+
+# functions
+
+function usage()
+{
+	cat <<- eof
+
+	Usage: $(basename $0) [-p <prefix>] [-t <salt>] [-s <suffix>] [-a <hash-algorithm>] [-r <bytes>] [-b] [-u]
+
+	  -p prefix
+          -t salt (if neither -t nor -r specified, user will be prompted)
+	  -s suffix
+	  -a secure hash algorithm [1|224|256|384|512] (default: SHA-1)
+	  -r use ARG bytes of random salt
+	  -b convert hash output to binary
+	  -u uuencode hash output
+
+	Examples:
+
+	$(basename $0) -p foo -s bar -h 224 -r -b -u
+
+	eof
+} # usage()
+
+function cleanup()
+{
+  rm -f $tmpbuf
+} # cleanup()
+
+function get_salt()
+{
+  read -s -p 'Enter salt: ' salt
+  read -s -p 'Confirm salt: ' check
+
+  if [[ $salt != $check ]]; then
+    echo 'Salt entries did not match!' >/dev/stderr
+    exit 1
+  fi
+} # get_salt()
+
+salt=''
+prefix=''
+suffix=''
+sha=''
+random=''
+binary=''
+encode=''
+
+while getopts "p:t:s:a:r:buh" opt; do
+  case $opt in
+    p ) prefix=$OPTARG ;;
+    t ) salt=$OPTARG ;;
+    s ) suffix=$OPTARG ;;
+    a ) sha=$OPTARG ;;
+    r ) random=$OPTARG ;;
+    b ) binary='true' ;;
+    u ) encode='true' ;;
+    h ) usage >/dev/stderr; exit 0 ;;
+    \? ) usage >/dev/stderr; exit 1 ;;
+  esac
+done
+
+shift $(($OPTIND - 1))
+
+shacmd=@SHA1SUM@
+
+if [[ -n $sha ]]; then
+  case $sha in
+    512 ) shacmd=@SHA512SUM@ ;;
+    384 ) shacmd=@SHA384SUM@ ;;
+    256 ) shacmd=@SHA256SUM@ ;;
+    224 ) shacmd=@SHA224SUM@ ;;
+    1 ) shacmd=@SHA1SUM@ ;;
+    * ) usage >/dev/stderr; exit 1 ;;
+  esac
+fi
+
+if [[ -z $salt && -z $random ]]; then
+  get_salt
+fi
+
+# temporary buffer
+tmpbuf=$(mktemp)
+
+# cleanup tmpbuf on exit
+trap cleanup ERR EXIT RETURN INT QUIT TERM
+
+if [[ -n $prefix ]]; then
+  printf '%s' "$prefix" >>$tmpbuf
+fi
+
+if [[ -n $salt ]]; then
+  printf '%s' "$salt" >>$tmpbuf
+fi
+
+if [[ -n $random ]]; then
+  head --bytes=$random /dev/urandom >>$tmpbuf
+fi
+
+if [[ -n $suffix ]]; then
+  printf '%s' "$suffix" >>$tmpbuf
+fi
+
+digest="$($shacmd $tmpbuf | cut --delimiter=' ' --fields=1)"
+
+if [[ -n $binary ]]; then
+  printf '%s' $digest | @XXD@ -r -p >$tmpbuf
+else
+  printf '%s' $digest >$tmpbuf
+fi
+
+if [[ -n $encode ]]; then
+  @UUENCODE@ $tmpbuf /dev/stdout | sed -e '1d' -e '$d' | tr --delete '\n'
+else
+  cat $tmpbuf
+fi
