@@ -8,8 +8,9 @@ if [ -f "@pkgdatadir@/functions" ]; then
   source "@pkgdatadir@/functions"
 fi
 
-# Set PATH so it includes user's private bin if it exists
+# Set PATH so it includes user's private bin dirs if they exist
 pathmung @homedir@/usr/$(arch)/bin
+pathmung @homedir@/usr/$(arch)/sbin
 
 if [ -f "@pkgdatadir@/bashrc" ]; then
   source "@pkgdatadir@/bashrc"
