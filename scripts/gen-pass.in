@@ -25,6 +25,8 @@ function usage()
 
 function cleanup()
 {
+  local size="$(stat --printf='%s' $tmpbuf)"
+  head --bytes=$size /dev/urandom >$tmpbuf
   rm -f $tmpbuf
 } # cleanup()
 
