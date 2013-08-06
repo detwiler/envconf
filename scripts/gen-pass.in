@@ -6,28 +6,32 @@ function usage()
 {
 	cat <<- eof
 
-	Usage: $(basename $0) [-p <prefix>] [-t <salt>] [-s <suffix>] [-a <hash-algorithm>] [-r <bytes>] [-b] [-u]
+	Usage: $(basename $0) [-p <prologue>] [-s <salt>] [-e <epilogue>] [-a <hash-algorithm>] [-r <bytes>] [-i <byte>] [-f <bytes>] [-t] [-u]
 
-	  -p prefix
-          -t salt (if neither -t nor -r specified, user will be prompted)
-	  -s suffix
+	  -p proloque
+	  -s salt (if neither -s nor -r specified, user will be prompted)
+	  -e epilogue
 	  -a secure hash algorithm [1|224|256|384|512] (default: SHA-1)
 	  -r use ARG bytes of random salt
-	  -b convert hash output to binary
-	  -u uuencode hash output
+	  -i initial byte of digest to begin with
+	  -f discard ARG final bytes of digest
+	  -t convert digest to text
+	  -u uuencode digest
 
 	Examples:
 
-	$(basename $0) -p foo -s bar -h 224 -r -b -u
+	$(basename $0) -p foo -e bar -a 224 -r 32 -t -u
 
 	eof
 } # usage()
 
 function cleanup()
 {
-  local size="$(stat --printf='%s' $tmpbuf)"
-  head --bytes=$size /dev/urandom >$tmpbuf
-  rm -f $tmpbuf
+  local size="$(stat --printf='%s' $message)"
+  head --bytes=$size /dev/urandom >$message
+  size="$(stat --printf='%s' $digest)"
+  head --bytes=$size /dev/urandom >$digest
+  rm -f $message $digest
 } # cleanup()
 
 function get_salt()
@@ -42,21 +46,25 @@ function get_salt()
 } # get_salt()
 
 salt=''
-prefix=''
-suffix=''
+prologue=''
+epilogue=''
 sha=''
 random=''
-binary=''
+text=''
+initial='1'
+final='0'
 encode=''
 
-while getopts "p:t:s:a:r:buh" opt; do
+while getopts "p:s:e:a:r:i:f:tuh" opt; do
   case $opt in
-    p ) prefix=$OPTARG ;;
-    t ) salt=$OPTARG ;;
-    s ) suffix=$OPTARG ;;
+    p ) prologue=$OPTARG ;;
+    s ) salt=$OPTARG ;;
+    e ) epilogue=$OPTARG ;;
     a ) sha=$OPTARG ;;
     r ) random=$OPTARG ;;
-    b ) binary='true' ;;
+    i ) initial=$OPTARG ;;
+    f ) final=$OPTARG ;;
+    t ) text='true' ;;
     u ) encode='true' ;;
     h ) usage >/dev/stderr; exit 0 ;;
     \? ) usage >/dev/stderr; exit 1 ;;
@@ -78,42 +86,60 @@ if [[ -n $sha ]]; then
   esac
 fi
 
+declare -A digest_size
+digest_size[@SHA1SUM@]=20
+digest_size[@SHA224SUM@]=28
+digest_size[@SHA256SUM@]=32
+digest_size[@SHA384SUM@]=48
+digest_size[@SHA512SUM@]=64
+
+if (( ${digest_size[$shacmd]} <= $initial + $final - 1 )); then
+  echo "You've discarded all ${digest_size[$shacmd]} digest bytes!" >/dev/stderr
+  exit 1
+fi
+  
 if [[ -z $salt && -z $random ]]; then
   get_salt
 fi
 
-# temporary buffer
-tmpbuf=$(mktemp)
+# message buffer
+message=$(mktemp)
 
-# cleanup tmpbuf on exit
+# digest buffer
+digest=$(mktemp)
+
+# cleanup on exit
 trap cleanup ERR EXIT RETURN INT QUIT TERM
 
-if [[ -n $prefix ]]; then
-  printf '%s' "$prefix" >>$tmpbuf
+if [[ -n $prologue ]]; then
+  printf '%s' "$prologue" >>$message
 fi
 
 if [[ -n $salt ]]; then
-  printf '%s' "$salt" >>$tmpbuf
+  printf '%s' "$salt" >>$message
 fi
 
 if [[ -n $random ]]; then
-  head --bytes=$random /dev/urandom >>$tmpbuf
+  head --bytes=$random /dev/urandom >>$message
 fi
 
-if [[ -n $suffix ]]; then
-  printf '%s' "$suffix" >>$tmpbuf
+if [[ -n $epilogue ]]; then
+  printf '%s' "$epilogue" >>$message
 fi
 
-digest="$($shacmd $tmpbuf | cut --delimiter=' ' --fields=1)"
+$shacmd $message | cut --delimiter=' ' --fields=1 | @XXD@ -r -p | \
+  head --bytes=-$final | tail --bytes=+$initial >$digest
 
-if [[ -n $binary ]]; then
-  printf '%s' $digest | @XXD@ -r -p >$tmpbuf
+if [[ -n $text ]]; then
+  # reuse message buffer
+  output=$message
+  @XXD@ -p $digest >$output
 else
-  printf '%s' $digest >$tmpbuf
+  output=$digest
 fi
 
 if [[ -n $encode ]]; then
-  @UUENCODE@ $tmpbuf /dev/stdout | sed -e '1d' -e '$d' | tr --delete '\n'
+  @UUENCODE@ $output /dev/stdout | sed -e '1d' -e '$d' | tr --delete '\n'
 else
-  cat $tmpbuf
+  cat $output
 fi
