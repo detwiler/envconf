@@ -112,6 +112,16 @@ AC_PATH_PROG([XXD], [xxd], [no])
 AS_IF([test "x$XXD" = xno],
       [AC_MSG_ERROR([could not find xxd; install vim-common])])
 
+AC_ARG_VAR([BASE64], [path to base64])
+AC_PATH_PROG([BASE64], [base64], [no])
+AS_IF([test "x$BASE64" = xno],
+      [AC_MSG_ERROR([could not find base64])])
+
+AC_ARG_VAR([ASCII85], [path to ascii85])
+AC_PATH_PROG([ASCII85], [ascii85], [no])
+AS_IF([test "x$ASCII85" = xno],
+      [AC_MSG_ERROR([could not find ascii85; install rubygem-Ascii85])])
+
 AC_ARG_VAR([UUENCODE], [path to uuencode])
 AC_PATH_PROG([UUENCODE], [uuencode], [no])
 AS_IF([test "x$UUENCODE" = xno],

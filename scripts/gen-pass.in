@@ -6,7 +6,7 @@ function usage()
 {
 	cat <<- eof
 
-	Usage: $(basename $0) [-p <prologue>] [-s <salt>] [-e <epilogue>] [-a <hash-algorithm>] [-r <bytes>] [-i <byte>] [-f <bytes>] [-t] [-u]
+	Usage: $(basename $0) [-p <prologue>] [-s <salt>] [-e <epilogue>] [-a <hash-algorithm>] [-r <bytes>] [-i <byte>] [-f <bytes>] [-t] [-u | -6 | -8]
 
 	  -p proloque
 	  -s salt (if neither -s nor -r specified, user will be prompted)
@@ -17,6 +17,8 @@ function usage()
 	  -f discard ARG final bytes of digest
 	  -t convert digest to text
 	  -u uuencode digest
+	  -6 base64 encode digest
+	  -8 ascii85 encode digest
 
 	Examples:
 
@@ -53,6 +55,9 @@ random=''
 text=''
 initial='1'
 final='0'
+uuencode=''
+base64=''
+ascii85=''
 encode=''
 
 while getopts "p:s:e:a:r:i:f:tuh" opt; do
@@ -65,13 +70,18 @@ while getopts "p:s:e:a:r:i:f:tuh" opt; do
     i ) initial=$OPTARG ;;
     f ) final=$OPTARG ;;
     t ) text='true' ;;
-    u ) encode='true' ;;
+    u ) uuencode='true' ;;
+    6 ) base64='true' ;;
+    8 ) ascii85='true' ;;
     h ) usage >/dev/stderr; exit 0 ;;
     \? ) usage >/dev/stderr; exit 1 ;;
   esac
 done
 
 shift $(($OPTIND - 1))
+
+# TODO sanity check options
+# if [[ -n $uuencode && ( -n $base64 || -n $ascii85 ]]
 
 shacmd=@SHA1SUM@
 
@@ -138,7 +148,7 @@ else
   output=$digest
 fi
 
-if [[ -n $encode ]]; then
+if [[ -n $uuencode ]]; then
   @UUENCODE@ $output /dev/stdout | sed -e '1d' -e '$d' | tr --delete '\n'
 else
   cat $output
