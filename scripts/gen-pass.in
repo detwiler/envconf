@@ -8,7 +8,7 @@ function usage()
 
 	Usage: $(basename $0) [-p <prologue>] [-s <salt>] [-e <epilogue>] \\
 	  [-a <hash-algorithm>] [-r <bytes>] [-i <byte>] [-f <bytes>] \\
-	  [-t] [-u | -b | -8]
+	  [-t] [-u | -b | -c]
 
 	  -p proloque
 	  -s salt (if neither -s nor -r specified, user will be prompted)
