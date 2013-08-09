@@ -167,7 +167,7 @@ fi
 if [[ -n $uuencode ]]; then
   @UUENCODE@ $output /dev/stdout | sed -e '1d' -e '$d' | tr --delete '\n'
 elif [[ -n $encode ]]; then
-  $encode $output --wrap=0
+  $encode --wrap=0 $output
 else
   cat $output
 fi
