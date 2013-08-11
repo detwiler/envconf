@@ -175,6 +175,16 @@ AC_SUBST([USER_NAME], [$with_user_name])
 EC_ARG_WITH([user_email], [$USER@$HOSTNAME])
 AC_SUBST([USER_EMAIL], [$with_user_email])
 
+# option to specify file containing git prompt definition
+EC_ARG_WITH([git_prompt],
+            [git-prompt.sh])
+AC_SUBST([GIT_PROMPT], [$with_git_prompt])
+
+# option to specify path to git prompt definition
+EC_ARG_WITH([git_prompt_path],
+            [/usr/share/git-core/contrib/completion])
+AC_SUBST([GIT_PROMPT_PATH], [$with_git_prompt_path])
+
 # option to specify path to gnulib clone
 EC_ARG_WITH([gnulib_srcdir], [no])
 AM_CONDITIONAL([WITH_GNULIB_SRCDIR], [test "x$with_gnulib_srcdir" != xno])

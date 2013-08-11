@@ -59,3 +59,18 @@ DISTCLEANFILES = $(bashrc_DATA)
 EXTRA_DIST = $(bash_completion).in \
 	     ls.aliases \
 	     ls-color.aliases
+
+mk-bashrcdir:
+	$(AM_V_GEN)test -e $(DESTDIR)$(bashrcdir) || \
+	  mkdir -p $(DESTDIR)$(bashrcdir)
+
+$(GIT_PROMPT): mk-bashrcdir
+	$(AM_V_GEN)cd $(DESTDIR)$(bashrcdir) && \
+	  test -e $@ || $(LN_S) $(GIT_PROMPT_PATH)/$@
+
+install-data-hook: $(GIT_PROMPT)
+uninstall_files = $(GIT_PROMPT)
+
+uninstall-hook:
+	$(AM_V_GEN)cd $(DESTDIR)$(bashrcdir) && \
+	  rm -f $(uninstall_files)
