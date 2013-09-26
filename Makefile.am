@@ -32,7 +32,12 @@ EXTRA_DIST = $(top_srcdir)/.version
 ACLOCAL_AMFLAGS = -I m4
 
 DISTCHECK_CONFIGURE_FLAGS = HOME=$(top_distdir) \
-			    --with-vimrc-example=@VIMRC_EXAMPLE@
+			    --with-bash-alias=@BASH_ALIAS@ \
+			    --with-subversion-alias=@SVN_ALIAS@ \
+			    --with-vim-alias=@VIM_ALIAS@ \
+			    --with-vimrc-example=@VIMRC_EXAMPLE@ \
+			    --with-idea-home=@IDEA_HOME@ \
+			    --with-android-bindir=@ANDROID_BINDIR@
 
 if WITH_GNULIB_SRCDIR
 DISTCHECK_CONFIGURE_FLAGS += --with-gnulib-srcdir=@GNULIB_SRCDIR@

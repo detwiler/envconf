@@ -11,4 +11,6 @@ alias du='du -h'
 # pushd
 alias di='dirs -v'
 alias pu='pushd'
+# set completions for pu to directory names only
+complete -d pu
 alias po='popd'
