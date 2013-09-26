@@ -11,6 +11,10 @@ dist_bashrc_DATA = files.sh \
 		   set.sh \
 		   shopt.sh
 
+if HAVE_AWS_CLI
+dist_bashrc_DATA += aws-cli-completion.sh
+endif
+
 if HAVE_EXUBERANT_CTAGS
 bashrc_DATA += ctags-alias.sh
 dist_bashrc_DATA += ctags.sh
@@ -34,7 +38,7 @@ endif
 
 if HAVE_VIM
 dist_bashrc_DATA += vi.sh
-endif HAVE_VIM
+endif
 
 if WITH_AWS_ACCOUNT_DIR
 bashrc_DATA += aws-aliases.sh
@@ -44,7 +48,7 @@ bash_completion = bash-completion.sh
 
 if ENABLE_LOCAL_BASH_COMP
 bashrc_DATA += $(bash_completion)
-endif ENABLE_LOCAL_BASH_COMP
+endif
 
 edit = $(SED) \
        -e 's:@sysconfdir[@]:$(sysconfdir):g'

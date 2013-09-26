@@ -55,6 +55,9 @@ AM_CONDITIONAL([HAVE_DIRCOLORS], [test "x$have_dircolors" = xyes])
 AC_CHECK_PROG([have_svn], [svn], [yes])
 AM_CONDITIONAL([HAVE_SVN], [test "x$have_svn" = xyes])
 
+AC_CHECK_PROG([have_aws_cli], [aws], [yes])
+AM_CONDITIONAL([HAVE_AWS_CLI], [test "x$have_aws_cli" = xyes])
+
 AC_CACHE_CHECK([for grep that supports --color], [ac_cv_path_GREP_COLOR],
   [AC_PATH_PROGS_FEATURE_CHECK([GREP_COLOR], [grep],
     [if echo color | $ac_path_GREP_COLOR --color color &> /dev/null; then
@@ -235,7 +238,7 @@ EC_ARG_WITH([vimrc_example], [/dev/null])
 AC_SUBST([VIMRC_EXAMPLE], [$with_vimrc_example])
 
 # option to specify path to AWS config file
-EC_ARG_WITH([aws_config_file], [$HOME/.aws-cmdrc])
+EC_ARG_WITH([aws_config_file], [$HOME/.aws/config])
 AC_SUBST([AWS_CONFIG_FILE], [$with_aws_config_file])
 
 # option to specify path to AWS account directory
@@ -245,6 +248,14 @@ AM_CONDITIONAL([WITH_AWS_ACCOUNT_DIR], [test "x$with_aws_account_dir" != xno])
 AM_COND_IF([WITH_AWS_ACCOUNT_DIR],
            [AC_SUBST([AWS_ACCOUNT_DIR], [$with_aws_account_dir])
            AC_CONFIG_FILES([data/bash/common/bashrc.d/aws-aliases.sh])])
+
+# option to specify s3cmd access key ID config file variable
+EC_ARG_WITH([s3cmd_access_key_var], [AWS_ACCESS_KEY])
+AC_SUBST([S3CMD_ACCESS_KEY_VAR], [$with_s3cmd_access_key_var])
+
+# option to specify s3cmd secret key config file variable
+EC_ARG_WITH([s3cmd_secret_key_var], [AWS_SECRET_KEY])
+AC_SUBST([S3CMD_SECRET_KEY_VAR], [$with_s3cmd_secret_key_var])
 
 # option to enable local bash-completion
 EC_ARG_ENABLE([local_bash_comp], [no])
