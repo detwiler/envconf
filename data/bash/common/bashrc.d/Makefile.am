@@ -28,6 +28,10 @@ if HAVE_GREP_COLOR
 bashrc_DATA += grep.sh
 endif
 
+if HAVE_S3CMD
+dist_bashrc_DATA += s3cmd-alias.sh
+endif
+
 if WITH_SVN_ALIAS
 bashrc_DATA += svn.sh
 endif
