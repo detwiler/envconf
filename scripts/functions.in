@@ -1,0 +1,59 @@
+# functions
+# vim:ft=sh
+
+function print_version()
+{
+  local utility="$1"
+  printf "%s\n" "$utility (@PACKAGE_STRING@)"
+} # print_version()
+
+# borrowed from gnulib
+# warnf_ FORMAT-STRING ARG1...
+function warnf_ ()
+{
+  local warnf_format_="$1"
+  shift
+  local nl='
+'
+  case $* in
+    *$nl*) me_=$(printf "$me"|tr "$nl|" '??')
+       printf "$warnf_format_" "$@" | sed "s|^|$me_: |" ;;
+    *) printf "$me: $warnf_format_" "$@" ;;
+  esac >/dev/stderr
+} # warnf_
+
+# borrowed from gnulib
+# warn_ WORD1...
+function warn_ ()
+{
+  # If IFS does not start with ' ', set it and emit the warning in a subshell.
+  case $IFS in
+    ' '*) warnf_ '%s\n' "$*";;
+    *)    (IFS=' '; warn_ "$@");;
+  esac
+} # warn_
+
+# borrowed from gnulib
+# die WORD1...
+function die() { warn_ "$@"; exit 1; }
+
+# usage: debug 'some message'
+#
+# make sure 'verbose' is set accordingly in your script
+function debug()
+{
+  if [[ -n $verbose ]]; then
+    warn_ "$@"
+  fi
+} # debug()
+
+# usage: remote_cmd <node> <cmd>
+#
+function remote_cmd()
+{
+  local node="$1"
+  local cmd="$2"
+  local opts='-o NumberOfPasswordPrompts=0 -o StrictHostKeyChecking=no'
+
+  ssh $opts $node "$cmd"
+} # remote_cmd()
