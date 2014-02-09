@@ -4,6 +4,8 @@
 config-bash
 dl-git
 dl-gnu-tool
+functions
 gen-pass
+get-git
 s3
 upper2lower

@@ -2,61 +2,65 @@
 
 # functions
 
+source @pkgdatadir@/functions
+
 function usage()
 {
-	cat <<- eof
+	cat <<- EOF
 
-	Usage: $(basename $0) -v <version>
+	Usage: $me -g <version>
 
-	  -v git version
+	  -g git version
+	  -v verbose output
+	  -V print version
+	  -h print usage
 
 	Examples:
 
-	$(basename $0) -v 1.7.4.1
+	$me -g 1.7.4.1
 
-	eof
+	EOF
 } # usage()
 
-while getopts 'v:' opt; do
+me="$(basename $0)"
+verbose=''
+
+while getopts 'g:vVh' opt; do
   case $opt in
-    v ) version=$OPTARG ;;
-    \? ) usage; exit 1 ;;
+    g ) version=$OPTARG ;;
+    v ) verbose='-v' ;;
+    V ) print_version $me; exit 0 ;;
+    h ) usage; exit 0 ;;
+    \? ) usage >/dev/stderr; exit 1 ;;
   esac
 done
 
 shift $(($OPTIND - 1))
 
 if [[ -z $version ]]; then
-  echo "Must specify version with -v"
-  usage
-  exit 1
+  die "Must specify git version with -g"
 fi
 
 baseurl="http://www.kernel.org/pub/software/scm"
 tool="git"
 toolname="$tool-$version"
-archive="$toolname.tar.bz2"
+archive="$toolname.tar"
+comparchive="$archive.gz"
 signature="$archive.sign"
-url="$baseurl/$tool/$archive"
+url="$baseurl/$tool/$comparchive"
 signurl="$baseurl/$tool/$signature"
 
 if ! wget $url; then
-  echo "Failed to download $url"
-  popd
-  cleanup $tmpdir
-  exit 1
+  die "Failed to download $url"
 fi
 
 if ! wget $signurl; then
-  echo "Failed to download $signurl"
-  popd
-  cleanup $tmpdir
-  exit 1
+  die "Failed to download $signurl"
 fi
 
-if ! @GPG@ --keyserver-options auto-key-retrieve --verify $signature; then
-  echo "Failed to verfiy signature $signature"
-  exit 1
+if ! zcat $comparchive | @GPG@ --keyserver-options auto-key-retrieve \
+  --verify $signature -; then
+  die "Failed to verfiy signature $signature"
 fi
 
-echo "Successfully downloaded $tool"
+debug "Successfully downloaded $tool"

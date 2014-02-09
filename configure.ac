@@ -3,14 +3,14 @@
 
 AC_INIT([envconf],
         [m4_esyscmd([build-aux/git-version-gen .tarball-version])],
-        [mike.detwiler@gmail.com])
+        [mike@mikedetwiler.com])
 
 AC_PREREQ([2.63])
 AC_CONFIG_AUX_DIR([build-aux])
 AC_CONFIG_MACRO_DIR([m4])
 AC_CONFIG_SRCDIR([data/bash/common/bashrc.in])
 
-AM_INIT_AUTOMAKE([-Wall -Werror dist-bzip2])
+AM_INIT_AUTOMAKE([-Wall -Wno-portability -Werror dist-bzip2])
 AM_SILENT_RULES([yes])
 
 AC_PREFIX_DEFAULT([$HOME/usr])
@@ -288,8 +288,8 @@ AC_CONFIG_FILES([Makefile
                  data/vim/Makefile
                  scripts/Makefile
                  scripts/config-bash
-                 scripts/dl-git
                  scripts/dl-gnu-tool
+                 scripts/functions
                  scripts/gen-pass
                  scripts/upper2lower
                  scripts/sed/Makefile
