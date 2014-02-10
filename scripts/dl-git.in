@@ -2,7 +2,7 @@
 
 # functions
 
-source @pkgdatadir@/functions
+source @pkgdatadir@/script-functions
 
 function usage()
 {
