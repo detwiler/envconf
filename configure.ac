@@ -289,7 +289,7 @@ AC_CONFIG_FILES([Makefile
                  scripts/Makefile
                  scripts/config-bash
                  scripts/dl-gnu-tool
-                 scripts/functions
+                 scripts/script-functions
                  scripts/gen-pass
                  scripts/upper2lower
                  scripts/sed/Makefile

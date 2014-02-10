@@ -4,7 +4,7 @@
 config-bash
 dl-git
 dl-gnu-tool
-functions
+script-functions
 gen-pass
 get-git
 s3
