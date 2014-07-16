@@ -3,6 +3,7 @@
 SUBDIRS = autoconf \
 	  bash \
 	  git \
+	  man \
 	  readline
 
 if HAVE_DIRCOLORS
