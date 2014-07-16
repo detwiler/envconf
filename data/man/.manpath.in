@@ -1,0 +1,21 @@
+# This file is used by the man-db package to configure the man and cat paths.
+# It is also used to provide a manpath for those without one by examining
+# their PATH environment variable. For details see the manpath(5) man page.
+#
+# Lines beginning with `#' are comments and are ignored. Any combination of
+# tabs or spaces may be used as `whitespace' separators.
+#
+# There are three mappings allowed in this file:
+# --------------------------------------------------------
+# MANDATORY_MANPATH			manpath_element
+# MANPATH_MAP		path_element	manpath_element
+# MANDB_MAP		global_manpath	[relative_catpath]
+#---------------------------------------------------------
+#
+#---------------------------------------------------------
+# set up PATH to MANPATH mapping
+# ie. what man tree holds man pages for what binary directory.
+#
+#		*PATH*	->	*MANPATH*
+
+MANPATH_MAP	@bindir@	@mandir@

@@ -283,6 +283,7 @@ AC_CONFIG_FILES([Makefile
                  data/dircolors/Makefile
                  data/git/Makefile
                  data/git/.gitconfig
+                 data/man/Makefile
                  data/readline/Makefile
                  data/svn/Makefile
                  data/vim/Makefile
