@@ -1,7 +1,6 @@
 # .gitignore
 
 # generated data files
-aws-aliases.sh
 aws-functions.sh
 bash-completion.sh
 ctags-alias.sh

@@ -44,10 +44,6 @@ if HAVE_VIM
 dist_bashrc_DATA += vi.sh
 endif
 
-if WITH_AWS_ACCOUNT_DIR
-bashrc_DATA += aws-aliases.sh
-endif
-
 bash_completion = bash-completion.sh
 
 if ENABLE_LOCAL_BASH_COMP
