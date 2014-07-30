@@ -244,10 +244,6 @@ AC_SUBST([AWS_CONFIG_FILE], [$with_aws_config_file])
 # option to specify path to AWS account directory
 EC_ARG_WITH([aws_account_dir], [$HOME/.aws])
 AC_SUBST([AWS_ACCOUNT_DIR], [$with_aws_account_dir])
-AM_CONDITIONAL([WITH_AWS_ACCOUNT_DIR], [test "x$with_aws_account_dir" != xno])
-AM_COND_IF([WITH_AWS_ACCOUNT_DIR],
-           [AC_SUBST([AWS_ACCOUNT_DIR], [$with_aws_account_dir])
-           AC_CONFIG_FILES([data/bash/common/bashrc.d/aws-aliases.sh])])
 
 # option to specify s3cmd access key ID config file variable
 EC_ARG_WITH([s3cmd_access_key_var], [AWS_ACCESS_KEY])
