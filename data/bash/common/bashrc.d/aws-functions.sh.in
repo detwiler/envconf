@@ -13,7 +13,6 @@ for account in $(command ls @AWS_ACCOUNT_DIR@/* 2>/dev/null); do
   acct=$(basename $account)
   if [[ ! -h $account ]]; then
     eval "function aws-$acct() { @LN_S@ --force $account @AWS_CONFIG_FILE@; }"
-    export -f aws-$acct
   fi
 done
 unset account acct
