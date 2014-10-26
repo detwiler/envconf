@@ -96,14 +96,24 @@ $(gnulib_tool): mk-bindir
 	$(AM_V_GEN)cd $(DESTDIR)$(bindir) && \
 	  test -e $@ || $(LN_S) $(GNULIB_SRCDIR)/$@
 
-if WITH_GNULIB_SRCDIR
-install-data-hook: $(gnulib_tool) mk-script-links
-uninstall_files = $(scripts) $(gnulib_tool)
-else
-install-data-hook: mk-script-links
+vc_list_files = vc-list-files
+
+$(vc_list_files): mk-bindir
+	$(AM_V_GEN)cd $(DESTDIR)$(bindir) && \
+	  test -e $@ || $(LN_S) $(GNULIB_SRCDIR)/build-aux/$@
+
+gnulib_scripts = $(gnulib_tool) \
+		 $(vc_list_files)
+
+install_data_targets = mk-script-links
 uninstall_files = $(scripts)
+
+if WITH_GNULIB_SRCDIR
+install_data_targets += $(gnulib_scripts)
+uninstall_files += $(gnulib_scripts)
 endif
 
+install-data-hook: $(install_data_targets)
 uninstall-hook:
 	$(AM_V_GEN)cd $(DESTDIR)$(bindir) && \
 	  rm -f $(uninstall_files)
