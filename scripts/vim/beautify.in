@@ -1,8 +1,0 @@
-#! /bin/bash
-
-# this script executes an ex command on its arguments that strips all trailing
-# whitespace from each line
-
-for file in "$@"; do
-  ex -s $file < @vimdatadir@/beautify.vim
-done

@@ -1,2 +1,0 @@
-" set the default font for gvim
-set guifont=@GVIM_FONT@\ @GVIM_FONT_SIZE@

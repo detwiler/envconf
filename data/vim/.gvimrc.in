@@ -1,7 +1,8 @@
 " .gvimrc
 " vim: set ft=vim :
 
-@GVIM_FONT_FILE@
+" set the default font for gvim
+set guifont=@GVIM_FONT@\ @GVIM_FONT_SIZE@
 
 set guioptions=aei
 
