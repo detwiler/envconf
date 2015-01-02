@@ -21,8 +21,7 @@ dist_vimplugin_DATA = greputil.vim \
 
 CLEANFILES = $(vimrc)
 
-DISTCLEANFILES = $(gvimrc) \
-		 gvimrc.linux
+DISTCLEANFILES = $(gvimrc)
 
 grep = $(GREP_COLOR) --line-number --max-count=1 --regexp=nocompatible
 cut = cut --delimiter=':' --fields=1

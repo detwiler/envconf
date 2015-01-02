@@ -3,12 +3,10 @@
 include $(top_srcdir)/rules.mk
 
 # data/script variables
-android = android.sh
 bash = bash.sh
 bash_completion = bash-completion.sh
 editor = editor.sh
 gnulib = gnulib.sh
-idea = idea.sh
 info = info.sh
 
 # static data/scripts (not generated; require explicit distribution)
@@ -22,14 +20,6 @@ conf_data = $(editor)
 
 if WITH_GNULIB_SRCDIR
 conf_data += $(gnulib)
-endif
-
-if WITH_ANDROID_BINDIR
-conf_data += $(android)
-endif
-
-if WITH_IDEA_HOME
-conf_data += $(idea)
 endif
 
 profile_DATA = $(conf_data)

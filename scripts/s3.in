@@ -1,9 +1,0 @@
-#! /bin/env bash
-
-# Load user configuration
-if [ -e '@AWS_CONFIG_FILE@' ]; then
-  export @S3CMD_ACCESS_KEY_VAR@="$(@SED@ -n 's/aws_access_key_id=//p' @AWS_CONFIG_FILE@)"
-  export @S3CMD_SECRET_KEY_VAR@="$(@SED@ -n 's/aws_secret_access_key=//p' @AWS_CONFIG_FILE@)"
-fi
-
-@S3CMD@ $@
