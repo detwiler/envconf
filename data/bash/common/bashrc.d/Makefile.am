@@ -65,8 +65,8 @@ mk-bashrcdir:
 	  mkdir -p $(DESTDIR)$(bashrcdir)
 
 $(GIT_PROMPT): mk-bashrcdir
-	$(AM_V_GEN)cd $(DESTDIR)$(bashrcdir) && \
-	  test -e $@ || $(LN_S) $(GIT_PROMPT_PATH)/$@
+	$(AM_V_GEN)test -e $(GIT_PROMPT_PATH)/$@ && (cd $(DESTDIR)$(bashrcdir) && \
+	  test -l $@ || $(LN_S) $(GIT_PROMPT_PATH)/$@) || true
 
 install-data-hook: $(GIT_PROMPT)
 uninstall_files = $(GIT_PROMPT)
