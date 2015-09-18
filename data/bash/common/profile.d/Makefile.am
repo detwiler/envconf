@@ -6,12 +6,14 @@ include $(top_srcdir)/rules.mk
 bash = bash.sh
 bash_completion = bash-completion.sh
 editor = editor.sh
+gpg = gpg.sh
 gnulib = gnulib.sh
 info = info.sh
 
 # static data/scripts (not generated; require explicit distribution)
 static_data = $(bash_completion) \
-	      $(bash)
+	      $(bash) \
+	      $(gpg)
 
 dist_profile_DATA = $(static_data)
 
