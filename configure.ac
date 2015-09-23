@@ -119,6 +119,16 @@ EC_ARG_WITH([git_prompt_path],
             [/usr/share/git-core/contrib/completion])
 AC_SUBST([GIT_PROMPT_PATH], [$with_git_prompt_path])
 
+# option to specify git gpg signing key
+EC_ARG_WITH([git_signing_key], [no])
+AM_CONDITIONAL([WITH_GIT_SIGNING_KEY], [test "x$with_git_signing_key" != xno])
+AM_COND_IF([WITH_GIT_SIGNING_KEY],
+           [AC_SUBST([GIT_SIGNING_KEY], [$with_git_signing_key])
+            GIT_SIGNING_KEY_FILE=data/git/gitconfig-signing-key
+            AC_CONFIG_FILES([data/git/gitconfig-signing-key])],
+            [GIT_SIGNING_KEY_FILE=/dev/null])
+AC_SUBST_FILE([GIT_SIGNING_KEY_FILE])
+
 # option to specify path to gnulib clone
 EC_ARG_WITH([gnulib_srcdir], [no])
 AM_CONDITIONAL([WITH_GNULIB_SRCDIR], [test "x$with_gnulib_srcdir" != xno])

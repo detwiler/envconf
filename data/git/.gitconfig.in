@@ -1,6 +1,7 @@
 [user]
 	name = @USER_NAME@
 	email = @USER_EMAIL@
+        @GIT_SIGNING_KEY_FILE@
 [core]
 	editor = vim
 	excludesfile = @homedir@/.gitignore-core
