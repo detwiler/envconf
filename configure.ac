@@ -164,9 +164,9 @@ AM_COND_IF([WITH_VIM_ALIAS],
 EC_ARG_WITH([vimrc_example], [/dev/null])
 AC_SUBST([VIMRC_EXAMPLE], [$with_vimrc_example])
 
-# option to specify path to AWS config file
-EC_ARG_WITH([aws_config_file], [$HOME/.aws/config])
-AC_SUBST([AWS_CONFIG_FILE], [$with_aws_config_file])
+# option to specify path to AWS credentials file
+EC_ARG_WITH([aws_credentials_file], [$HOME/.aws/credentials])
+AC_SUBST([AWS_CREDENTIALS_FILE], [$with_aws_credentials_file])
 
 # option to specify path to AWS account directory
 EC_ARG_WITH([aws_account_dir], [$HOME/.aws])
