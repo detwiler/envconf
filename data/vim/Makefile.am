@@ -23,14 +23,11 @@ CLEANFILES = $(vimrc)
 
 DISTCLEANFILES = $(gvimrc)
 
-grep = $(GREP_COLOR) --line-number --max-count=1 --regexp=nocompatible
-cut = cut --delimiter=':' --fields=1
-
 $(vimrc): @VIMRC_EXAMPLE@ Makefile
 	$(AM_V_GEN) \
 	  ( \
-	    head --lines=$$($(grep) $< | $(cut)) $<; \
-	    echo -e '\nsource $(vimdatadir)/$(pathogenvim)'; \
-	    tail --lines=+$$(echo "$$($(grep) $< | $(cut)) + 1" | bc -l) $<; \
-	    echo -e '\nsource $(vimdatadir)/$(customvim)' \
+	    cat $<; \
+	    printf '\n'; \
+	    printf 'source %s/%s\n' $(vimdatadir) $(pathogenvim); \
+	    printf 'source %s/%s\n' $(vimdatadir) $(customvim); \
 	  ) >$@-t && mv $@-t $@
