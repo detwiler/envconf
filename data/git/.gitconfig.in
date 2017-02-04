@@ -7,3 +7,5 @@
 	excludesfile = @homedir@/.gitignore-core
 [color]
 	ui = auto
+[gpg]
+        program = @GPG@
