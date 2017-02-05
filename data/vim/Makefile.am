@@ -11,7 +11,7 @@ pathogenvim = pathogen.vim
 home_DATA = $(vimrc) \
 	    $(gvimrc)
 
-dist_vimdata_DATA = $(customvim) \
+dist_vimconf_DATA = $(customvim) \
 		    $(pathogenvim)
 
 dist_vimplugin_DATA = greputil.vim \
@@ -28,6 +28,6 @@ $(vimrc): @VIMRC_EXAMPLE@ Makefile
 	  ( \
 	    cat $<; \
 	    printf '\n'; \
-	    printf 'source %s/%s\n' $(vimdatadir) $(pathogenvim); \
-	    printf 'source %s/%s\n' $(vimdatadir) $(customvim); \
+	    printf 'source %s/%s\n' $(vimconfdir) $(pathogenvim); \
+	    printf 'source %s/%s\n' $(vimconfdir) $(customvim); \
 	  ) >$@-t && mv $@-t $@

@@ -13,43 +13,24 @@ AC_CONFIG_SRCDIR([data/bash/common/bashrc.in])
 AM_INIT_AUTOMAKE([-Wall -Wno-portability -Werror dist-bzip2])
 AM_SILENT_RULES([yes])
 
-AC_PREFIX_DEFAULT([$HOME/usr])
+AC_PREFIX_DEFAULT([$HOME/.local])
 
 AC_SUBST([homedir], [$HOME])
-AC_SUBST([bashrcdir], ["\$(pkgdatadir)/bashrc.d"])
-AC_SUBST([profiledir], ["\$(pkgdatadir)/profile.d"])
-AC_SUBST([vimdatadir], ["\$(pkgdatadir)/vim"])
+AC_SUBST([pkgconfdir], ["\$(sysconfdir)/\$(PACKAGE)"])
+AC_SUBST([bashrcdir], ["\$(pkgconfdir)/bashrc.d"])
+AC_SUBST([profiledir], ["\$(pkgconfdir)/profile.d"])
+AC_SUBST([vimconfdir], ["\$(pkgconfdir)/vim"])
 
 # Checks for programs.
 AC_PROG_INSTALL
 AC_PROG_LN_S
 AC_PROG_SED
 
-AC_ARG_VAR([EDITOR], [default text editor])
-AC_CHECK_PROG([EDITOR], [vim], [vim], [vi])
-AM_CONDITIONAL([HAVE_VIM], [test "x$EDITOR" = xvim])
-AM_COND_IF([HAVE_VIM], [AC_CONFIG_FILES([data/vim/.gvimrc])])
-
-AC_CHECK_PROG([have_dircolors], [dircolors], [yes])
-AM_CONDITIONAL([HAVE_DIRCOLORS], [test "x$have_dircolors" = xyes])
-
-AC_CHECK_PROG([have_svn], [svn], [yes])
-AM_CONDITIONAL([HAVE_SVN], [test "x$have_svn" = xyes])
-
+# check for aws cli
 AC_CHECK_PROG([have_aws_cli], [aws], [yes])
 AM_CONDITIONAL([HAVE_AWS_CLI], [test "x$have_aws_cli" = xyes])
 
-AC_CACHE_CHECK([for grep that supports --color], [ac_cv_path_GREP_COLOR],
-  [AC_PATH_PROGS_FEATURE_CHECK([GREP_COLOR], [grep],
-    [if echo color | $ac_path_GREP_COLOR --color color &> /dev/null; then
-      ac_cv_path_GREP_COLOR=$ac_path_GREP_COLOR
-      ac_path_GREP_COLOR_found=:
-     fi])])
-AM_CONDITIONAL([HAVE_GREP_COLOR], [test -n $ac_cv_path_GREP_COLOR])
-AM_COND_IF([HAVE_GREP_COLOR],
-           [AC_SUBST([GREP_COLOR], [$ac_cv_path_GREP_COLOR])
-            AC_CONFIG_FILES([data/bash/common/bashrc.d/grep.sh])])
-
+# check for exuberant ctags
 AC_CACHE_CHECK([for exuberant ctags], [ac_cv_path_EXUBERANT_CTAGS],
   [AC_PATH_PROGS_FEATURE_CHECK([EXUBERANT_CTAGS], [ctags],
     [if $ac_path_EXUBERANT_CTAGS --version | grep --silent Exuberant; then
@@ -61,21 +42,60 @@ AM_COND_IF([HAVE_EXUBERANT_CTAGS],
            [AC_SUBST([EXUBERANT_CTAGS], [$ac_cv_path_EXUBERANT_CTAGS])
             AC_CONFIG_FILES([data/bash/common/bashrc.d/ctags-alias.sh])])
 
+# check for dircolors
+AC_CHECK_PROG([have_dircolors], [dircolors], [yes])
+AM_CONDITIONAL([HAVE_DIRCOLORS], [test "x$have_dircolors" = xyes])
+
+# check for gpg2
+AC_ARG_VAR([GPG], [path to gpg])
+AC_CHECK_PROGS([GPG], [gpg2 gpg], [gpg])
+AM_CONDITIONAL([HAVE_GPG2], [test "x$GPG" = xgpg2])
+AM_COND_IF([HAVE_GPG2], [AC_CONFIG_FILES([data/bash/common/bashrc.d/gpg2.sh])])
+
+# check for grep
+AC_CACHE_CHECK([for grep that supports --color], [ac_cv_path_GREP_COLOR],
+  [AC_PATH_PROGS_FEATURE_CHECK([GREP_COLOR], [grep],
+    [if echo color | $ac_path_GREP_COLOR --color color &> /dev/null; then
+      ac_cv_path_GREP_COLOR=$ac_path_GREP_COLOR
+      ac_path_GREP_COLOR_found=:
+     fi])])
+AM_CONDITIONAL([HAVE_GREP_COLOR], [test -n $ac_cv_path_GREP_COLOR])
+AM_COND_IF([HAVE_GREP_COLOR],
+           [AC_SUBST([GREP_COLOR], [$ac_cv_path_GREP_COLOR])
+            AC_CONFIG_FILES([data/bash/common/bashrc.d/grep.sh])])
+
+# check for egrep
 AC_ARG_VAR([EGREP], [path to egrep])
 AC_PROG_EGREP
 AS_IF([test "x$EGREP" = xno],
       [AC_MSG_ERROR([could not find egrep])])
 
+# check for ls that supports --color
 AM_CONDITIONAL([EC_LSCOLOR], [ls --color &> /dev/null])
 AM_COND_IF([EC_LSCOLOR],
            [LS_ALIASES=data/bash/common/bashrc.d/ls-color.aliases],
            [LS_ALIASES=data/bash/common/bashrc.d/ls.aliases])
 AC_SUBST_FILE([LS_ALIASES])
 
-AC_ARG_VAR([GPG], [path to gpg])
-AC_CHECK_PROGS([GPG], [gpg2 gpg], [gpg])
-AM_CONDITIONAL([HAVE_GPG2], [test "x$GPG" = xgpg2])
-AM_COND_IF([HAVE_GPG2], [AC_CONFIG_FILES([data/bash/common/bashrc.d/gpg2.sh])])
+# check for subversion
+AC_CHECK_PROG([have_svn], [svn], [yes])
+AM_CONDITIONAL([HAVE_SVN], [test "x$have_svn" = xyes])
+
+# check for systemd-path
+AC_ARG_VAR([SYSTEMD_PATH], [path to systemd-path])
+AC_PATH_PROG([SYSTEMD_PATH], [systemd-path], [no])
+AM_CONDITIONAL([HAVE_SYSTEMD_PATH], [test "x$SYSTEMD_PATH" != xno])
+AM_COND_IF([HAVE_SYSTEMD_PATH],
+           [XDG_BASEDIR_FILE=data/autoconf/config-site-systemd
+            AC_CONFIG_FILES([data/autoconf/config-site-systemd])],
+           [XDG_BASEDIR_FILE=data/autoconf/config-site-sysvinit])
+AC_SUBST_FILE([XDG_BASEDIR_FILE])
+
+# check for vim
+AC_ARG_VAR([EDITOR], [default text editor])
+AC_CHECK_PROG([EDITOR], [vim], [vim], [vi])
+AM_CONDITIONAL([HAVE_VIM], [test "x$EDITOR" = xvim])
+AM_COND_IF([HAVE_VIM], [AC_CONFIG_FILES([data/vim/.gvimrc])])
 
 # Checks for files.
 

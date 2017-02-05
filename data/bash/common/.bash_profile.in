@@ -10,6 +10,6 @@ if [ -f "$HOME/.bashrc" ] ; then
 fi
 
 # source customizations
-if [ -f "@pkgdatadir@/profile" ]; then
-  source "@pkgdatadir@/profile"
+if [ -f "@pkgconfdir@/profile" ]; then
+  source "@pkgconfdir@/profile"
 fi

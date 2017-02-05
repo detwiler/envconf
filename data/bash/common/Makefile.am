@@ -11,13 +11,13 @@ profile = profile
 home_DATA = $(bash_profile_h) \
 	    $(bashrc_h)
 
-pkgdata_DATA = $(bashrc) \
+pkgconf_DATA = $(bashrc) \
 	       functions \
 	       global-bash \
 	       $(profile)
 
 CLEANFILES = $(home_DATA) \
-	     $(pkgdata_DATA)
+	     $(pkgconf_DATA)
 
 EXTRA_DIST = $(bash_profile_h).in \
 	     $(bashrc_h).in \
@@ -26,7 +26,9 @@ EXTRA_DIST = $(bash_profile_h).in \
 
 edit = $(SED) \
        -e 's:@homedir[@]:$(homedir):g' \
-       -e 's:@pkgdatadir[@]:$(pkgdatadir):g' \
+       -e 's:@bindir[@]:$(bindir):g' \
+       -e 's:@sbindir[@]:$(sbindir):g' \
+       -e 's:@pkgconfdir[@]:$(pkgconfdir):g' \
        -e 's:@bashrcdir[@]:$(bashrcdir):g' \
        -e 's:@profiledir[@]:$(profiledir):g'
 
