@@ -2,9 +2,9 @@
 
 SUBDIRS = data
 
-pkgdata_DATA = $(PACKAGE)-release
+pkgconf_DATA = $(PACKAGE)-release
 
-CLEANFILES = $(pkgdata_DATA)
+CLEANFILES = $(pkgconf_DATA)
 
 .PHONY: $(PACKAGE)-release
 $(PACKAGE)-release:

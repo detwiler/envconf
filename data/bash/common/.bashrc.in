@@ -1,17 +1,17 @@
 # Source global definitions
-if [ -f "@pkgdatadir@/global-bash" ]; then
-  source "@pkgdatadir@/global-bash"
+if [ -f "@pkgconfdir@/global-bash" ]; then
+  source "@pkgconfdir@/global-bash"
 fi
 
 # User specific aliases and functions
-if [ -f "@pkgdatadir@/functions" ]; then
-  source "@pkgdatadir@/functions"
+if [ -f "@pkgconfdir@/functions" ]; then
+  source "@pkgconfdir@/functions"
 fi
 
 # Set PATH so it includes user's private bin dirs if they exist
-pathmung @homedir@/usr/$(arch)/bin
-pathmung @homedir@/usr/$(arch)/sbin
+pathmung @bindir@
+pathmung @sbindir@
 
-if [ -f "@pkgdatadir@/bashrc" ]; then
-  source "@pkgdatadir@/bashrc"
+if [ -f "@pkgconfdir@/bashrc" ]; then
+  source "@pkgconfdir@/bashrc"
 fi
