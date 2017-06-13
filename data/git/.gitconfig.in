@@ -1,6 +1,6 @@
 [user]
-	name = @USER_NAME@
-	email = @USER_EMAIL@
+	name = @GIT_AUTHOR_NAME@
+	email = @GIT_AUTHOR_EMAIL@
 	@GIT_SIGNING_KEY_FILE@
 [core]
 	editor = vim

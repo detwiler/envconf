@@ -2,11 +2,11 @@
 
 # only do this in interactive shells
 if echo $- | grep i &> /dev/null; then
-  [[ $BASH == @BASH_ALIAS@ ]] || @BASH_ALIAS@ --login
+  [[ $BASH == @BASH_PATH@ ]] || @BASH_PATH@ --login
 fi
 
 # Source global definitions
-if  [[ $BASH == @BASH_ALIAS@ ]]; then
+if  [[ $BASH == @BASH_PATH@ ]]; then
   if [ -f /etc/bashrc ]; then
     source /etc/bashrc
   fi
