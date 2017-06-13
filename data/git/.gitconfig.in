@@ -9,3 +9,5 @@
 	ui = auto
 [gpg]
         program = @GPG@
+[alias]
+	syncsub = submodule foreach git pull origin master
