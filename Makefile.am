@@ -31,14 +31,7 @@ EXTRA_DIST = $(top_srcdir)/.version
 ACLOCAL_AMFLAGS = -I m4
 
 DISTCHECK_CONFIGURE_FLAGS = HOME=$(top_distdir) \
-			    --with-bash-alias=@BASH_ALIAS@ \
-			    --with-subversion-alias=@SVN_ALIAS@ \
-			    --with-vim-alias=@VIM_ALIAS@ \
-			    --with-vimrc-example=@VIMRC_EXAMPLE@
-
-if WITH_GNULIB_SRCDIR
-DISTCHECK_CONFIGURE_FLAGS += --with-gnulib-srcdir=@GNULIB_SRCDIR@
-endif # WITH_GNULIB_SRCDIR
+			    --enable-local-bash-completion=$enable_local_bash_comp
 
 mk-bindir:
 	$(AM_V_GEN)test -e $(DESTDIR)$(bindir) || mkdir -p $(DESTDIR)$(bindir)
@@ -47,18 +40,18 @@ gnulib_tool = gnulib-tool
 
 $(gnulib_tool): mk-bindir
 	$(AM_V_GEN)cd $(DESTDIR)$(bindir) && \
-	  test -e $@ || $(LN_S) $(GNULIB_SRCDIR)/$@
+	  test -h $@ || $(LN_S) $(GNULIB_SRCDIR)/$@
 
 vc_list_files = vc-list-files
 
 $(vc_list_files): mk-bindir
 	$(AM_V_GEN)cd $(DESTDIR)$(bindir) && \
-	  test -e $@ || $(LN_S) $(GNULIB_SRCDIR)/build-aux/$@
+	  test -h $@ || $(LN_S) $(GNULIB_SRCDIR)/build-aux/$@
 
 gnulib_scripts = $(gnulib_tool) \
 		 $(vc_list_files)
 
-if WITH_GNULIB_SRCDIR
+if HAVE_GNULIB_SRCDIR
 install-data-hook: $(gnulib_scripts)
 uninstall-hook:
 	$(AM_V_GEN)cd $(DESTDIR)$(bindir) && \
