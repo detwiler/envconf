@@ -220,6 +220,7 @@ AC_CONFIG_FILES([Makefile
                  data/git/.gitconfig
                  data/man/Makefile
                  data/readline/Makefile
+                 data/ruby/Makefile
                  data/vim/Makefile
                  ])
 
