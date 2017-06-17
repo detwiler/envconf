@@ -1,5 +1,3 @@
-#! /bin/bash
-
 if [[ -z "$LS_COLORS" ]]; then
   if [[ -f @pkgconfdir@/dircolors ]]; then 
     eval "$(dircolors -b @pkgconfdir@/dircolors)"

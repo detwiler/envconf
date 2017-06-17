@@ -4,7 +4,8 @@ SUBDIRS = autoconf \
 	  bash \
 	  git \
 	  man \
-	  readline
+	  readline \
+	  ruby
 
 if HAVE_DIRCOLORS
 SUBDIRS += dircolors
