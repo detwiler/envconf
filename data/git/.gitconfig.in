@@ -10,4 +10,11 @@
 [gpg]
         program = @GPG@
 [alias]
-	syncsub = submodule foreach git pull origin master
+	subupdate = submodule update --remote --rebase
+	subpush = push --recurse-submodules=on-demand
+[diff]
+	submodule = log
+[status]
+	submodulesummary = 1
+[push]
+	recurseSubmodules = check
