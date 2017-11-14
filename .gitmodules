@@ -1,0 +1,3 @@
+[submodule "quickhatch-m4"]
+	path = .qh-m4
+	url = https://github.com/quickhatch/quickhatch-m4.git

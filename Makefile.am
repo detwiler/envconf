@@ -28,7 +28,7 @@ gen-ChangeLog:
 
 EXTRA_DIST = $(top_srcdir)/.version
 
-ACLOCAL_AMFLAGS = -I m4
+ACLOCAL_AMFLAGS = -I m4 -I .qh-m4
 
 DISTCHECK_CONFIGURE_FLAGS = HOME=$(top_distdir) \
 			    --enable-local-bash-completion=$enable_local_bash_comp

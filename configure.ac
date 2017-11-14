@@ -21,11 +21,11 @@ AC_SUBST([bashrcdir], ["\$(pkgconfdir)/bashrc.d"])
 AC_SUBST([profiledir], ["\$(pkgconfdir)/profile.d"])
 AC_SUBST([vimconfdir], ["\$(pkgconfdir)/vim"])
 
-EC_VAR_ENSURE([WORKDIR],
+QH_VAR_ENSURE([WORKDIR],
               [path to local work directory],
               [$HOME/work])
 
-EC_VAR_ENSURE([SRCDIR],
+QH_VAR_ENSURE([SRCDIR],
               [path to local source code directory],
               [$WORKDIR/src])
 
@@ -40,11 +40,11 @@ AC_PROG_SED
 AC_CHECK_PROG([have_aws_cli], [aws], [yes])
 AM_CONDITIONAL([HAVE_AWS_CLI], [test "x$have_aws_cli" = xyes])
 
-EC_VAR_ENSURE([AWS_CONFIG_DIR],
+QH_VAR_ENSURE([AWS_CONFIG_DIR],
               [path to aws-cli configuration directory],
               [$HOME/.aws])
 
-EC_VAR_ENSURE([AWS_SHARED_CREDENTIALS_FILE],
+QH_VAR_ENSURE([AWS_SHARED_CREDENTIALS_FILE],
               [path to aws-cli shared credentials file],
               [$AWS_CONFIG_DIR/credentials])
 
@@ -75,11 +75,11 @@ AM_CONDITIONAL([BIND_INPUTRC], [test "x$INPUTRC" != x])
 # customization of PS1 color
 # Text color codes:
 # 30=black 31=red 32=green 33=yellow 34=blue 35=magenta 36=cyan 37=white
-EC_VAR_ENSURE([PS1_USER_COLOR], [bash prompt username color],    [32])
-EC_VAR_ENSURE([PS1_HOST_COLOR], [bash prompt hostname color],    [34])
-EC_VAR_ENSURE([PS1_GIT_COLOR],  [bash prompt git status color],  [32])
-EC_VAR_ENSURE([PS1_PWD_COLOR],  [bash prompt pwd color],          [0])
-EC_VAR_ENSURE([PS1_AWS_COLOR],  [bash prompt aws profile color], [33])
+QH_VAR_ENSURE([PS1_USER_COLOR], [bash prompt username color],    [32])
+QH_VAR_ENSURE([PS1_HOST_COLOR], [bash prompt hostname color],    [34])
+QH_VAR_ENSURE([PS1_GIT_COLOR],  [bash prompt git status color],  [32])
+QH_VAR_ENSURE([PS1_PWD_COLOR],  [bash prompt pwd color],          [0])
+QH_VAR_ENSURE([PS1_AWS_COLOR],  [bash prompt aws profile color], [33])
 
 ## coreutils ##
 
@@ -115,15 +115,15 @@ AM_COND_IF([HAVE_GPG2], [AC_CONFIG_FILES([data/bash/common/bashrc.d/gpg2.sh])])
 
 ## git ##
 
-EC_VAR_ENSURE([GIT_AUTHOR_NAME],
+QH_VAR_ENSURE([GIT_AUTHOR_NAME],
               [human-readable name for git author],
               [`getent passwd $USER | cut -d: -f5`])
 
-EC_VAR_ENSURE([GIT_AUTHOR_EMAIL],
+QH_VAR_ENSURE([GIT_AUTHOR_EMAIL],
               [git author email],
               [$USER@$HOSTNAME])
 
-EC_VAR_ENSURE([GIT_SIGNING_KEY],
+QH_VAR_ENSURE([GIT_SIGNING_KEY],
               [git author gpg signing key],
               [`$GPG --list-key $GIT_AUTHOR_EMAIL 2>/dev/null | sed '2{s/\s*//;q};d'`])
 AM_CONDITIONAL([HAVE_GIT_SIGNING_KEY], [test "x$GIT_SIGNING_KEY" != x])
@@ -133,13 +133,13 @@ AM_COND_IF([HAVE_GIT_SIGNING_KEY],
            [GIT_SIGNING_KEY_FILE=/dev/null])
 AC_SUBST_FILE([GIT_SIGNING_KEY_FILE])
 
-EC_VAR_ENSURE([GIT_PROMPT_PATH],
+QH_VAR_ENSURE([GIT_PROMPT_PATH],
               [path to git-prompt.sh],
               [/usr/share/git-core/contrib/completion/git-prompt.sh])
 
 ## gnulib ##
 
-EC_VAR_ENSURE([GNULIB_SRCDIR],
+QH_VAR_ENSURE([GNULIB_SRCDIR],
               [path to gnulib source directory],
               [$SRCDIR/gnulib])
 AM_CONDITIONAL([HAVE_GNULIB_SRCDIR], [test -d $GNULIB_SRCDIR])
@@ -148,7 +148,7 @@ AM_COND_IF([HAVE_GNULIB_SRCDIR],
 
 ## go ##
 
-EC_VAR_ENSURE([GOPATH],
+QH_VAR_ENSURE([GOPATH],
               [path to Go workspace directory],
               [$WORKDIR/go])
 
@@ -189,15 +189,15 @@ AC_CHECK_PROG([EDITOR], [vim], [vim], [vi])
 AM_CONDITIONAL([HAVE_VIM], [test "x$EDITOR" = xvim])
 AM_COND_IF([HAVE_VIM], [AC_CONFIG_FILES([data/vim/.gvimrc])])
 
-EC_VAR_ENSURE([GVIM_FONT],
+QH_VAR_ENSURE([GVIM_FONT],
               [gvim font],
               [Monospace])
 
-EC_VAR_ENSURE([GVIM_FONT_SIZE],
+QH_VAR_ENSURE([GVIM_FONT_SIZE],
               [gvim font size],
               [11])
 
-EC_VAR_ENSURE([VIMRC_EXAMPLE_PATH],
+QH_VAR_ENSURE([VIMRC_EXAMPLE_PATH],
               [path to vimrc_example.vim],
               [`(rpm -ql vim-common 2>/dev/null | grep '/vimrc_example.vim') || echo /dev/null`])
 
