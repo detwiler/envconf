@@ -1,3 +1,6 @@
 [submodule "quickhatch-m4"]
 	path = .qh-m4
 	url = https://github.com/quickhatch/quickhatch-m4.git
+[submodule "gnulib"]
+	path = .gnulib
+	url = git://git.sv.gnu.org/gnulib.git
