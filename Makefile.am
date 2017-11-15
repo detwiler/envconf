@@ -26,9 +26,10 @@ gen-ChangeLog:
 	  mv $(distdir)/cl-t $(distdir)/ChangeLog;			\
 	fi
 
-EXTRA_DIST = $(top_srcdir)/.version
+EXTRA_DIST = $(top_srcdir)/.version \
+	     m4/gnulib-cache.m4
 
-ACLOCAL_AMFLAGS = -I m4
+ACLOCAL_AMFLAGS = -I m4 -I .qh-m4
 
 DISTCHECK_CONFIGURE_FLAGS = HOME=$(top_distdir) \
 			    --enable-local-bash-completion=$enable_local_bash_comp

@@ -1,0 +1,11 @@
+/config.guess
+/config.sub
+/depcomp
+/do-release-commit-and-tag
+/git-version-gen
+/gitlog-to-changelog
+/install-sh
+/mdate-sh
+/missing
+/texinfo.tex
+/vc-list-files

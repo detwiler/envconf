@@ -3,7 +3,6 @@
 # generated build files
 autom4te.cache/
 autoscan.log
-build-aux/
 aclocal.m4
 ChangeLog
 config.log
@@ -18,6 +17,7 @@ Makefile.in
 stamp-h1
 .deps/
 .libs/
+/.libgnu
 *.l[oa]
 *.gz
 *.bz2
