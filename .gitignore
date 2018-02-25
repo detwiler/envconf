@@ -21,7 +21,7 @@ stamp-h1
 *.l[oa]
 *.gz
 *.bz2
-.version
+/.version
 
 # vim config files
 .gvimrc
