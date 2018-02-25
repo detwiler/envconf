@@ -2,21 +2,33 @@
 
 SUBDIRS = data
 
-pkgconf_DATA = $(PACKAGE)-release
+gvg_version = .version
+pkg_release = $(PACKAGE)-release
+gnulib_tool = gnulib-tool
+vc_list_files = vc-list-files
+gnulib_scripts = $(gnulib_tool) \
+		 $(vc_list_files)
 
-CLEANFILES = $(pkgconf_DATA)
+pkgconf_DATA = $(pkg_release)
 
-.PHONY: $(PACKAGE)-release
-$(PACKAGE)-release:
-	$(AM_V_GEN)echo "$(PACKAGE) release $(VERSION)" > $@-t && mv $@-t $@
+ACLOCAL_AMFLAGS = -I m4 -I .qh-at/m4
 
-BUILT_SOURCES = $(top_srcdir)/.version
+BUILT_SOURCES = $(gvg_version)
 
-$(top_srcdir)/.version:
+DISTCLEANFILES = $(gvg_version) \
+		 $(pkg_release)
+
+EXTRA_DIST = $(gvg_version) \
+	     m4/gnulib-cache.m4
+
+DISTCHECK_CONFIGURE_FLAGS = HOME=$(top_distdir) \
+			    --enable-local-bash-completion=$enable_local_bash_comp
+
+$(gvg_version): Makefile
 	$(AM_V_GEN)echo $(VERSION) > $@-t && mv $@-t $@
 
-dist-hook: gen-ChangeLog
-	$(AM_V_GEN)echo $(VERSION) > $(distdir)/.tarball-version
+$(pkg_release): $(gvg_version)
+	$(AM_V_GEN)echo "$(PACKAGE) release $(VERSION)" > $@-t && mv $@-t $@
 
 .PHONY: gen-ChangeLog
 gen-ChangeLog:
@@ -26,31 +38,16 @@ gen-ChangeLog:
 	  mv $(distdir)/cl-t $(distdir)/ChangeLog;			\
 	fi
 
-EXTRA_DIST = $(top_srcdir)/.version \
-	     m4/gnulib-cache.m4
-
-ACLOCAL_AMFLAGS = -I m4 -I .qh-at/m4
-
-DISTCHECK_CONFIGURE_FLAGS = HOME=$(top_distdir) \
-			    --enable-local-bash-completion=$enable_local_bash_comp
-
 mk-bindir:
 	$(AM_V_GEN)test -e $(DESTDIR)$(bindir) || mkdir -p $(DESTDIR)$(bindir)
-
-gnulib_tool = gnulib-tool
 
 $(gnulib_tool): mk-bindir
 	$(AM_V_GEN)cd $(DESTDIR)$(bindir) && \
 	  test -h $@ || $(LN_S) $(GNULIB_SRCDIR)/$@
 
-vc_list_files = vc-list-files
-
 $(vc_list_files): mk-bindir
 	$(AM_V_GEN)cd $(DESTDIR)$(bindir) && \
 	  test -h $@ || $(LN_S) $(GNULIB_SRCDIR)/build-aux/$@
-
-gnulib_scripts = $(gnulib_tool) \
-		 $(vc_list_files)
 
 if HAVE_GNULIB_SRCDIR
 install-data-hook: $(gnulib_scripts)
@@ -58,3 +55,6 @@ uninstall-hook:
 	$(AM_V_GEN)cd $(DESTDIR)$(bindir) && \
 	  rm -f $(gnulib_scripts)
 endif
+
+dist-hook: gen-ChangeLog
+	$(AM_V_GEN)echo $(VERSION) > $(distdir)/.tarball-version
