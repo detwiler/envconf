@@ -25,9 +25,9 @@ QH_VAR_ENSURE([WORKDIR],
               [path to local work directory],
               [$HOME/work])
 
-QH_VAR_ENSURE([SRCDIR],
-              [path to local source code directory],
-              [$WORKDIR/src])
+QH_VAR_ENSURE([REFDIR],
+              [path to local directory with reference repositories],
+              [$WORKDIR/ref])
 
 ### Checks for programs. ###
 
@@ -141,7 +141,7 @@ QH_VAR_ENSURE([GIT_PROMPT_PATH],
 
 QH_VAR_ENSURE([GNULIB_SRCDIR],
               [path to gnulib source directory],
-              [$SRCDIR/gnulib])
+              [$REFDIR/gnulib])
 AM_CONDITIONAL([HAVE_GNULIB_SRCDIR], [test -d $GNULIB_SRCDIR])
 AM_COND_IF([HAVE_GNULIB_SRCDIR],
            [AC_CONFIG_FILES([data/bash/common/profile.d/gnulib.sh])])
