@@ -1,6 +1,6 @@
 [submodule "gnulib"]
 	path = .gnulib
-	url = git://git.sv.gnu.org/gnulib.git
+	url = https://github.com/coreutils/gnulib.git
 [submodule "quickhatch-autotools"]
 	path = .qh-at
 	url = https://github.com/quickhatch/quickhatch-autotools.git
