@@ -18,3 +18,4 @@
 	submodulesummary = 1
 [push]
 	recurseSubmodules = check
+@GIT_CRED_HELPER_FILE@
