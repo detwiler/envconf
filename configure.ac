@@ -133,6 +133,13 @@ AM_COND_IF([HAVE_GIT_SIGNING_KEY],
            [GIT_SIGNING_KEY_FILE=/dev/null])
 AC_SUBST_FILE([GIT_SIGNING_KEY_FILE])
 
+AC_CHECK_PROG([have_git_cred_pass], [git-credential-password-store], [yes])
+AM_CONDITIONAL([HAVE_GIT_CRED_PASS], [test "x$have_git_cred_pass" = xyes])
+AM_COND_IF([HAVE_GIT_CRED_PASS],
+           [GIT_CRED_HELPER_FILE=data/git/gitconfig-cred-helper],
+           [GIT_CRED_HELPER_FILE=/dev/null])
+AC_SUBST_FILE([GIT_CRED_HELPER_FILE])
+
 QH_VAR_ENSURE([GIT_PROMPT_PATH],
               [path to git-prompt.sh],
               [/usr/share/git-core/contrib/completion/git-prompt.sh])
