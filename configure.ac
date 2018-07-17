@@ -13,6 +13,11 @@ AC_CONFIG_SRCDIR([data/bash/common/bashrc.in])
 AM_INIT_AUTOMAKE([-Wall -Wno-portability -Werror dist-bzip2])
 AM_SILENT_RULES([yes])
 
+## determine host os ##
+AC_CANONICAL_HOST
+
+AM_CONDITIONAL([HOST_OS_DARWIN], [grep darwin <<<$host_os &>/dev/null])
+
 AC_PREFIX_DEFAULT([$HOME/.local])
 
 AC_SUBST([homedir], [$HOME])
@@ -33,6 +38,7 @@ QH_VAR_ENSURE([REFDIR],
 
 AC_PROG_INSTALL
 AC_PROG_LN_S
+AC_PROG_MKDIR_P
 AC_PROG_SED
 
 ## aws-cli ##
@@ -58,18 +64,23 @@ AM_COND_IF([HAVE_BASH_PATH],
            [AC_SUBST([BASH_PATH])
             MULTI_BASH_HACK=data/bash/common/multi-bash-hack.sh
             AC_CONFIG_FILES([data/bash/common/multi-bash-hack.sh])],
-            [MULTI_BASH_HACK=data/bash/common/single-bash.sh])
+           [MULTI_BASH_HACK=data/bash/common/single-bash.sh])
 AC_SUBST_FILE([MULTI_BASH_HACK])
 
-# option to enable local bash-completion
-AC_ARG_ENABLE([local-bash-completion],
-              [AS_HELP_STRING([--enable-local-bash-completion]
-                              [install bash-completion configuration locally])],
-              [enable_local_bash_comp=$enableval],
-              [enable_local_bash_comp=no])
-AM_CONDITIONAL([ENABLE_LOCAL_BASH_COMP],
-               [test "x$enable_local_bash_comp" = xyes])
+# bash-completion not enabled by default on Darwin
+AM_COND_IF([HOST_OS_DARWIN],
+           [QH_VAR_ENSURE([BASH_COMPLETION],
+                          [path to bash completion script],
+                          [/usr/local/etc/bash_completion])
+            QH_VAR_ENSURE([BASH_COMPLETION_DIR],
+                          [path to bash completion directory],
+                          [/usr/local/etc/bash_completion.d])
+            QH_VAR_ENSURE([BASH_COMPLETION_COMPAT_DIR],
+                          [path to bash completion compat directory],
+                          [/usr/local/etc/bash_completion.d])
+            AC_CONFIG_FILES([data/bash/common/bashrc.d/bash-completion.sh])])
 
+# readline configuration
 AM_CONDITIONAL([BIND_INPUTRC], [test "x$INPUTRC" != x])
 
 # customization of PS1 color
@@ -106,12 +117,23 @@ AM_COND_IF([HAVE_EXUBERANT_CTAGS],
            [AC_SUBST([EXUBERANT_CTAGS], [$ac_cv_path_EXUBERANT_CTAGS])
             AC_CONFIG_FILES([data/bash/common/bashrc.d/ctags-alias.sh])])
 
-## gpg2 ##
+## gpg ##
 
-AC_ARG_VAR([GPG], [path to gpg])
+# gpg2 #
+AC_ARG_VAR([GPG], [gpg program])
 AC_CHECK_PROGS([GPG], [gpg2 gpg], [gpg])
 AM_CONDITIONAL([HAVE_GPG2], [test "x$GPG" = xgpg2])
 AM_COND_IF([HAVE_GPG2], [AC_CONFIG_FILES([data/bash/common/bashrc.d/gpg2.sh])])
+
+# gpg-agent
+AC_ARG_VAR([GPG_AGENT], [gpg-agent program])
+AC_CHECK_PROGS([GPG_AGENT], [gpg-agent], [no])
+AM_CONDITIONAL([HAVE_GPG_AGENT], [test "x$GPG_AGENT" != x])
+
+# pinentry-mac
+AC_ARG_VAR([PINENTRY_MAC], [path to pinentry-mac])
+AC_PATH_PROG([PINENTRY_MAC], [pinentry-mac], [no])
+AM_CONDITIONAL([HAVE_PINENTRY_MAC], [test "x$PINENTRY_MAC" != xno])
 
 ## git ##
 
@@ -177,6 +199,14 @@ AM_COND_IF([HAVE_GREP_COLOR],
            [AC_SUBST([GREP_COLOR], [$ac_cv_path_GREP_COLOR])
             AC_CONFIG_FILES([data/bash/common/bashrc.d/grep.sh])])
 
+## homebrew gnubin paths ##
+
+AM_COND_IF([HOST_OS_DARWIN],
+           [QH_VAR_ENSURE([HOMEBREW_PREFIX],
+                          [Homebrew prefix],
+                          [/usr/local])
+            AC_CONFIG_FILES([data/bash/common/gnubin-pathmung])])
+
 ## systemd ##
 
 # check for systemd-path
@@ -196,6 +226,10 @@ AC_CHECK_PROG([EDITOR], [vim], [vim], [vi])
 AM_CONDITIONAL([HAVE_VIM], [test "x$EDITOR" = xvim])
 AM_COND_IF([HAVE_VIM], [AC_CONFIG_FILES([data/vim/.gvimrc])])
 
+QH_VAR_ENSURE([VIMRC_EXAMPLE_PATH],
+              [path to vimrc_example.vim],
+              [`(rpm -ql vim-common 2>/dev/null | grep '/vimrc_example.vim') || echo /dev/null`])
+
 QH_VAR_ENSURE([GVIM_FONT],
               [gvim font],
               [Monospace])
@@ -204,9 +238,10 @@ QH_VAR_ENSURE([GVIM_FONT_SIZE],
               [gvim font size],
               [11])
 
-QH_VAR_ENSURE([VIMRC_EXAMPLE_PATH],
-              [path to vimrc_example.vim],
-              [`(rpm -ql vim-common 2>/dev/null | grep '/vimrc_example.vim') || echo /dev/null`])
+AM_COND_IF([HOST_OS_DARWIN],
+           [GVIM_FONT_SEPARATOR=:h],
+           [GVIM_FONT_SEPARATOR='\ '])
+AC_SUBST([GVIM_FONT_SEPARATOR])
 
 AC_CONFIG_FILES([Makefile
                  data/Makefile

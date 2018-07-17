@@ -1,4 +1,4 @@
 # vim:ft=sh
 
 test "$sysconfdir" = '${prefix}/etc' && sysconfdir="${XDG_CONFIG_HOME:-$HOME/.config}"
-test "$libdir" = '${exec_prefix}/lib' && libdir="$HOME/.local/lib/`/bin/arch`"
+test "$libdir" = '${exec_prefix}/lib' && libdir="$HOME/.local/lib/`uname -m`"
