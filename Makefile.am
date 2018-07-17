@@ -8,6 +8,10 @@ gnulib_tool = gnulib-tool
 vc_list_files = vc-list-files
 gnulib_scripts = $(gnulib_tool) \
 		 $(vc_list_files)
+gnupgdir = $(homedir)/.gnupg
+gpg_agent_conf = $(gnupgdir)/gpg-agent.conf
+install_data_targets =
+uninstall_targets =
 
 pkgconf_DATA = $(pkg_release)
 
@@ -21,8 +25,7 @@ DISTCLEANFILES = $(gvg_version) \
 EXTRA_DIST = $(gvg_version) \
 	     m4/gnulib-cache.m4
 
-DISTCHECK_CONFIGURE_FLAGS = HOME=$(top_distdir) \
-			    --enable-local-bash-completion=$enable_local_bash_comp
+DISTCHECK_CONFIGURE_FLAGS = HOME=$(top_distdir)
 
 $(gvg_version): Makefile
 	$(AM_V_GEN)echo $(VERSION) > $@-t && mv $@-t $@
@@ -38,8 +41,10 @@ gen-ChangeLog:
 	  mv $(distdir)/cl-t $(distdir)/ChangeLog;			\
 	fi
 
+.PHONY: mk-bindir
 mk-bindir:
-	$(AM_V_GEN)test -e $(DESTDIR)$(bindir) || mkdir -p $(DESTDIR)$(bindir)
+	$(AM_V_GEN)test -e $(DESTDIR)$(bindir) \
+	  || $(MKDIR_P) $(DESTDIR)$(bindir)
 
 $(gnulib_tool): mk-bindir
 	$(AM_V_GEN)cd $(DESTDIR)$(bindir) && \
@@ -49,12 +54,41 @@ $(vc_list_files): mk-bindir
 	$(AM_V_GEN)cd $(DESTDIR)$(bindir) && \
 	  test -h $@ || $(LN_S) $(GNULIB_SRCDIR)/build-aux/$@
 
-if HAVE_GNULIB_SRCDIR
-install-data-hook: $(gnulib_scripts)
-uninstall-hook:
+.PHONY: rm-gnulib-scripts
+rm-gnulib-scripts:
 	$(AM_V_GEN)cd $(DESTDIR)$(bindir) && \
 	  rm -f $(gnulib_scripts)
+
+if HAVE_GNULIB_SRCDIR
+install_data_targets += $(gnulib_scripts)
+uninstall_targets += rm-gnulib-scripts
 endif
+
+.PHONY: mk-gnupgdir
+mk-gnupgdir:
+	$(AM_V_GEN)test -e $(DESTDIR)$(gnupgdir) || \
+	  $(MKDIR_P) -m 0700 $(DESTDIR)$(gnupgdir)
+
+.PHONY: gpg-agent-pinentry-mac
+gpg-agent-pinentry-mac: mk-gnupgdir
+	$(AM_V_GEN)$(GREP) '^pinentry-program' $(DESTDIR)$(gpg_agent_conf) &>/dev/null || \
+	  printf 'pinentry-program %s\n' $(PINENTRY_MAC) >>$(DESTDIR)$(gpg_agent_conf)
+
+.PHONY: rm-gpg-agent-pinentry-mac
+rm-gpg-agent-pinentry-mac: mk-gnupgdir
+	$(AM_V_GEN)$(GREP) -v '^pinentry-program $(PINENTRY_MAC)' $(DESTDIR)$(gpg_agent_conf) &>/dev/null || \
+	  rm $(DESTDIR)$(gpg_agent_conf)
+
+if HAVE_GPG_AGENT
+if HAVE_PINENTRY_MAC
+install_data_targets += gpg-agent-pinentry-mac
+uninstall_targets += rm-gpg-agent-pinentry-mac
+endif
+endif
+
+install-data-hook: $(install_data_targets)
+
+uninstall-hook: $(uninstall_targets)
 
 dist-hook: gen-ChangeLog
 	$(AM_V_GEN)echo $(VERSION) > $(distdir)/.tarball-version

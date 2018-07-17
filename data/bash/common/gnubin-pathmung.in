@@ -1,0 +1,5 @@
+# vim: ft=sh
+
+for dir in $(find @HOMEBREW_PREFIX@/opt -follow -type d -name gnubin | sort -r); do
+  pathmung $dir
+done
