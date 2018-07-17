@@ -128,7 +128,7 @@ AM_COND_IF([HAVE_GPG2], [AC_CONFIG_FILES([data/bash/common/bashrc.d/gpg2.sh])])
 # gpg-agent
 AC_ARG_VAR([GPG_AGENT], [gpg-agent program])
 AC_CHECK_PROGS([GPG_AGENT], [gpg-agent], [no])
-AM_CONDITIONAL([HAVE_GPG_AGENT], [test "x$GPG_AGENT" != x])
+AM_CONDITIONAL([HAVE_GPG_AGENT], [test "x$GPG_AGENT" != xno])
 
 # pinentry-mac
 AC_ARG_VAR([PINENTRY_MAC], [path to pinentry-mac])
