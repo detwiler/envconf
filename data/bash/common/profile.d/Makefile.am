@@ -10,11 +10,16 @@ info = info.sh
 gnulib = gnulib.sh
 go = go.sh
 gpg = gpg.sh
+macosx = macosx.sh
 
 # static data/scripts (not generated; require explicit distribution)
 static_data = $(bash_completion) \
 	      $(bash) \
 	      $(gpg)
+
+if HOST_OS_DARWIN
+static_data += $(macosx)
+endif
 
 dist_profile_DATA = $(static_data)
 
