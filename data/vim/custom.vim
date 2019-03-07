@@ -15,7 +15,7 @@ set tags+=./tags,tags
 runtime! ftplugin/man.vim
 
 if has("cscope")
-  set cscopeprg=/usr/bin/cscope
+  set cscopeprg=cscope
   set cscopetagorder=0
   set cscopetag
   set cscopequickfix=s-,c-,d-,i-,t-,e-
