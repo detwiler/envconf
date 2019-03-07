@@ -199,13 +199,13 @@ AM_COND_IF([HAVE_GREP_COLOR],
            [AC_SUBST([GREP_COLOR], [$ac_cv_path_GREP_COLOR])
             AC_CONFIG_FILES([data/bash/common/bashrc.d/grep.sh])])
 
-## homebrew gnubin paths ##
+## homebrew paths ##
 
 AM_COND_IF([HOST_OS_DARWIN],
            [QH_VAR_ENSURE([HOMEBREW_PREFIX],
                           [Homebrew prefix],
                           [/usr/local])
-            AC_CONFIG_FILES([data/bash/common/gnubin-pathmung])])
+            AC_CONFIG_FILES([data/bash/common/homebrew-pathmung])])
 
 ## systemd ##
 

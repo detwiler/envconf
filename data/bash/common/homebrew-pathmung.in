@@ -1,0 +1,13 @@
+# vim: ft=sh
+
+# gnubin
+for dir in $(find @HOMEBREW_PREFIX@/opt -follow -type d -name gnubin | sort -r); do
+  pathmung $dir
+done
+
+# python3
+pathmung @HOMEBREW_PREFIX@/opt/python/libexec/bin
+pathmung $HOME/Library/Python/3.7/bin
+
+# llvm
+pathmung @HOMEBREW_PREFIX@/opt/llvm/bin

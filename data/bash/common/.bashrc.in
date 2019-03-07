@@ -12,9 +12,9 @@ fi
 pathmung @bindir@
 pathmung @sbindir@
 
-# Add Homebrew gnubin directories to PATH
-if [ -f "@pkgconfdir@/gnubin-pathmung" ]; then
-  source "@pkgconfdir@/gnubin-pathmung"
+# Add Homebrew directories to PATH
+if [ -f "@pkgconfdir@/homebrew-pathmung" ]; then
+  source "@pkgconfdir@/homebrew-pathmung"
 fi
 
 if [ -f "@pkgconfdir@/bashrc" ]; then
