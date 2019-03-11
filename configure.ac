@@ -17,6 +17,7 @@ AM_SILENT_RULES([yes])
 AC_CANONICAL_HOST
 
 AM_CONDITIONAL([HOST_OS_DARWIN], [grep darwin <<<$host_os &>/dev/null])
+AM_CONDITIONAL([HOST_OS_MINGW], [grep mingw <<<$host_os &>/dev/null])
 
 AC_PREFIX_DEFAULT([$HOME/.local])
 
@@ -158,8 +159,10 @@ AC_SUBST_FILE([GIT_SIGNING_KEY_FILE])
 AC_CHECK_PROG([have_git_cred_pass], [git-credential-password-store], [yes])
 AM_CONDITIONAL([HAVE_GIT_CRED_PASS], [test "x$have_git_cred_pass" = xyes])
 AM_COND_IF([HAVE_GIT_CRED_PASS],
-           [GIT_CRED_HELPER_FILE=data/git/gitconfig-cred-helper],
-           [GIT_CRED_HELPER_FILE=/dev/null])
+           [GIT_CRED_HELPER_FILE=data/git/cred-helper-pass],
+           [AM_COND_IF([HOST_OS_MINGW],
+                       [GIT_CRED_HELPER_FILE=data/git/cred-helper-manager],
+                       [GIT_CRED_HELPER_FILE=/dev/null])])
 AC_SUBST_FILE([GIT_CRED_HELPER_FILE])
 
 QH_VAR_ENSURE([GIT_PROMPT_PATH],
@@ -206,6 +209,25 @@ AM_COND_IF([HOST_OS_DARWIN],
                           [Homebrew prefix],
                           [/usr/local])
             AC_CONFIG_FILES([data/bash/common/homebrew-pathmung])])
+
+## python ##
+
+
+AM_COND_IF([HOST_OS_MINGW],
+           [AC_CACHE_CHECK([for Windows native Python 3],
+                           [ac_cv_path_WIN_PY3],
+                           [AC_PATH_PROGS_FEATURE_CHECK([WIN_PY3],
+                                                        [python python3],
+                                                        [if $ac_path_WIN_PY3 -c 'import sys; print(sys.version)' | grep '^3.*MSC' &>/dev/null; then
+                                                         ac_cv_path_WIN_PY3=$ac_path_WIN_PY3
+                                                         ac_path_WIN_PY3_found=:
+                                                         fi])])
+           AM_CONDITIONAL([HAVE_WIN_PY3],
+                          [test -n $ac_cv_path_WIN_PY3])
+           AM_COND_IF([HAVE_WIN_PY3],
+                      [AC_SUBST([WIN_PY3_BASEDIR], [`dirname $ac_cv_path_WIN_PY3`])
+                       AC_SUBST([WIN_PY3_SCRIPTDIR], [$WIN_PY3_BASEDIR/Scripts])
+                       AC_CONFIG_FILES([data/bash/common/win-python-pathmung])])])
 
 ## systemd ##
 

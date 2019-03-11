@@ -48,11 +48,11 @@ mk-bindir:
 
 $(gnulib_tool): mk-bindir
 	$(AM_V_GEN)cd $(DESTDIR)$(bindir) && \
-	  test -h $@ || $(LN_S) $(GNULIB_SRCDIR)/$@
+	  test -h $@ || $(LN_S) $(GNULIB_SRCDIR)/$@ $@
 
 $(vc_list_files): mk-bindir
 	$(AM_V_GEN)cd $(DESTDIR)$(bindir) && \
-	  test -h $@ || $(LN_S) $(GNULIB_SRCDIR)/build-aux/$@
+	  test -h $@ || $(LN_S) $(GNULIB_SRCDIR)/build-aux/$@ $@
 
 .PHONY: rm-gnulib-scripts
 rm-gnulib-scripts:

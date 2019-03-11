@@ -4,7 +4,8 @@
 	@GIT_SIGNING_KEY_FILE@
 [core]
 	editor = vim
-	excludesfile = @homedir@/.gitignore-core
+	excludesfile = ~/.gitignore-core
+	autocrlf = false
 [color]
 	ui = auto
 [gpg]
