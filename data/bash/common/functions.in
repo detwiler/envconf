@@ -1,6 +1,8 @@
 # functions
 # vim:ft=sh
 
+# usage pathmung <dir> [after]
+#
 function pathmung()
 {
   if ! echo $PATH | @EGREP@ -s "(^|:)$1($|:)" &> /dev/null ; then
@@ -13,3 +15,16 @@ function pathmung()
     fi
   fi
 } # pathmung
+
+# usage pathmung_force <dir> [after]
+#
+function pathmung_force()
+{
+  if [[ -e $1 ]]; then
+    if [[ "$2" == "after" ]] ; then
+      export PATH=$PATH:$1
+    else
+      export PATH=$1:$PATH
+    fi
+  fi
+} # pathmung_force

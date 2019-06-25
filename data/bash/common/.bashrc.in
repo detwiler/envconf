@@ -17,6 +17,11 @@ if [ -f "@pkgconfdir@/homebrew-pathmung" ]; then
   source "@pkgconfdir@/homebrew-pathmung"
 fi
 
+# Add Windows Python 3 directories to PATH
+if [ -f "@pkgconfdir@/win-python-pathmung" ]; then
+  source "@pkgconfdir@/win-python-pathmung"
+fi
+
 if [ -f "@pkgconfdir@/bashrc" ]; then
   source "@pkgconfdir@/bashrc"
 fi

@@ -5,6 +5,7 @@ include $(top_srcdir)/rules.mk
 # data/script variables
 gitconfig = .gitconfig
 gitignore_core = .gitignore-core
+gitconfig_signing_key = gitconfig-signing-key
 
 # static data/scripts (not generated; require explicit distribution)
 static_data = $(gitignore_core)
@@ -16,4 +17,5 @@ conf_data = $(gitconfig)
 
 home_DATA = $(conf_data)
 
-DISTCLEANFILES = $(conf_data)
+DISTCLEANFILES = $(conf_data) \
+		 $(gitconfig_signing_key)
