@@ -93,6 +93,15 @@ QH_VAR_ENSURE([PS1_GIT_COLOR],  [bash prompt git status color],  [32])
 QH_VAR_ENSURE([PS1_PWD_COLOR],  [bash prompt pwd color],          [0])
 QH_VAR_ENSURE([PS1_AWS_COLOR],  [bash prompt aws profile color], [33])
 
+## conan ##
+
+QH_VAR_ENSURE([CONAN_USERNAME],
+              [User name required by conan-package-tools],
+              [$USER])
+QH_VAR_ENSURE([CONAN_PIP_COMMAND],
+              [Name of Python3 version of the pip command],
+              [pip3])
+
 ## coreutils ##
 
 AC_CHECK_PROG([have_dircolors], [dircolors], [yes])
@@ -280,6 +289,7 @@ AC_CONFIG_FILES([Makefile
                  data/bash/common/bashrc.d/ls.sh
                  data/bash/common/bashrc.d/ps1.sh
                  data/bash/common/profile.d/Makefile
+                 data/bash/common/profile.d/conan.sh
                  data/bash/common/profile.d/editor.sh
                  data/dircolors/Makefile
                  data/git/Makefile
