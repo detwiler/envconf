@@ -1,0 +1,4 @@
+# gnulib settings
+
+export CONAN_USERNAME=@CONAN_USERNAME@
+export CONAN_PIP_COMMAND=@CONAN_PIP_COMMAND@

@@ -1,6 +1,7 @@
 # .gitignore
 
 # generated data files
+conan.sh
 editor.sh
 go.sh
 gnulib.sh
