@@ -101,6 +101,9 @@ QH_VAR_ENSURE([CONAN_USERNAME],
 QH_VAR_ENSURE([CONAN_PIP_COMMAND],
               [Name of Python3 version of the pip command],
               [pip3])
+QH_VAR_ENSURE([CONAN_GCC_VERSIONS],
+              [colon-separated list of GCC major versions for conan-package-tools],
+              [9])
 
 ## coreutils ##
 
