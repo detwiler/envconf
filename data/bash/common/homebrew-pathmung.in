@@ -11,3 +11,6 @@ pathmung $HOME/Library/Python/3.7/bin
 
 # llvm
 pathmung @HOMEBREW_PREFIX@/opt/llvm/bin
+
+# curl
+pathmung @HOMEBREW_PREFIX@/opt/curl/bin
