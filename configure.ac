@@ -297,6 +297,7 @@ AC_CONFIG_FILES([Makefile
                  data/dircolors/Makefile
                  data/git/Makefile
                  data/git/.gitconfig
+                 data/gnupg/Makefile
                  data/man/Makefile
                  data/readline/Makefile
                  data/ruby/Makefile
