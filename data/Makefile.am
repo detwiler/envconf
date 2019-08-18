@@ -3,6 +3,7 @@
 SUBDIRS = autoconf \
 	  bash \
 	  git \
+	  gnupg \
 	  man \
 	  readline \
 	  ruby
