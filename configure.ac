@@ -101,15 +101,18 @@ QH_VAR_ENSURE([PS1_AWS_COLOR],  [bash prompt aws profile color], [33])
 
 ## conan ##
 
-QH_VAR_ENSURE([CONAN_USERNAME],
-              [User name required by conan-package-tools],
-              [$USER])
-QH_VAR_ENSURE([CONAN_PIP_COMMAND],
-              [Name of Python3 version of the pip command],
-              [pip3])
+QH_VAR_ENSURE([CONAN_CLANG_VERSIONS],
+              [colon-separated list of Clang major versions for conan-package-tools],
+              [9])
 QH_VAR_ENSURE([CONAN_GCC_VERSIONS],
               [colon-separated list of GCC major versions for conan-package-tools],
               [9])
+QH_VAR_ENSURE([CONAN_PIP_COMMAND],
+              [Name of Python3 version of the pip command],
+              [pip3])
+QH_VAR_ENSURE([CONAN_USERNAME],
+              [User name required by conan-package-tools],
+              [$USER])
 
 ## coreutils ##
 
