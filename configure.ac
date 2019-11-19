@@ -16,8 +16,14 @@ AM_SILENT_RULES([yes])
 ## determine host os ##
 AC_CANONICAL_HOST
 
-AM_CONDITIONAL([HOST_OS_DARWIN], [grep darwin <<<$host_os &>/dev/null])
-AM_CONDITIONAL([HOST_OS_MINGW], [grep mingw <<<$host_os &>/dev/null])
+# need to check for grep early
+AC_ARG_VAR([GREP], [path to grep])
+AC_PROG_GREP
+AS_IF([test "x$GREP" = xno],
+      [AC_MSG_ERROR([could not find grep])])
+
+AM_CONDITIONAL([HOST_OS_DARWIN], [$GREP darwin <<<$host_os &>/dev/null])
+AM_CONDITIONAL([HOST_OS_MINGW], [$GREP mingw <<<$host_os &>/dev/null])
 
 AC_PREFIX_DEFAULT([$HOME/.local])
 
@@ -123,7 +129,7 @@ AC_CACHE_CHECK([for exuberant ctags],
                [ac_cv_path_EXUBERANT_CTAGS],
                [AC_PATH_PROGS_FEATURE_CHECK([EXUBERANT_CTAGS],
                                             [ctags],
-                                            [if $ac_path_EXUBERANT_CTAGS --version | grep --silent Exuberant; then
+                                            [if $ac_path_EXUBERANT_CTAGS --version | $GREP --silent Exuberant; then
                                                ac_cv_path_EXUBERANT_CTAGS=$ac_path_EXUBERANT_CTAGS
                                                ac_path_EXUBERANT_CTAGS_found=:
                                              fi])])
@@ -163,7 +169,7 @@ QH_VAR_ENSURE([GIT_AUTHOR_EMAIL],
 
 QH_VAR_ENSURE([GIT_SIGNING_KEY],
               [git author gpg signing key],
-              [`$GPG --list-key $GIT_AUTHOR_EMAIL 2>/dev/null | sed '2{s/\s*//;q};d'`])
+              [`$GPG --list-key $GIT_AUTHOR_EMAIL 2>/dev/null | $SED '2{s/\s*//;q};d'`])
 AM_CONDITIONAL([HAVE_GIT_SIGNING_KEY], [test "x$GIT_SIGNING_KEY" != x])
 AM_COND_IF([HAVE_GIT_SIGNING_KEY],
            [GIT_SIGNING_KEY_FILE=data/git/gitconfig-signing-key
@@ -209,7 +215,7 @@ AS_IF([test "x$EGREP" = xno],
 AC_CACHE_CHECK([for grep that supports --color],
                [ac_cv_path_GREP_COLOR],
                [AC_PATH_PROGS_FEATURE_CHECK([GREP_COLOR],
-                                            [grep],
+                                            [ggrep grep],
                                             [if echo color | $ac_path_GREP_COLOR --color color &> /dev/null; then
                                                ac_cv_path_GREP_COLOR=$ac_path_GREP_COLOR
                                                ac_path_GREP_COLOR_found=:
@@ -233,7 +239,7 @@ AC_CACHE_CHECK([for Windows native Python 3],
                [ac_cv_path_WIN_PY3],
                [AC_PATH_PROGS_FEATURE_CHECK([WIN_PY3],
                                             [python python3],
-                                            [if $ac_path_WIN_PY3 -c 'import sys; print(sys.version)' | grep '^3.*MSC' &>/dev/null; then
+                                            [if $ac_path_WIN_PY3 -c 'import sys; print(sys.version)' | $GREP '^3.*MSC' &>/dev/null; then
                                              ac_cv_path_WIN_PY3=$ac_path_WIN_PY3
                                              ac_path_WIN_PY3_found=:
                                              fi])])
@@ -264,7 +270,7 @@ AM_COND_IF([HAVE_VIM], [AC_CONFIG_FILES([data/vim/.gvimrc])])
 
 QH_VAR_ENSURE([VIMRC_EXAMPLE_PATH],
               [path to vimrc_example.vim],
-              [`(rpm -ql vim-common 2>/dev/null | grep '/vimrc_example.vim') || echo /dev/null`])
+              [`(rpm -ql vim-common 2>/dev/null | $GREP '/vimrc_example.vim') || echo /dev/null`])
 
 QH_VAR_ENSURE([GVIM_FONT],
               [gvim font],
