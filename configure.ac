@@ -273,7 +273,7 @@ AC_SUBST_FILE([XDG_BASEDIR_FILE])
 AC_ARG_VAR([EDITOR], [default text editor])
 AC_CHECK_PROG([EDITOR], [vim], [vim], [vi])
 AM_CONDITIONAL([HAVE_VIM], [test "x$EDITOR" = xvim])
-AM_COND_IF([HAVE_VIM], [AC_CONFIG_FILES([data/vim/.gvimrc])])
+AM_COND_IF([HAVE_VIM], [AC_CONFIG_FILES([data/vim/gvimrc])])
 
 QH_VAR_ENSURE([VIMRC_EXAMPLE_PATH],
               [path to vimrc_example.vim],

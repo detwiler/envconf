@@ -96,8 +96,9 @@ mk-bashrcdir:
 	  mkdir -p $(DESTDIR)$(bashrcdir)
 
 $(git_prompt): mk-bashrcdir
-	$(AM_V_GEN)test -e $(GIT_PROMPT_PATH) && (cd $(DESTDIR)$(bashrcdir) && \
-	  test -h $@ || $(LN_S) $(GIT_PROMPT_PATH) $@) || true
+	$(AM_V_GEN)test -e $(GIT_PROMPT_PATH) && \
+	    (cd $(DESTDIR)$(bashrcdir) && \
+	      (test -h $@ || $(LN_S) $(GIT_PROMPT_PATH) $@)) || true
 
 if !HOST_OS_MINGW
 install-data-hook: $(git_prompt)
