@@ -17,5 +17,5 @@ tags
 cscope.*
 
 # YouCompleteMe
-/.clangd/
+.clangd/
 /.ycm*
