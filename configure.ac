@@ -99,6 +99,10 @@ QH_VAR_ENSURE([PS1_GIT_COLOR],  [bash prompt git status color],  [32])
 QH_VAR_ENSURE([PS1_PWD_COLOR],  [bash prompt pwd color],          [0])
 QH_VAR_ENSURE([PS1_AWS_COLOR],  [bash prompt aws profile color], [33])
 
+## clangd (for YouCompleteMe) ##
+AC_ARG_VAR([CLANGD], [path to clangd])
+AC_PATH_PROG([CLANGD], [clangd])
+
 ## conan ##
 
 QH_VAR_ENSURE([CONAN_CLANG_VERSIONS],
@@ -269,7 +273,7 @@ AC_SUBST_FILE([XDG_BASEDIR_FILE])
 AC_ARG_VAR([EDITOR], [default text editor])
 AC_CHECK_PROG([EDITOR], [vim], [vim], [vi])
 AM_CONDITIONAL([HAVE_VIM], [test "x$EDITOR" = xvim])
-AM_COND_IF([HAVE_VIM], [AC_CONFIG_FILES([data/vim/.gvimrc])])
+AM_COND_IF([HAVE_VIM], [AC_CONFIG_FILES([data/vim/gvimrc])])
 
 QH_VAR_ENSURE([VIMRC_EXAMPLE_PATH],
               [path to vimrc_example.vim],
@@ -311,6 +315,7 @@ AC_CONFIG_FILES([Makefile
                  data/readline/Makefile
                  data/ruby/Makefile
                  data/vim/Makefile
+                 data/vim/ycm.vim
                  ])
 
 AC_OUTPUT

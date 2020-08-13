@@ -1,0 +1,17 @@
+" YouCompleteMe configuration
+" vim: set filetype=vim :
+
+let g:ycm_clangd_binary_path = '@CLANGD@'
+let g:ycm_collect_identifiers_from_tags_files = 1
+let g:ycm_complete_in_comments = 1
+let g:ycm_extra_conf_globlist = ['!~/work/src/3p', '~/work/src/*', '!~/*']
+let g:ycm_goto_buffer_command = 'split-or-existing-window'
+let g:ycm_key_list_select_completion = ['<TAB>', '<Down>', '<Enter>']
+
+nnoremap <leader>g :leftabove vertical YcmCompleter GoTo<CR>
+nnoremap <leader>p :leftabove vertical YcmCompleter GoToImprecise<CR>
+nnoremap <leader>i :leftabove vertical YcmCompleter GoToInclude<CR>
+nnoremap <leader>c :leftabove vertical YcmCompleter GoToDeclaration<CR>
+nnoremap <leader>f :leftabove vertical YcmCompleter GoToDefinition<CR>
+nnoremap <leader>r :leftabove vertical YcmCompleter GoToReferences<CR>
+nnoremap <leader>m :YcmCompleter RefactorRename 
