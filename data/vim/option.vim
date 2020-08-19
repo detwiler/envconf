@@ -1,5 +1,6 @@
 "" option.vim
 
+set autowrite
 set expandtab
 set path+=/usr/bin,/usr/local/bin
 set secure

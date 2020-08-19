@@ -6,6 +6,9 @@ let mapleader = "s"
 " usually we move to the end of a word to begin editing there
 nnoremap e ea
 
+" call :make
+nnoremap <leader>m :make<CR>
+
 " movement
 
 " split window and jump to tag under cursor 

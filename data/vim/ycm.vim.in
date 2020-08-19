@@ -14,4 +14,4 @@ nnoremap <leader>i :leftabove vertical YcmCompleter GoToInclude<CR>
 nnoremap <leader>c :leftabove vertical YcmCompleter GoToDeclaration<CR>
 nnoremap <leader>f :leftabove vertical YcmCompleter GoToDefinition<CR>
 nnoremap <leader>r :leftabove vertical YcmCompleter GoToReferences<CR>
-nnoremap <leader>m :YcmCompleter RefactorRename 
+nnoremap <leader>n :YcmCompleter RefactorRename 

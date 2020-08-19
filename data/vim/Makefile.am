@@ -3,6 +3,7 @@
 include $(top_srcdir)/rules.mk
 
 # data/script variables
+cmake = cmake.vim
 gvimrc = gvimrc
 map = map.vim
 option = option.vim
@@ -19,7 +20,8 @@ vimbundledir = $(vimdir)/bundle
 vundle_plugindir = $(vimbundledir)/$(vundle_repo_basename)
 
 # static data/scripts (not generated; require explicit distribution)
-vimconf_static_data = $(map) \
+vimconf_static_data = $(cmake) \
+		      $(map) \
 		      $(option) \
 		      $(vundle)
 dist_vimconf_DATA = $(vimconf_static_data)
@@ -52,6 +54,7 @@ $(vimrc): @VIMRC_EXAMPLE_PATH@ Makefile
 	    cat $<; \
 	    printf '\n'; \
 	    printf 'source %s/%s\n' $(vimconfdir) $(vundle); \
+	    printf 'source %s/%s\n' $(vimconfdir) $(cmake); \
 	    printf 'source %s/%s\n' $(vimconfdir) $(ycm); \
 	    printf 'source %s/%s\n' $(vimconfdir) $(option); \
 	  ) >$@-t && mv $@-t $@
