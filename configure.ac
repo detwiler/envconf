@@ -22,8 +22,8 @@ AC_PROG_GREP
 AS_IF([test "x$GREP" = xno],
       [AC_MSG_ERROR([could not find grep])])
 
-AM_CONDITIONAL([HOST_OS_DARWIN], [$GREP darwin <<<$host_os &>/dev/null])
-AM_CONDITIONAL([HOST_OS_MINGW], [$GREP mingw <<<$host_os &>/dev/null])
+AM_CONDITIONAL([HOST_OS_DARWIN], [echo $host_os | $GREP darwin &>/dev/null])
+AM_CONDITIONAL([HOST_OS_MINGW], [echo $host_os | $GREP mingw &>/dev/null])
 
 AC_PREFIX_DEFAULT([$HOME/.local])
 
