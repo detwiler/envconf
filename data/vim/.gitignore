@@ -3,4 +3,6 @@
 # generated data files
 gvimrc
 vimrc
+cmake.vim
+vundle.vim
 ycm.vim

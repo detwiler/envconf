@@ -242,6 +242,8 @@ AM_COND_IF([HOST_OS_DARWIN],
 
 ## python ##
 
+PC_PROG_PYTHON([python], [3.0], [4.0])
+
 AC_CACHE_CHECK([for Windows native Python 3],
                [ac_cv_path_WIN_PY3],
                [AC_PATH_PROGS_FEATURE_CHECK([WIN_PY3],
@@ -279,6 +281,22 @@ QH_VAR_ENSURE([VIMRC_EXAMPLE_PATH],
               [path to vimrc_example.vim],
               [`(rpm -ql vim-common 2>/dev/null | $GREP '/vimrc_example.vim') || echo /dev/null`])
 
+QH_VAR_ENSURE([VIM_CMAKE_BUILD_DIR],
+              [vim-cmake plugin build directory],
+              [.ycm-build])
+
+QH_VAR_ENSURE([VIM_VUNDLE_OWNER],
+              [Github owner for Vundle.vim],
+              [detwiler])
+
+QH_VAR_ENSURE([VIM_YCM_OWNER],
+              [Github owner for YouCompleteMe],
+              [detwiler])
+
+QH_VAR_ENSURE([VIM_YCM_REF],
+              [Git reference for YouCompleteMe],
+              [master])
+
 QH_VAR_ENSURE([GVIM_FONT],
               [gvim font],
               [Monospace])
@@ -315,6 +333,8 @@ AC_CONFIG_FILES([Makefile
                  data/readline/Makefile
                  data/ruby/Makefile
                  data/vim/Makefile
+                 data/vim/cmake.vim
+                 data/vim/vundle.vim
                  data/vim/ycm.vim
                  ])
 

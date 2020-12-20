@@ -1,0 +1,3 @@
+" vim-cmake configuration
+
+let g:cmake_build_dir = '@VIM_CMAKE_BUILD_DIR@'

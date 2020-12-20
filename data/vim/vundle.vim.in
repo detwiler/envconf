@@ -8,14 +8,14 @@ set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 
 " let Vundle manage Vundle, required
-Plugin 'VundleVim/Vundle.vim'
+Plugin '@VIM_VUNDLE_OWNER@/Vundle.vim'
 
 " plugins
 Plugin 'vhdirk/vim-cmake'
 Plugin 'tpope/vim-dispatch'
 Plugin 'tpope/vim-fugitive'
 Plugin 'tpope/vim-surround'
-Plugin 'ycm-core/YouCompleteMe'
+Plugin '@VIM_YCM_OWNER@/YouCompleteMe', {'rev': '@VIM_YCM_REF@'}
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
