@@ -76,7 +76,7 @@ vim-plugin-vundle: mk-vimbundledir
 	   ( \
 	     cd $(DESTDIR)$(vimbundledir) && \
 	     git clone $(vundle_plugin_url) && \
-	     vim +PluginInstall +qall \
+	     vim -u $(DESTDIR)$(vimdir)/vimrc +PluginInstall +qall \
 	   )
 
 .PHONY: vim-plugin-ycm
