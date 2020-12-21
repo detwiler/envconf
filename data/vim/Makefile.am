@@ -10,9 +10,9 @@ option = option.vim
 vimrc = vimrc
 vundle = vundle.vim
 vundle_repo_basename = Vundle.vim
-ycm_repo_basename = YouCompleteMe
 vundle_plugin_url = https://github.com/@VIM_VUNDLE_OWNER@/$(vundle_repo_basename).git
 ycm = ycm.vim
+ycm_repo_basename = YouCompleteMe
 
 # directory variables
 vimdir = $(homedir)/.vim
