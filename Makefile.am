@@ -25,7 +25,7 @@ DISTCLEANFILES = $(gvg_version) \
 EXTRA_DIST = $(gvg_version) \
 	     m4/gnulib-cache.m4
 
-DISTCHECK_CONFIGURE_FLAGS = homedir=$(top_distir)
+AM_DISTCHECK_CONFIGURE_FLAGS = HOME=$(top_distdir)
 
 $(gvg_version): Makefile
 	$(AM_V_GEN)echo $(VERSION) > $@-t && mv $@-t $@

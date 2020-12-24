@@ -31,6 +31,7 @@ AC_SUBST([homedir], [$HOME])
 AC_SUBST([pkgconfdir], ["\$(sysconfdir)/\$(PACKAGE)"])
 AC_SUBST([bashrcdir], ["\$(pkgconfdir)/bashrc.d"])
 AC_SUBST([profiledir], ["\$(pkgconfdir)/profile.d"])
+AC_SUBST([vimdir], ["\$(sysconfdir)/vim"])
 AC_SUBST([vimconfdir], ["\$(pkgconfdir)/vim"])
 
 QH_VAR_ENSURE([WORKDIR],
@@ -242,7 +243,8 @@ AM_COND_IF([HOST_OS_DARWIN],
 
 ## python ##
 
-PC_PROG_PYTHON([python], [3.0], [4.0])
+AM_PATH_PYTHON([3.0], [],
+	       [AC_MSG_ERROR([could not find python version >= 3.0])])
 
 AC_CACHE_CHECK([for Windows native Python 3],
                [ac_cv_path_WIN_PY3],
@@ -285,13 +287,9 @@ QH_VAR_ENSURE([VIM_CMAKE_BUILD_DIR],
               [vim-cmake plugin build directory],
               [.ycm-build])
 
-QH_VAR_ENSURE([VIM_VUNDLE_OWNER],
-              [Github owner for Vundle.vim],
-              [detwiler])
-
 QH_VAR_ENSURE([VIM_YCM_OWNER],
               [Github owner for YouCompleteMe],
-              [detwiler])
+              [ycm-core])
 
 QH_VAR_ENSURE([VIM_YCM_REF],
               [Git reference for YouCompleteMe],
@@ -334,7 +332,6 @@ AC_CONFIG_FILES([Makefile
                  data/ruby/Makefile
                  data/vim/Makefile
                  data/vim/cmake.vim
-                 data/vim/vundle.vim
                  data/vim/ycm.vim
                  ])
 
