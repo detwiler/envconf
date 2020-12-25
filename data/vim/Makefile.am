@@ -63,18 +63,6 @@ $(vimrc): @VIMRC_EXAMPLE_PATH@ Makefile
 	    printf 'source %s/%s\n' $(vimconfdir) $(map); \
 	  ) >$@-t && mv $@-t $@
 
-.PHONY: mk-vimdir
-mk-vimdir:
-	$(AM_V_GEN)test -e $(DESTDIR)$(vimdir) || mkdir -p $(DESTDIR)$(vimdir)
-
-.PHONY: mk-vimautoloaddir
-mk-vimautoloaddir: mk-vimdir
-	$(AM_V_GEN)test -e $(DESTDIR)$(vimautoloaddir) || mkdir -p $(DESTDIR)$(vimautoloaddir)
-
-.PHONY: mk-vimpluggeddir
-mk-vimpluggeddir: mk-vimdir
-	$(AM_V_GEN)test -e $(DESTDIR)$(vimpluggeddir) || mkdir -p $(DESTDIR)$(vimpluggeddir)
-
 # sed command to build data/scripts
 EDIT = -e 's:@PYTHON[@]:$(PYTHON):g' \
        -e 's:@vimdir[@]:$(vimdir):g' \
