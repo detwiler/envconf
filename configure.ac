@@ -22,8 +22,8 @@ AC_PROG_GREP
 AS_IF([test "x$GREP" = xno],
       [AC_MSG_ERROR([could not find grep])])
 
-AM_CONDITIONAL([HOST_OS_DARWIN], [$GREP darwin <<<$host_os &>/dev/null])
-AM_CONDITIONAL([HOST_OS_MINGW], [$GREP mingw <<<$host_os &>/dev/null])
+AM_CONDITIONAL([HOST_OS_DARWIN], [echo $host_os | $GREP darwin &>/dev/null])
+AM_CONDITIONAL([HOST_OS_MINGW], [echo $host_os | $GREP mingw &>/dev/null])
 
 AC_PREFIX_DEFAULT([$HOME/.local])
 
@@ -31,6 +31,7 @@ AC_SUBST([homedir], [$HOME])
 AC_SUBST([pkgconfdir], ["\$(sysconfdir)/\$(PACKAGE)"])
 AC_SUBST([bashrcdir], ["\$(pkgconfdir)/bashrc.d"])
 AC_SUBST([profiledir], ["\$(pkgconfdir)/profile.d"])
+AC_SUBST([vimdir], ["\$(sysconfdir)/vim"])
 AC_SUBST([vimconfdir], ["\$(pkgconfdir)/vim"])
 
 QH_VAR_ENSURE([WORKDIR],
@@ -242,6 +243,9 @@ AM_COND_IF([HOST_OS_DARWIN],
 
 ## python ##
 
+AM_PATH_PYTHON([3.0], [],
+	       [AC_MSG_ERROR([could not find python version >= 3.0])])
+
 AC_CACHE_CHECK([for Windows native Python 3],
                [ac_cv_path_WIN_PY3],
                [AC_PATH_PROGS_FEATURE_CHECK([WIN_PY3],
@@ -279,6 +283,18 @@ QH_VAR_ENSURE([VIMRC_EXAMPLE_PATH],
               [path to vimrc_example.vim],
               [`(rpm -ql vim-common 2>/dev/null | $GREP '/vimrc_example.vim') || echo /dev/null`])
 
+QH_VAR_ENSURE([VIM_CMAKE_BUILD_DIR],
+              [vim-cmake plugin build directory],
+              [.ycm-build])
+
+QH_VAR_ENSURE([VIM_YCM_OWNER],
+              [Github owner for YouCompleteMe],
+              [ycm-core])
+
+QH_VAR_ENSURE([VIM_YCM_REF],
+              [Git reference for YouCompleteMe],
+              [master])
+
 QH_VAR_ENSURE([GVIM_FONT],
               [gvim font],
               [Monospace])
@@ -315,6 +331,7 @@ AC_CONFIG_FILES([Makefile
                  data/readline/Makefile
                  data/ruby/Makefile
                  data/vim/Makefile
+                 data/vim/cmake.vim
                  data/vim/ycm.vim
                  ])
 

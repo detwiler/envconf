@@ -1,6 +1,9 @@
 # .gitignore
 
 # generated data files
+cmake.vim
 gvimrc
+init.vim
+vim-plug.vim
 vimrc
 ycm.vim

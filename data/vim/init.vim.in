@@ -1,0 +1,8 @@
+" vim: set ft=vim :
+
+set runtimepath^=@vimdir@
+set runtimepath+=@vimdir@/after
+set viminfofile=@vimdir@/viminfo
+set directory^=@vimdir@/swap//
+set backupdir^=@vimdir@/backup//
+set undodir^=@vimdir@/undo//
