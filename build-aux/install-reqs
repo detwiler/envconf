@@ -17,6 +17,7 @@ tar
 
 pkgs_fedora='
 awscli
+ccache
 clang-tools-extra
 findutils
 python3-bottle
