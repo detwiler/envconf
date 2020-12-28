@@ -1,0 +1,33 @@
+name: cicd
+on: [push]
+jobs:
+  cicd:
+    name: CI/CD
+    runs-on: ubuntu-latest
+    container: fedora:latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Bootstrap
+        run: ./bootstrap
+        env:
+          ENVCONF_BOOTSTRAP_INSTALL_REQS: true
+
+      - name: Configure
+        run: ./configure --prefix=$HOME/.local --sysconfdir=$HOME/.config
+        env:
+          CONAN_CLANG_VERSIONS: 11
+          CONAN_GCC_VERSIONS: 10
+
+      - name: Build
+        run: make
+
+      - name: Test
+        run: make distcheck
+
+      - name: Install
+        run: make install
+
+      - name: Integration Test
+        run: vim -c qa
