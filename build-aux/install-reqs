@@ -6,7 +6,9 @@ SUDO=`which sudo`
 pkgs_common='
 autoconf
 automake
+binutils
 cmake
+ctags
 curl
 git
 gzip
@@ -15,6 +17,7 @@ tar
 
 pkgs_fedora='
 awscli
+clang-tools-extra
 python3-bottle
 python3-colorama
 python3-dateutil

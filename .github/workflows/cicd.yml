@@ -7,7 +7,7 @@ jobs:
     container: fedora:latest
     steps:
       - name: Install Git
-        run: dnf --assumeyes install git
+        run: dnf --assumeyes install git-core
 
       - name: Checkout
         uses: actions/checkout@v2
@@ -23,6 +23,9 @@ jobs:
         env:
           CONAN_CLANG_VERSIONS: 11
           CONAN_GCC_VERSIONS: 10
+          CONAN_USERNAME: envconf
+          GIT_AUTHOR_NAME: envconf
+          GIT_AUTHOR_EMAIL: envconf@localhost
 
       - name: Build
         run: make

@@ -101,6 +101,25 @@ QH_VAR_ENSURE([PS1_GIT_COLOR],  [bash prompt git status color],  [32])
 QH_VAR_ENSURE([PS1_PWD_COLOR],  [bash prompt pwd color],          [0])
 QH_VAR_ENSURE([PS1_AWS_COLOR],  [bash prompt aws profile color], [33])
 
+## python ##
+
+AM_PATH_PYTHON([3.0], [],
+	       [AC_MSG_ERROR([could not find python version >= 3.0])])
+
+AC_CACHE_CHECK([for Windows native Python 3],
+               [ac_cv_path_WIN_PY3],
+               [AC_PATH_PROGS_FEATURE_CHECK([WIN_PY3],
+                                            [python python3],
+                                            [if $ac_path_WIN_PY3 -c 'import sys; print(sys.version)' | $GREP '^3.*MSC' &>/dev/null; then
+                                             ac_cv_path_WIN_PY3=$ac_path_WIN_PY3
+                                             ac_path_WIN_PY3_found=:
+                                             fi])])
+AM_CONDITIONAL([HAVE_WIN_PY3], [test "x$ac_cv_path_WIN_PY3" != x])
+AM_COND_IF([HAVE_WIN_PY3],
+           [AC_SUBST([WIN_PY3_BASEDIR], [`dirname $ac_cv_path_WIN_PY3`])
+            AC_SUBST([WIN_PY3_SCRIPTDIR], [$WIN_PY3_BASEDIR/Scripts])
+            AC_CONFIG_FILES([data/bash/common/win-python-pathmung])])
+
 ## conan ##
 
 QH_VAR_ENSURE([CONAN_CLANG_VERSIONS],
@@ -111,7 +130,7 @@ QH_VAR_ENSURE([CONAN_GCC_VERSIONS],
               [9])
 QH_VAR_ENSURE([CONAN_PIP_COMMAND],
               [Name of Python3 version of the pip command],
-              [pip3])
+              ["'$PYTHON -m pip'"])
 QH_VAR_ENSURE([CONAN_USERNAME],
               [User name required by conan-package-tools],
               [$USER])
@@ -238,25 +257,6 @@ AM_COND_IF([HOST_OS_DARWIN],
                           [Homebrew prefix],
                           [/usr/local])
             AC_CONFIG_FILES([data/bash/common/homebrew-pathmung])])
-
-## python ##
-
-AM_PATH_PYTHON([3.0], [],
-	       [AC_MSG_ERROR([could not find python version >= 3.0])])
-
-AC_CACHE_CHECK([for Windows native Python 3],
-               [ac_cv_path_WIN_PY3],
-               [AC_PATH_PROGS_FEATURE_CHECK([WIN_PY3],
-                                            [python python3],
-                                            [if $ac_path_WIN_PY3 -c 'import sys; print(sys.version)' | $GREP '^3.*MSC' &>/dev/null; then
-                                             ac_cv_path_WIN_PY3=$ac_path_WIN_PY3
-                                             ac_path_WIN_PY3_found=:
-                                             fi])])
-AM_CONDITIONAL([HAVE_WIN_PY3], [test "x$ac_cv_path_WIN_PY3" != x])
-AM_COND_IF([HAVE_WIN_PY3],
-           [AC_SUBST([WIN_PY3_BASEDIR], [`dirname $ac_cv_path_WIN_PY3`])
-            AC_SUBST([WIN_PY3_SCRIPTDIR], [$WIN_PY3_BASEDIR/Scripts])
-            AC_CONFIG_FILES([data/bash/common/win-python-pathmung])])
 
 ## systemd ##
 
