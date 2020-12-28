@@ -43,4 +43,4 @@ jobs:
         run: make install
 
       - name: Integration Test
-        run: vim -c qa
+        run: vim -u $RUNNER_TEMP/.config/vim/vimrc -c qa
