@@ -6,6 +6,8 @@ jobs:
     runs-on: ubuntu-latest
     container: fedora:latest
     env:
+      CC: gcc
+      CXX: g++
       CONAN_CLANG_VERSIONS: 11
       CONAN_GCC_VERSIONS: 10
       CONAN_USERNAME: envconf
