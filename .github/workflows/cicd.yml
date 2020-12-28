@@ -5,6 +5,12 @@ jobs:
     name: CI/CD
     runs-on: ubuntu-latest
     container: fedora:latest
+    env:
+      CONAN_CLANG_VERSIONS: 11
+      CONAN_GCC_VERSIONS: 10
+      CONAN_USERNAME: envconf
+      GIT_AUTHOR_NAME: envconf
+      GIT_AUTHOR_EMAIL: envconf@localhost
     steps:
       - name: Install Git
         run: dnf --assumeyes install git-core which
@@ -20,27 +26,15 @@ jobs:
 
       - name: Configure
         run: ./configure --prefix=$RUNNER_TEMP/.local --sysconfdir=$RUNNER_TEMP/.config
-        env:
-          CONAN_CLANG_VERSIONS: 11
-          CONAN_GCC_VERSIONS: 10
-          CONAN_USERNAME: envconf
-          GIT_AUTHOR_NAME: envconf
-          GIT_AUTHOR_EMAIL: envconf@localhost
 
       - name: Build
         run: make
 
       - name: Test
         run: make distcheck
-        env:
-          CONAN_CLANG_VERSIONS: 11
-          CONAN_GCC_VERSIONS: 10
-          CONAN_USERNAME: envconf
-          GIT_AUTHOR_NAME: envconf
-          GIT_AUTHOR_EMAIL: envconf@localhost
 
       - name: Install
         run: make install
 
       - name: Integration Test
-        run: vim -u $RUNNER_TEMP/.config/vim/vimrc -c qa
+        run: vim -es -u $RUNNER_TEMP/.config/vim/vimrc -i NONE -c PlugInstall -c qa
