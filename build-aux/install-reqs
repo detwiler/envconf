@@ -1,0 +1,50 @@
+#! /bin/sh
+
+OS_RELEASE_FILE=${OS_RELEASE_FILE:-/etc/os-release}
+SUDO=`which sudo`
+
+pkgs_common='
+autoconf
+automake
+cmake
+curl
+git
+gzip
+tar
+'
+
+pkgs_fedora='
+awscli
+python3-bottle
+python3-colorama
+python3-dateutil
+python3-deprecation
+python3-devel
+python3-distro
+python3-fasteners
+python3-future
+python3-jinja2
+python3-jwt
+python3-node-semver
+python3-patch-ng
+python3-pip
+python3-pluginbase
+python3-pygments
+python3-pyyaml
+python3-requests
+python3-six
+python3-tabulate
+python3-tqdm
+python3-urllib3
+vim-enhanced
+'
+
+test -r $OS_RELEASE_FILE || exit
+
+os_id=`sed -ne 's/^ID=//p' $OS_RELEASE_FILE`
+
+test -n $os_id || exit
+
+case $os_id in
+    fedora) $SUDO dnf --assumeyes install $pkgs_common $pkgs_fedora;;
+esac

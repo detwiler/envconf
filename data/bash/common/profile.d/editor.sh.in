@@ -1,6 +1,5 @@
 # editor settings
 
-export EDITOR=@EDITOR@
-
+export EDITOR=@VIM@
 export VISUAL=$EDITOR
 export GIT_EDITOR=$EDITOR

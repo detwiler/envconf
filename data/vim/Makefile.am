@@ -42,31 +42,19 @@ vimconf_DATA += $(vimconf_make_data)
 make_output = $(vimconf_make_data) \
 	      $(vim_make_data)
 
-# vimrc has no input source file to distribute
-make_sources = $(addsuffix .in,$(vimconf_make_data))
+make_sources = $(addsuffix .in,$(make_output))
 
 # explicit source file distribution
 EXTRA_DIST = $(make_sources)
 
 CLEANFILES = $(make_output)
 
-$(vimrc): @VIMRC_EXAMPLE_PATH@ Makefile
-	$(AM_V_GEN) \
-	  ( \
-	    printf 'source %s/%s\n' $(vimconfdir) $(init); \
-	    cat $<; \
-	    printf '\n'; \
-	    printf 'source %s/%s\n' $(vimconfdir) $(cmake); \
-	    printf 'source %s/%s\n' $(vimconfdir) $(ycm); \
-	    printf 'source %s/%s\n' $(vimconfdir) $(vim_plug); \
-	    printf 'source %s/%s\n' $(vimconfdir) $(option); \
-	    printf 'source %s/%s\n' $(vimconfdir) $(map); \
-	  ) >$@-t && mv $@-t $@
-
 # sed command to build data/scripts
-EDIT = -e 's:@PYTHON[@]:$(PYTHON):g' \
-       -e 's:@vimdir[@]:$(vimdir):g' \
+EDIT = -e 's:@CURL[@]:$(CURL):g' \
+       -e 's:@PYTHON[@]:$(PYTHON):g' \
        -e 's:@vimautoloaddir[@]:$(vimautoloaddir):g' \
+       -e 's:@vimconfdir[@]:$(vimconfdir):g' \
+       -e 's:@vimdir[@]:$(vimdir):g' \
        -e 's:@vimpluggeddir[@]:$(vimpluggeddir):g' \
        -e 's:@VIM_YCM_OWNER[@]:$(VIM_YCM_OWNER):g' \
        -e 's:@VIM_YCM_REF[@]:$(VIM_YCM_REF):g'
