@@ -6,13 +6,14 @@ jobs:
     runs-on: ubuntu-latest
     container: fedora:latest
     steps:
-      - name: Checkout code
+      - name: Checkout
         uses: actions/checkout@v2
+
+      - name: Install Requirements
+        run: build-aux/install-reqs
 
       - name: Bootstrap
         run: ./bootstrap
-        env:
-          ENVCONF_BOOTSTRAP_INSTALL_REQS: true
 
       - name: Configure
         run: ./configure --prefix=$HOME/.local --sysconfdir=$HOME/.config
