@@ -122,6 +122,9 @@ AM_COND_IF([HAVE_WIN_PY3],
 
 ## conan ##
 
+QH_REQUIRE_PROG([CLANG], [clang], [path to clang])
+QH_REQUIRE_PROG([GCC], [gcc], [path to gcc])
+
 QH_VAR_ENSURE([CONAN_CLANG_VERSIONS],
               [colon-separated list of Clang major versions for conan-package-tools],
               [9])
@@ -283,6 +286,7 @@ QH_REQUIRE_PROG([CURL], [curl], [path to curl])
 # YouCompleteMe requirements
 QH_REQUIRE_PROG([CLANGD], [clangd], [path to clangd])
 QH_REQUIRE_PROG([CMAKE], [cmake], [path to cmake])
+QH_REQUIRE_PROG([CXX], [g++], [path to g++])
 
 QH_VAR_ENSURE([VIM_CMAKE_BUILD_DIR],
               [vim-cmake plugin build directory],
