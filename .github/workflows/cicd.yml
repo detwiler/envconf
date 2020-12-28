@@ -37,4 +37,6 @@ jobs:
         run: make install
 
       - name: Integration Test
-        run: vim -es -u $RUNNER_TEMP/.config/vim/vimrc -i NONE -c PlugInstall -c qa
+        run: |
+          vim -es -u $RUNNER_TEMP/.config/vim/vimrc -i NONE -c PlugInstall -c qa
+          vim -es -u $RUNNER_TEMP/.config/vim/vimrc -i NONE -c YcmDebugInfo -c qa
