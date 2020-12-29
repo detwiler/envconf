@@ -7,7 +7,7 @@ jobs:
     container: ${{ matrix.image }}
     strategy:
       matrix:
-        image: [fedora:latest]
+        image: ["fedora:latest"]
     env:
       CONAN_USERNAME: envconf
       GIT_AUTHOR_NAME: envconf
