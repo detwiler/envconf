@@ -286,7 +286,7 @@ QH_REQUIRE_PROG([CURL], [curl], [path to curl])
 # YouCompleteMe requirements
 QH_REQUIRE_PROG([CLANGD], [clangd], [path to clangd])
 QH_REQUIRE_PROG([CMAKE], [cmake], [path to cmake])
-QH_REQUIRE_PROG([CXX], [g++], [path to g++])
+QH_REQUIRE_PROG([GCXX], [g++], [path to g++])
 
 QH_VAR_ENSURE([VIM_CMAKE_BUILD_DIR],
               [vim-cmake plugin build directory],
