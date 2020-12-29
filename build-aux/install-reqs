@@ -21,6 +21,7 @@ pkgs_alpine='
 alpine-sdk
 aws-cli
 clang-dev
+git-diff-highlight
 py3-bottle
 py3-colorama
 py3-dateutil
