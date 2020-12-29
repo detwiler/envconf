@@ -7,18 +7,26 @@ jobs:
     container: ${{ matrix.image }}
     strategy:
       matrix:
-        image: ["alpine:latest", "fedora:latest"]
+        include:
+          - image: alpine:latest
+            vim-ycm-owner: detwiler
+            vim-ycm-ref: llvm-10
+          - image: fedora:latest
+            vim-ycm-owner: ycm-core
+            vim-ycm-ref: master
     env:
       CONAN_USERNAME: envconf
       GIT_AUTHOR_NAME: envconf
       GIT_AUTHOR_EMAIL: envconf@localhost
+      VIM_YCM_OWNER: ${{ matrix.vim-ycm-owner }}
+      VIM_YCM_REF: ${{ matrix.vim-ycm-ref }}
     steps:
       - name: Install Git
         run: |
           os_id=`sed -ne 's/^ID=//p' /etc/os-release`
           case $os_id in
-              alpine) apk add git;;
-              fedora) dnf --assumeyes install git-core which;;
+              alpine) apk update && apk upgrade && apk add git;;
+              fedora) dnf --assumeyes upgrade && dnf --assumeyes install git-core which;;
           esac
 
       - name: Checkout
@@ -43,4 +51,6 @@ jobs:
         run: make install
 
       - name: Integration Test
-        run: vim -es -u $RUNNER_TEMP/.config/vim/vimrc -i NONE -c PlugInstall -c qa
+        run: |
+          vim -es -u $RUNNER_TEMP/.config/vim/vimrc -i NONE -c PlugInstall -c qa
+          find $RUNNER_TEMP/.config/vim/plugged/YouCompleteMe -name 'ycm_core.so' | grep .
