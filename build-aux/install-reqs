@@ -11,13 +11,13 @@ findutils
 gcc
 grep
 make
-python3
 '
 
 pkgs_alpine='
 aws-cli
 clang-dev
 g++
+python3-dev
 vim
 '
 
@@ -25,6 +25,7 @@ pkgs_fedora='
 awscli
 clang-devel
 gcc-c++
+python3-devel
 vim-enhanced
 '
 
