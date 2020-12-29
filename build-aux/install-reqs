@@ -5,6 +5,7 @@ SUDO=`which sudo`
 
 pkgs_common='
 cmake
+clang
 curl
 findutils
 gcc
@@ -14,7 +15,7 @@ make
 
 pkgs_alpine='
 aws-cli
-clang-dev
+clang-extra-tools
 ctags
 g++
 python3-dev
@@ -23,7 +24,7 @@ vim
 
 pkgs_fedora='
 awscli
-clang-devel
+clang-tools-extra
 ctags
 gcc-c++
 python3-devel
@@ -32,11 +33,9 @@ vim-enhanced
 
 pkgs_ubuntu='
 awscli
-clang
 clangd
 exuberant-ctags
 g++
-libclang-dev
 python3-dev
 vim
 '
