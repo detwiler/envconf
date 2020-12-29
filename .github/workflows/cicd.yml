@@ -15,9 +15,7 @@ jobs:
             vim-ycm-owner: ycm-core
             vim-ycm-ref: master
     env:
-      CONAN_USERNAME: envconf
-      GIT_AUTHOR_NAME: envconf
-      GIT_AUTHOR_EMAIL: envconf@localhost
+      USER: ${{ github.repository_owner }}
       VIM_YCM_OWNER: ${{ matrix.vim-ycm-owner }}
       VIM_YCM_REF: ${{ matrix.vim-ycm-ref }}
     steps:
@@ -32,11 +30,13 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Install Requirements
-        run: build-aux/install-reqs
+      - name: Install Prerequisites
+        run: build-aux/install-prereqs
 
       - name: Bootstrap
         run: ./bootstrap
+        env:
+          ENVCONF_BOOTSTRAP_INSTALL_REQS: true
 
       - name: Configure
         run: ./configure --prefix=$RUNNER_TEMP/.local --sysconfdir=$RUNNER_TEMP/.config

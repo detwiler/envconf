@@ -1,0 +1,23 @@
+#! /bin/sh
+
+OS_RELEASE_FILE=${OS_RELEASE_FILE:-/etc/os-release}
+SUDO=`which sudo`
+
+pkgs_common='
+autoconf
+automake
+git
+gzip
+tar
+'
+
+test -r $OS_RELEASE_FILE || exit
+
+os_id=`sed -ne 's/^ID=//p' $OS_RELEASE_FILE`
+
+test -n $os_id || exit
+
+case $os_id in
+    alpine) $SUDO apk add $pkgs_common;;
+    fedora) $SUDO dnf --assumeyes install $pkgs_common;;
+esac
