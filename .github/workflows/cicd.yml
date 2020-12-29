@@ -7,18 +7,19 @@ jobs:
     container: ${{ matrix.image }}
     strategy:
       matrix:
-        include:
-          - image: fedora:latest
-            pkg-cmd: dnf --assumeyes install git-core which
-          - image: alpine:latest
-            pkg-cmd: apk add git
+        image: ["alpine:latest", "fedora:latest"]
     env:
       CONAN_USERNAME: envconf
       GIT_AUTHOR_NAME: envconf
       GIT_AUTHOR_EMAIL: envconf@localhost
     steps:
-      - name: Install Base Packages
-        run: ${{ matrix.pgk-cmd }}
+      - name: Install Git
+        run: |
+          os_id=`sed -ne 's/^ID=//p' /etc/os-release`
+          case $os_id in
+              alpine) apk add git;;
+              fedora) dnf --assumeyes install git-core which;;
+          esac
 
       - name: Checkout
         uses: actions/checkout@v2
