@@ -14,6 +14,9 @@ jobs:
           - image: fedora:latest
             vim-ycm-owner: ycm-core
             vim-ycm-ref: master
+          - image: ubuntu:latest
+            vim-ycm-owner: ycm-core
+            vim-ycm-ref: master
     env:
       USER: ${{ github.repository_owner }}
       VIM_YCM_OWNER: ${{ matrix.vim-ycm-owner }}
@@ -25,6 +28,7 @@ jobs:
           case $os_id in
               alpine) apk update && apk upgrade && apk add git;;
               fedora) dnf --assumeyes upgrade && dnf --assumeyes install git-core which;;
+              ubuntu) apt-get --assume-yes update && apt-get --assume-yes upgrade && apt-get --assume-yes install git;;
           esac
 
       - name: Checkout

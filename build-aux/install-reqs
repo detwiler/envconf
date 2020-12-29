@@ -5,7 +5,6 @@ SUDO=`which sudo`
 
 pkgs_common='
 cmake
-ctags
 curl
 findutils
 gcc
@@ -16,6 +15,7 @@ make
 pkgs_alpine='
 aws-cli
 clang-dev
+ctags
 g++
 python3-dev
 vim
@@ -24,9 +24,21 @@ vim
 pkgs_fedora='
 awscli
 clang-devel
+ctags
 gcc-c++
 python3-devel
 vim-enhanced
+'
+
+pkgs_ubuntu='
+awscli
+clang
+clangd
+exuberant-ctags
+g++
+libclang-dev
+python3-dev
+vim
 '
 
 test -r $OS_RELEASE_FILE || exit
@@ -38,4 +50,5 @@ test -n $os_id || exit
 case $os_id in
     alpine) $SUDO apk add $pkgs_common $pkgs_alpine;;
     fedora) $SUDO dnf --assumeyes install $pkgs_common $pkgs_fedora;;
+    ubuntu) $SUDO apt-get --assume-yes install $pkgs_common $pkgs_ubuntu;;
 esac
