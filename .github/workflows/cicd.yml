@@ -61,3 +61,9 @@ jobs:
         run: |
           vim -es -u $RUNNER_TEMP/.config/vim/vimrc -i NONE -c PlugInstall -c qa
           find $RUNNER_TEMP/.config/vim/plugged/YouCompleteMe -name 'ycm_core.so' | grep .
+
+      - name: Upload Distribution Artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: distribution-tarball
+          path: envconf-*.tar.gz
