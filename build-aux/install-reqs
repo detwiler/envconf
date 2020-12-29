@@ -6,7 +6,6 @@ SUDO=`which sudo`
 pkgs_common='
 autoconf
 automake
-binutils
 cmake
 ctags
 curl
@@ -15,6 +14,7 @@ git
 grep
 gzip
 tar
+wget
 '
 
 pkgs_alpine='
@@ -42,9 +42,10 @@ vim
 '
 
 pkgs_fedora='
+@c-development
+@development-tools
 awscli
-gcc-c++
-clang-tools-extra
+clang-devel
 python3-bottle
 python3-colorama
 python3-dateutil
