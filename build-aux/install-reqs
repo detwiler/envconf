@@ -12,6 +12,7 @@ ctags
 curl
 findutils
 git
+grep
 gzip
 tar
 '
