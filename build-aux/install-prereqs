@@ -6,6 +6,7 @@ SUDO=`which sudo`
 pkgs_common='
 autoconf
 automake
+coreutils
 git
 gzip
 tar

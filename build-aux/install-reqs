@@ -10,6 +10,7 @@ curl
 findutils
 gcc
 grep
+make
 python3
 '
 
