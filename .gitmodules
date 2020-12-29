@@ -1,6 +1,7 @@
 [submodule "gnulib"]
 	path = .gnulib
 	url = https://github.com/coreutils/gnulib.git
+	branch = master
 [submodule "quickhatch-autotools"]
 	path = .qh-at
 	url = https://github.com/quickhatch/quickhatch-autotools.git
