@@ -5,7 +5,7 @@ AC_INIT([envconf],
         [m4_esyscmd([build-aux/git-version-gen .tarball-version])],
         [mike@detwiler.io])
 
-AC_PREREQ([2.63])
+AC_PREREQ([2.64])
 AC_CONFIG_AUX_DIR([build-aux])
 AC_CONFIG_MACRO_DIR([m4])
 AC_CONFIG_SRCDIR([data/bash/common/bashrc.in])
