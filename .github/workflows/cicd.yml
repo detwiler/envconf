@@ -1,10 +1,12 @@
-name: cicd
+name: ci-cd
 on: [push]
 jobs:
-  cicd:
-    name: CI/CD
+
+  build-test:
+    name: Build and Test
     runs-on: ubuntu-latest
     container: ${{ matrix.image }}
+
     strategy:
       matrix:
         include:
@@ -17,19 +19,21 @@ jobs:
           - image: ubuntu:rolling
             vim-ycm-owner: ycm-core
             vim-ycm-ref: master
+
     env:
       USER: ${{ github.repository_owner }}
       VIM_YCM_OWNER: ${{ matrix.vim-ycm-owner }}
       VIM_YCM_REF: ${{ matrix.vim-ycm-ref }}
       DEBIAN_FRONTEND: noninteractive
+
     steps:
       - name: Upgrade Packages
         run: |
           os_id=`sed -ne 's/^ID=//p' /etc/os-release`
           case $os_id in
               alpine) apk update && apk upgrade && apk add git;;
-              fedora) dnf --assumeyes upgrade && dnf --assumeyes install git-core which;;
-              ubuntu) apt-get --assume-yes update && apt-get --assume-yes upgrade && apt-get --assume-yes install git;;
+              fedora) dnf -y upgrade && dnf -y install git-core which;;
+              ubuntu) apt-get -y update && apt-get -y upgrade && apt-get -y install git;;
           esac
 
       - name: Checkout
@@ -67,3 +71,21 @@ jobs:
         with:
           name: distribution-tarball
           path: envconf-*.tar.gz
+
+  create-release:
+    name: Create Release
+    needs: build-test
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/v')
+
+    steps:
+      - name: Download Distribution Artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: distribution-tarball
+
+#      - name: Create Release
+#        uses: actions/create-release@v1
+#
+#      - name: Upload Release Asset
+#        uses: actions/upload-release-asset@v1
