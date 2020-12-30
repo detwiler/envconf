@@ -74,9 +74,10 @@ jobs:
 
   create-release:
     name: Create Release
-    needs: build-test
     runs-on: ubuntu-latest
-    if: startsWith(github.ref, 'refs/tags/v')
+    needs: build-test
+    #if: startsWith(github.ref, 'refs/tags/v') && needs.build-test.result == 'success'
+    if: needs.build-test.result == 'success'
 
     steps:
       - name: Download Distribution Artifact
@@ -84,8 +85,23 @@ jobs:
         with:
           name: distribution-tarball
 
-#      - name: Create Release
-#        uses: actions/create-release@v1
-#
-#      - name: Upload Release Asset
-#        uses: actions/upload-release-asset@v1
+      - name: Create Release
+        id: create-release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          draft: true
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+
+      - name: Upload Release Asset
+        id: upload-release-asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create-release.outputs.upload_url }}
+          asset_path: envconf-*.tar.gz
+          asset_name: envconf.tar.gz
+          asset_content_type: application/gzip
