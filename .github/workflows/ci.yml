@@ -41,6 +41,10 @@ jobs:
         with:
           fetch-depth: 0
 
+      # see: https://github.com/actions/checkout/issues/290
+      - name: Fetch Tags
+        run: git fetch --force --tags
+
       - name: Install Prerequisites
         run: build-aux/install-prereqs
 
