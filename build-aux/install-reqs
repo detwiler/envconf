@@ -1,0 +1,53 @@
+#! /bin/sh
+
+OS_RELEASE_FILE=${OS_RELEASE_FILE:-/etc/os-release}
+SUDO=`which sudo`
+
+pkgs_common='
+cmake
+clang
+curl
+findutils
+gcc
+grep
+make
+'
+
+pkgs_alpine='
+aws-cli
+clang-extra-tools
+ctags
+g++
+python3-dev
+vim
+'
+
+pkgs_fedora='
+awscli
+clang-tools-extra
+ctags
+gcc-c++
+python3-devel
+vim-enhanced
+'
+
+pkgs_ubuntu='
+awscli
+clangd
+exuberant-ctags
+g++
+python3-dev
+vim
+'
+
+test -r $OS_RELEASE_FILE || exit
+
+os_id=`sed -ne 's/^ID=//p' $OS_RELEASE_FILE`
+
+test -n $os_id || exit
+
+case $os_id in
+    alpine) $SUDO apk add $pkgs_common $pkgs_alpine;;
+    fedora) $SUDO dnf --assumeyes install $pkgs_common $pkgs_fedora;;
+    ubuntu) $SUDO apt-get --assume-yes install $pkgs_common $pkgs_ubuntu;;
+esac

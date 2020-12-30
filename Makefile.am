@@ -23,7 +23,8 @@ DISTCLEANFILES = $(gvg_version) \
 		 $(pkg_release)
 
 EXTRA_DIST = $(gvg_version) \
-	     m4/gnulib-cache.m4
+	     m4/gnulib-cache.m4 \
+	     README.md
 
 AM_DISTCHECK_CONFIGURE_FLAGS = HOME=$(top_distdir)
 

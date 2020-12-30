@@ -5,12 +5,12 @@ AC_INIT([envconf],
         [m4_esyscmd([build-aux/git-version-gen .tarball-version])],
         [mike@detwiler.io])
 
-AC_PREREQ([2.63])
+AC_PREREQ([2.64])
 AC_CONFIG_AUX_DIR([build-aux])
 AC_CONFIG_MACRO_DIR([m4])
 AC_CONFIG_SRCDIR([data/bash/common/bashrc.in])
 
-AM_INIT_AUTOMAKE([-Wall -Wno-portability -Werror dist-bzip2])
+AM_INIT_AUTOMAKE([-Wall -Wno-portability -Werror foreign])
 AM_SILENT_RULES([yes])
 
 ## determine host os ##
@@ -51,16 +51,17 @@ AC_PROG_SED
 
 ## aws-cli ##
 
-AC_CHECK_PROG([have_aws_cli], [aws], [yes])
-AM_CONDITIONAL([HAVE_AWS_CLI], [test "x$have_aws_cli" = xyes])
-
-QH_VAR_ENSURE([AWS_CONFIG_DIR],
-              [path to aws-cli configuration directory],
-              [$HOME/.aws])
-
-QH_VAR_ENSURE([AWS_SHARED_CREDENTIALS_FILE],
-              [path to aws-cli shared credentials file],
-              [$AWS_CONFIG_DIR/credentials])
+QH_ARG_ENABLE([aws_cli], [yes])
+AM_CONDITIONAL([ENABLE_AWS_CLI], [test "x$enable_aws_cli" = xyes])
+AM_COND_IF([ENABLE_AWS_CLI],
+           [QH_REQUIRE_PROG([AWS], [aws], [path to aws])
+            QH_VAR_ENSURE([AWS_CONFIG_DIR],
+                          [path to aws-cli configuration directory],
+                          [$HOME/.aws])
+            QH_VAR_ENSURE([AWS_SHARED_CREDENTIALS_FILE],
+                          [path to aws-cli shared credentials file],
+                          [$AWS_CONFIG_DIR/credentials])])
+AM_CONDITIONAL([HAVE_AWS_CLI], [test "x$AWS" != x])
 
 ## bash ##
 
@@ -100,11 +101,29 @@ QH_VAR_ENSURE([PS1_GIT_COLOR],  [bash prompt git status color],  [32])
 QH_VAR_ENSURE([PS1_PWD_COLOR],  [bash prompt pwd color],          [0])
 QH_VAR_ENSURE([PS1_AWS_COLOR],  [bash prompt aws profile color], [33])
 
-## clangd (for YouCompleteMe) ##
-AC_ARG_VAR([CLANGD], [path to clangd])
-AC_PATH_PROG([CLANGD], [clangd])
+## python ##
+
+AM_PATH_PYTHON([3.0], [],
+	       [AC_MSG_ERROR([could not find python version >= 3.0])])
+
+AC_CACHE_CHECK([for Windows native Python 3],
+               [ac_cv_path_WIN_PY3],
+               [AC_PATH_PROGS_FEATURE_CHECK([WIN_PY3],
+                                            [python python3],
+                                            [if $ac_path_WIN_PY3 -c 'import sys; print(sys.version)' | $GREP '^3.*MSC' &>/dev/null; then
+                                             ac_cv_path_WIN_PY3=$ac_path_WIN_PY3
+                                             ac_path_WIN_PY3_found=:
+                                             fi])])
+AM_CONDITIONAL([HAVE_WIN_PY3], [test "x$ac_cv_path_WIN_PY3" != x])
+AM_COND_IF([HAVE_WIN_PY3],
+           [AC_SUBST([WIN_PY3_BASEDIR], [`dirname $ac_cv_path_WIN_PY3`])
+            AC_SUBST([WIN_PY3_SCRIPTDIR], [$WIN_PY3_BASEDIR/Scripts])
+            AC_CONFIG_FILES([data/bash/common/win-python-pathmung])])
 
 ## conan ##
+
+QH_REQUIRE_PROG([CLANG], [clang], [path to clang])
+QH_REQUIRE_PROG([GCC], [gcc], [path to gcc])
 
 QH_VAR_ENSURE([CONAN_CLANG_VERSIONS],
               [colon-separated list of Clang major versions for conan-package-tools],
@@ -114,7 +133,7 @@ QH_VAR_ENSURE([CONAN_GCC_VERSIONS],
               [9])
 QH_VAR_ENSURE([CONAN_PIP_COMMAND],
               [Name of Python3 version of the pip command],
-              [pip3])
+              ["'$PYTHON -m pip'"])
 QH_VAR_ENSURE([CONAN_USERNAME],
               [User name required by conan-package-tools],
               [$USER])
@@ -167,6 +186,7 @@ AM_CONDITIONAL([HAVE_PINENTRY_MAC], [test "x$PINENTRY_MAC" != xno])
 
 ## git ##
 
+QH_REQUIRE_PROG([GIT], [git], [path to git])
 QH_VAR_ENSURE([GIT_AUTHOR_NAME],
               [human-readable name for git author],
               [`getent passwd $USER | cut -d: -f5`])
@@ -241,25 +261,6 @@ AM_COND_IF([HOST_OS_DARWIN],
                           [/usr/local])
             AC_CONFIG_FILES([data/bash/common/homebrew-pathmung])])
 
-## python ##
-
-AM_PATH_PYTHON([3.0], [],
-	       [AC_MSG_ERROR([could not find python version >= 3.0])])
-
-AC_CACHE_CHECK([for Windows native Python 3],
-               [ac_cv_path_WIN_PY3],
-               [AC_PATH_PROGS_FEATURE_CHECK([WIN_PY3],
-                                            [python python3],
-                                            [if $ac_path_WIN_PY3 -c 'import sys; print(sys.version)' | $GREP '^3.*MSC' &>/dev/null; then
-                                             ac_cv_path_WIN_PY3=$ac_path_WIN_PY3
-                                             ac_path_WIN_PY3_found=:
-                                             fi])])
-AM_CONDITIONAL([HAVE_WIN_PY3], [test "x$ac_cv_path_WIN_PY3" != x])
-AM_COND_IF([HAVE_WIN_PY3],
-           [AC_SUBST([WIN_PY3_BASEDIR], [`dirname $ac_cv_path_WIN_PY3`])
-            AC_SUBST([WIN_PY3_SCRIPTDIR], [$WIN_PY3_BASEDIR/Scripts])
-            AC_CONFIG_FILES([data/bash/common/win-python-pathmung])])
-
 ## systemd ##
 
 # check for systemd-path
@@ -274,14 +275,18 @@ AC_SUBST_FILE([XDG_BASEDIR_FILE])
 
 ## vim ##
 
-AC_ARG_VAR([EDITOR], [default text editor])
-AC_CHECK_PROG([EDITOR], [vim], [vim], [vi])
-AM_CONDITIONAL([HAVE_VIM], [test "x$EDITOR" = xvim])
-AM_COND_IF([HAVE_VIM], [AC_CONFIG_FILES([data/vim/gvimrc])])
+QH_REQUIRE_PROG([VIM], [vim], [path to vim])
+AC_CHECK_PROGS([GVIM], [gvim])
+AM_CONDITIONAL([HAVE_GVIM], [test "x$GVIM" = xgvim])
+AM_COND_IF([HAVE_GVIM], [AC_CONFIG_FILES([data/vim/gvimrc])])
 
-QH_VAR_ENSURE([VIMRC_EXAMPLE_PATH],
-              [path to vimrc_example.vim],
-              [`(rpm -ql vim-common 2>/dev/null | $GREP '/vimrc_example.vim') || echo /dev/null`])
+# vim-plug requirements
+QH_REQUIRE_PROG([CURL], [curl], [path to curl])
+
+# YouCompleteMe requirements
+QH_REQUIRE_PROG([CLANGD], [clangd], [path to clangd])
+QH_REQUIRE_PROG([CMAKE], [cmake], [path to cmake])
+QH_REQUIRE_PROG([GCXX], [g++], [path to g++])
 
 QH_VAR_ENSURE([VIM_CMAKE_BUILD_DIR],
               [vim-cmake plugin build directory],
@@ -308,6 +313,8 @@ AM_COND_IF([HOST_OS_DARWIN],
            [GVIM_FONT_SEPARATOR='\ '])
 AC_SUBST([GVIM_FONT_SEPARATOR])
 
+## configure output files
+
 AC_CONFIG_FILES([Makefile
                  data/Makefile
                  data/autoconf/Makefile
@@ -320,6 +327,7 @@ AC_CONFIG_FILES([Makefile
                  data/bash/common/bashrc.d/aws-functions.sh
                  data/bash/common/bashrc.d/ls.sh
                  data/bash/common/bashrc.d/ps1.sh
+                 data/bash/common/bashrc.d/vi.sh
                  data/bash/common/profile.d/Makefile
                  data/bash/common/profile.d/conan.sh
                  data/bash/common/profile.d/editor.sh
@@ -334,5 +342,4 @@ AC_CONFIG_FILES([Makefile
                  data/vim/cmake.vim
                  data/vim/ycm.vim
                  ])
-
 AC_OUTPUT
