@@ -67,22 +67,22 @@ jobs:
           find $RUNNER_TEMP/.config/vim/plugged/YouCompleteMe -name 'ycm_core.so' | grep .
 
       - name: Configure Version
-        run: echo "ENVCONF_VERSION=`cat .version`" >>$GITHUB_ENV
+        run: echo "PROJECT_VERSION=`cat .version`" >>$GITHUB_ENV
 
       - name: Upload Distribution Artifact
         uses: actions/upload-artifact@v2
         with:
           name: distribution-tarball
           path: |
-            envconf-${{ env.ENVCONF_VERSION }}.tar.gz
+            envconf-${{ env.PROJECT_VERSION }}.tar.gz
             .version
 
   create-release:
     name: Create Release
     runs-on: ubuntu-latest
     needs: build-test
-    #if: startsWith(github.ref, 'refs/tags/v') && needs.build-test.result == 'success'
-    if: needs.build-test.result == 'success'
+      #if: startsWith(github.ref, 'refs/tags/v') && needs.build-test.result == 'success'
+    if: startsWith(github.ref, 'refs/heads/8') && needs.build-test.result == 'success'
 
     steps:
       - name: Download Distribution Artifact
@@ -91,7 +91,7 @@ jobs:
           name: distribution-tarball
 
       - name: Configure Version
-        run: echo "ENVCONF_VERSION=`cat .version`" >>$GITHUB_ENV
+        run: echo "PROJECT_VERSION=`cat .version`" >>$GITHUB_ENV
 
       - name: Create Release
         id: create-release
@@ -100,8 +100,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           draft: true
-          tag_name: ${{ env.ENVCONF_VERSION }}
-          release_name: Release ${{ env.ENVCONF_VERSION }}
+          tag_name: ${{ env.PROJECT_VERSION }}
+          release_name: Release ${{ env.PROJECT_VERSION }}
 
       - name: Upload Release Asset
         id: upload-release-asset
@@ -110,6 +110,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create-release.outputs.upload_url }}
-          asset_path: envconf-${{ env.ENVCONF_VERSION }}.tar.gz
-          asset_name: envconf-${{ env.ENVCONF_VERSION }}.tar.gz
+          asset_path: envconf-${{ env.PROJECT_VERSION }}.tar.gz
+          asset_name: envconf-${{ env.PROJECT_VERSION }}.tar.gz
           asset_content_type: application/gzip
