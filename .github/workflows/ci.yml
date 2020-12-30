@@ -73,10 +73,11 @@ jobs:
       - name: Configure Version
         run: echo "PROJECT_VERSION=`cat .version`" >>$GITHUB_ENV
 
-      - name: Upload Distribution Artifact
+      - name: Upload Distribution Artifacts
         uses: actions/upload-artifact@v2
         with:
-          name: distribution-tarball
+          name: distribution-artifacts
+          if-no-files-found: error
           path: |
             envconf-${{ env.PROJECT_VERSION }}.tar.gz
             .version
@@ -88,10 +89,10 @@ jobs:
     if: startsWith(github.ref, 'refs/tags/v')
 
     steps:
-      - name: Download Distribution Artifact
+      - name: Download Distribution Artifacts
         uses: actions/download-artifact@v2
         with:
-          name: distribution-tarball
+          name: distribution-artifacts
 
       - name: Configure Version
         run: echo "PROJECT_VERSION=`cat .version`" >>$GITHUB_ENV
