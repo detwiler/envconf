@@ -74,7 +74,7 @@ jobs:
         with:
           name: distribution-tarball
           path: |
-            envconf-${ENVCONF_VERSION}.tar.gz
+            envconf-${{ env.ENVCONF_VERSION }}.tar.gz
             .version
 
   create-release:
@@ -100,8 +100,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           draft: true
-          tag_name: $ENVCONF_VERSION
-          release_name: Release $ENVCONF_VERSION
+          tag_name: ${{ env.ENVCONF_VERSION }}
+          release_name: Release ${{ env.ENVCONF_VERSION }}
 
       - name: Upload Release Asset
         id: upload-release-asset
@@ -110,6 +110,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create-release.outputs.upload_url }}
-          asset_path: envconf-${ENVCONF_VERSION}.tar.gz
-          asset_name: envconf-${ENVCONF_VERSION}.tar.gz
+          asset_path: envconf-${{ env.ENVCONF_VERSION }}.tar.gz
+          asset_name: envconf-${{ env.ENVCONF_VERSION }}.tar.gz
           asset_content_type: application/gzip
