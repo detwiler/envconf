@@ -6,5 +6,5 @@
 [submodule "quickhatch-autotools"]
 	path = .qh-at
 	url = https://github.com/quickhatch/quickhatch-autotools.git
-	branch = 15-convenience-wrappers
+	branch = master
 	shallow = true
