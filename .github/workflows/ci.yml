@@ -21,17 +21,19 @@ jobs:
             vim-ycm-ref: master
 
     env:
+      DEBIAN_FRONTEND: noninteractive
+      GNULIB_SRCDIR: "$HOME/.gnulib"
+      GNULIB_URL: 'https://github.com/coreutils/gnulib.git'
       USER: ${{ github.repository_owner }}
       VIM_YCM_OWNER: ${{ matrix.vim-ycm-owner }}
       VIM_YCM_REF: ${{ matrix.vim-ycm-ref }}
-      DEBIAN_FRONTEND: noninteractive
 
     steps:
       - name: Upgrade Packages
         run: |
           os_id=`sed -ne 's/^ID=//p' /etc/os-release`
           case $os_id in
-              alpine) apk update && apk upgrade && apk add git;;
+              alpine) apk update && apk upgrade && apk add git tar;;
               fedora) dnf -y upgrade && dnf -y install git-core which;;
               ubuntu) apt-get -y update && apt-get -y upgrade && apt-get -y install git;;
           esac
@@ -45,13 +47,32 @@ jobs:
       - name: Fetch Tags
         run: git fetch --force --tags
 
-      - name: Install Prerequisites
-        run: build-aux/install-prereqs
+      - name: Configure Gnulib Cache Key
+        run: echo "GNULIB_CACHE_KEY=`git submodule status .gnulib | sed -re 's/^.([0-9,a-f]{1,}) .*$/\1/'`" >>$GITHUB_ENV
+
+      - name: Cache Gnulib Repository
+        id: cache-gnulib
+        uses: actions/cache@v2
+        env:
+          cache-name: cache-gnulib
+        with:
+          path: ${{ env.GNULIB_SRCDIR }}
+          key: ${{ runner.os }}-${{ env.cache-name }}-${{ env.GNULIB_CACHE_KEY }}
+          restore-keys: |
+            ${{ runner.os }}-${{ env.cache-name }}-
+
+      - name: Fetch Upstream Gnulib Repository
+        if: steps.cache-gnulib.outputs.cache-hit != 'true'
+        run: |
+          if [ -d $GNULIB_SRCDIR ]; then
+              cd $GNULIB_SRCDIR
+              git pull --ff-only
+          else
+              git clone $GNULIB_URL $GNULIB_SRCDIR
+          fi
 
       - name: Bootstrap
-        run: ./bootstrap
-        env:
-          ENVCONF_BOOTSTRAP_INSTALL_REQS: true
+        run: ./bootstrap --install-prereqs --install-reqs
 
       - name: Configure
         run: ./configure --prefix=$RUNNER_TEMP/.local --sysconfdir=$RUNNER_TEMP/.config
@@ -59,7 +80,7 @@ jobs:
       - name: Build
         run: make
 
-      - name: Test
+      - name: Distribution Test
         run: make distcheck
 
       - name: Install

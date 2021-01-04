@@ -4,7 +4,7 @@
 	branch = master
 	shallow = true
 [submodule "quickhatch-autotools"]
-	path = .qh-at
+	path = .quickhatch
 	url = https://github.com/quickhatch/quickhatch-autotools.git
 	branch = master
 	shallow = true
