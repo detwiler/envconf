@@ -2,7 +2,7 @@
 
 SUBDIRS = data
 
-gvg_version = .version
+gvg_version = $(top_srcdir)/.version
 pkg_release = $(PACKAGE)-release
 gnulib_tool = gnulib-tool
 vc_list_files = vc-list-files
@@ -13,14 +13,14 @@ gpg_agent_conf = $(gnupgdir)/gpg-agent.conf
 install_data_targets =
 uninstall_targets =
 
-pkgconf_DATA = $(pkg_release)
-
-ACLOCAL_AMFLAGS = -I m4 -I .qh-at/m4
+ACLOCAL_AMFLAGS = -I m4 -I .quickhatch/m4
 
 BUILT_SOURCES = $(gvg_version)
 
-DISTCLEANFILES = $(gvg_version) \
-		 $(pkg_release)
+pkgconf_DATA = $(pkg_release)
+
+CLEANFILES = $(gvg_version) \
+	     $(pkg_release)
 
 EXTRA_DIST = $(gvg_version) \
 	     m4/gnulib-cache.m4 \
@@ -28,7 +28,7 @@ EXTRA_DIST = $(gvg_version) \
 
 AM_DISTCHECK_CONFIGURE_FLAGS = HOME=$(top_distdir)
 
-$(gvg_version): Makefile
+$(gvg_version):
 	$(AM_V_GEN)echo $(VERSION) > $@-t && mv $@-t $@
 
 $(pkg_release): $(gvg_version)
@@ -41,6 +41,10 @@ gen-ChangeLog:
 	  rm -f $(distdir)/ChangeLog;					\
 	  mv $(distdir)/cl-t $(distdir)/ChangeLog;			\
 	fi
+
+.PHONY: gen-tarball-version
+gen-tarball-version:
+	$(AM_V_GEN)echo $(VERSION) > $(distdir)/.tarball-version
 
 .PHONY: mk-bindir
 mk-bindir:
@@ -91,5 +95,4 @@ install-data-hook: $(install_data_targets)
 
 uninstall-hook: $(uninstall_targets)
 
-dist-hook: gen-ChangeLog
-	$(AM_V_GEN)echo $(VERSION) > $(distdir)/.tarball-version
+dist-hook: gen-ChangeLog gen-tarball-version
