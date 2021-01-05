@@ -1,0 +1,4 @@
+[pager]
+	log = @DIFF_HIGHLIGHT@ | less -R
+	show = @DIFF_HIGHLIGHT@ | less -R
+	diff = @DIFF_HIGHLIGHT@ | less -R

@@ -18,6 +18,8 @@ aws-cli
 clang-extra-tools
 ctags
 g++
+git-diff-highlight
+less
 python3-dev
 vim
 '

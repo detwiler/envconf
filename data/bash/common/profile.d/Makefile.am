@@ -7,16 +7,19 @@ bash = bash.sh
 bash_completion = bash-completion.sh
 conan = conan.sh
 editor = editor.sh
-info = info.sh
+git = git.sh
 gnulib = gnulib.sh
 go = go.sh
 gpg = gpg.sh
+gvim = gvim.sh
+info = info.sh
 macosx = macosx.sh
 vim = vim.sh
 
 # static data/scripts (not generated; require explicit distribution)
 static_data = $(bash_completion) \
 	      $(bash) \
+	      $(git) \
 	      $(gpg)
 
 if HOST_OS_DARWIN
@@ -41,6 +44,10 @@ DISTCLEANFILES = $(conf_data)
 make_data = $(go) \
 	    $(info) \
 	    $(vim)
+
+if HAVE_GVIM
+make_data += $(gvim)
+endif
 
 profile_DATA += $(make_data)
 

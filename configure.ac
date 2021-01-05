@@ -131,9 +131,6 @@ QH_VAR_ENSURE([CONAN_CLANG_VERSIONS],
 QH_VAR_ENSURE([CONAN_GCC_VERSIONS],
               [colon-separated list of GCC major versions for conan-package-tools],
               [9])
-QH_VAR_ENSURE([CONAN_PIP_COMMAND],
-              [Name of Python3 version of the pip command],
-              ["'$PYTHON -m pip'"])
 QH_VAR_ENSURE([CONAN_USERNAME],
               [User name required by conan-package-tools],
               [$USER])
@@ -214,9 +211,25 @@ AM_COND_IF([HAVE_GIT_CRED_PASS],
                        [GIT_CRED_HELPER_FILE=/dev/null])])
 AC_SUBST_FILE([GIT_CRED_HELPER_FILE])
 
-QH_VAR_ENSURE([GIT_PROMPT_PATH],
-              [path to git-prompt.sh],
-              [/usr/share/git-core/contrib/completion/git-prompt.sh])
+AC_ARG_VAR([DIFF_HIGHLIGHT], [path to git diff-highlight])
+AC_PATH_PROG([DIFF_HIGHLIGHT], [diff-highlight], [no],
+             [$PATH$PATH_SEPARATOR/usr/share/git-core/contrib$PATH_SEPARATOR/usr/share/doc/git/contrib/diff-highlight])
+AM_CONDITIONAL([HAVE_DIFF_HIGHLIGHT], [test "x$DIFF_HIGHLIGHT" != xno])
+AM_COND_IF([HAVE_DIFF_HIGHLIGHT],
+           [GIT_PAGER_FILE=data/git/pager-diff-highlight
+            AC_CONFIG_FILES([data/git/pager-diff-highlight])],
+           [GIT_PAGER_FILE=/dev/null])
+AC_SUBST_FILE([GIT_PAGER_FILE])
+
+AC_CHECK_FILE([/etc/bash_completion.d/git-prompt])
+AM_CONDITIONAL([HAVE_GIT_PROMPT],
+               [test "x$ac_cv_file__etc_bash_completion_d_git_prompt" = xyes])
+AC_ARG_VAR([GIT_PROMPT_PATH], [path to git-prompt.sh])
+AS_IF([test "x$GIT_PROMPT_PATH" = x],
+      [AC_CHECK_FILE([/usr/share/git-core/contrib/completion/git-prompt.sh],
+                     [GIT_PROMPT_PATH=/usr/share/git-core/contrib/completion/git-prompt.sh])])
+AM_CONDITIONAL([LOCAL_GIT_PROMPT],
+               [test "x$GIT_PROMPT_PATH" != x])
 
 ## gnulib ##
 
@@ -293,7 +306,7 @@ QH_VAR_ENSURE([VIM_CMAKE_BUILD_DIR],
               [.ycm-build])
 
 QH_VAR_ENSURE([VIM_YCM_OWNER],
-              [Github owner for YouCompleteMe],
+              [GitHub owner for YouCompleteMe],
               [ycm-core])
 
 QH_VAR_ENSURE([VIM_YCM_REF],

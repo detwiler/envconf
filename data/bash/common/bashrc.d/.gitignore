@@ -4,6 +4,7 @@
 aws-functions.sh
 bash-completion.sh
 ctags-alias.sh
+git-prompt.sh
 gpg2.sh
 grep.sh
 ls.sh

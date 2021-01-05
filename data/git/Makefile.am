@@ -19,3 +19,6 @@ home_DATA = $(conf_data)
 
 DISTCLEANFILES = $(conf_data) \
 		 $(gitconfig_signing_key)
+
+EXTRA_DIST = cred-helper-manager \
+	     cred-helper-pass
