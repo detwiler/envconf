@@ -123,14 +123,10 @@ AM_COND_IF([HAVE_WIN_PY3],
 ## conan ##
 
 QH_REQUIRE_PROG([CLANG], [clang], [path to clang])
+QH_CLANG_VERSION_MAJOR([CONAN_CLANG_VERSIONS], [clang version for conan])
 QH_REQUIRE_PROG([GCC], [gcc], [path to gcc])
+QH_GCC_VERSION_MAJOR([CONAN_GCC_VERSIONS], [gcc version for conan])
 
-QH_VAR_ENSURE([CONAN_CLANG_VERSIONS],
-              [colon-separated list of Clang major versions for conan-package-tools],
-              [9])
-QH_VAR_ENSURE([CONAN_GCC_VERSIONS],
-              [colon-separated list of GCC major versions for conan-package-tools],
-              [9])
 QH_VAR_ENSURE([CONAN_USERNAME],
               [User name required by conan-package-tools],
               [$USER])
