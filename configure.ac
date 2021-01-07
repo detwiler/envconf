@@ -122,10 +122,12 @@ AM_COND_IF([HAVE_WIN_PY3],
 
 ## conan ##
 
-QH_REQUIRE_PROG([CLANG], [clang], [path to clang])
-QH_CLANG_VERSION_MAJOR([CONAN_CLANG_VERSIONS], [clang version for conan])
-QH_REQUIRE_PROG([GCC], [gcc], [path to gcc])
-QH_GCC_VERSION_MAJOR([CONAN_GCC_VERSIONS], [gcc version for conan])
+EC_COMPILER_C_VERSION_MAJOR([CONAN_CLANG_VERSIONS],
+                            [clang version for conan],
+                            [clang])
+EC_COMPILER_C_VERSION_MAJOR([CONAN_GCC_VERSIONS],
+                            [gcc version for conan],
+                            [gcc])
 
 QH_VAR_ENSURE([CONAN_USERNAME],
               [User name required by conan-package-tools],
@@ -339,6 +341,7 @@ AC_CONFIG_FILES([Makefile
                  data/bash/common/bashrc.d/vi.sh
                  data/bash/common/profile.d/Makefile
                  data/bash/common/profile.d/conan.sh
+                 data/bash/common/profile.d/git.sh
                  data/bash/common/profile.d/editor.sh
                  data/dircolors/Makefile
                  data/git/Makefile
