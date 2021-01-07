@@ -3,6 +3,7 @@
 # generated data files
 conan.sh
 editor.sh
+git.sh
 go.sh
 gnulib.sh
 gvim.sh
