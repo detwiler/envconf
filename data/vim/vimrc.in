@@ -1,9 +1,9 @@
 " vim: set ft=vim :
 
 source @vimconfdir@/init.vim
+source @vimconfdir@/map.vim
 source $VIMRUNTIME/vimrc_example.vim
 source @vimconfdir@/cmake.vim
 source @vimconfdir@/ycm.vim
 source @vimconfdir@/vim-plug.vim
 source @vimconfdir@/option.vim
-source @vimconfdir@/map.vim
