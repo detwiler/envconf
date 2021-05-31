@@ -105,6 +105,7 @@ QH_VAR_ENSURE([PS1_AWS_COLOR],  [bash prompt aws profile color], [33])
 
 AM_PATH_PYTHON([3.0], [],
 	       [AC_MSG_ERROR([could not find python version >= 3.0])])
+QH_REQUIRE_PROG([CONAN_PIP_COMMAND], [pip3], [path to pip3])
 
 AC_CACHE_CHECK([for Windows native Python 3],
                [ac_cv_path_WIN_PY3],
