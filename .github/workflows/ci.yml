@@ -89,7 +89,7 @@ jobs:
       - name: Integration Test
         run: |
           vim -es -u $RUNNER_TEMP/.config/vim/vimrc -i NONE -c PlugInstall -c qa
-          find $RUNNER_TEMP/.config/vim/plugged/YouCompleteMe -name 'ycm_core.so' | grep .
+          find $RUNNER_TEMP/.config/vim/plugged/YouCompleteMe -name 'ycm_core*.so' | grep .
 
       - name: Configure Version
         run: echo "PROJECT_VERSION=`cat .version`" >>$GITHUB_ENV
