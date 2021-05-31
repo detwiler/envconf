@@ -21,6 +21,7 @@ g++
 git-diff-highlight
 less
 python3-dev
+py3-pip
 vim
 '
 
@@ -30,6 +31,7 @@ clang-tools-extra
 ctags
 gcc-c++
 python3-devel
+python3-pip
 vim-enhanced
 '
 
@@ -39,6 +41,7 @@ clangd
 exuberant-ctags
 g++
 python3-dev
+python3-pip
 vim
 '
 
