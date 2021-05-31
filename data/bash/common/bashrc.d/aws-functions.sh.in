@@ -11,7 +11,7 @@ function __aws_profile()
 for p in $(command ls @AWS_CONFIG_DIR@/* 2>/dev/null | @GREP@ --invert-match config 2>/dev/null); do
   profile=$(basename $p)
   if [[ ! -h $p ]]; then
-    eval "aws_$profile() { @LN_S@ --force $p @AWS_SHARED_CREDENTIALS_FILE@; }"
+    eval "aws_$profile() { @LN_S@ --force $p @AWS_SHARED_CREDENTIALS_FILE@; @LN_S@ --force config-${profile} @AWS_CONFIG_FILE@; }"
     export -f aws_$profile
   fi
 done
