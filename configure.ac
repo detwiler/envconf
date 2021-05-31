@@ -58,6 +58,9 @@ AM_COND_IF([ENABLE_AWS_CLI],
             QH_VAR_ENSURE([AWS_CONFIG_DIR],
                           [path to aws-cli configuration directory],
                           [$HOME/.aws])
+            QH_VAR_ENSURE([AWS_CONFIG_FILE],
+                          [path to aws-cli config file],
+                          [$AWS_CONFIG_DIR/config])
             QH_VAR_ENSURE([AWS_SHARED_CREDENTIALS_FILE],
                           [path to aws-cli shared credentials file],
                           [$AWS_CONFIG_DIR/credentials])])
