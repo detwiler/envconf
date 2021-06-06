@@ -13,6 +13,7 @@ AC_MSG_CHECKING([if $1 is set])
 AS_VAR_SET_IF([$1],
               [AC_MSG_RESULT([$$1])],
               [AC_MSG_RESULT([no])
+               AS_VAR_COPY([_ec_version], [VERSION])
                QH_OS_RELEASE
                AS_ECHO_N(['setting $1 to computed value... '])
                AS_CASE([$ID],
@@ -21,6 +22,7 @@ AS_VAR_SET_IF([$1],
                                           [18.04], [AS_VAR_SET([$1], [detwiler])],
                                           [AS_VAR_SET([$1], [ycm-core])])],
                        [AS_VAR_SET([$1], [ycm-core])])
+               AS_VAR_COPY([VERSION], [_ec_version])
                AC_MSG_RESULT([$$1])])
 ]) # EC_VIM_YCM_OWNER
 
@@ -37,6 +39,7 @@ AC_MSG_CHECKING([if $1 is set])
 AS_VAR_SET_IF([$1],
               [AC_MSG_RESULT([$$1])],
               [AC_MSG_RESULT([no])
+               AS_VAR_COPY([_ec_version], [VERSION])
                QH_OS_RELEASE
                AS_ECHO_N(['setting $1 to computed value... '])
                AS_CASE([$ID],
@@ -45,5 +48,6 @@ AS_VAR_SET_IF([$1],
                                           [18.04], [AS_VAR_SET([$1], [ubuntu-1804])],
                                           [AS_VAR_SET([$1], [master])])],
                        [AS_VAR_SET([$1], [master])])
+               AS_VAR_COPY([VERSION], [_ec_version])
                AC_MSG_RESULT([$$1])])
 ]) # EC_VIM_YCM_REF
