@@ -315,6 +315,17 @@ EC_VIM_YCM_OWNER([VIM_YCM_OWNER],
 EC_VIM_YCM_REF([VIM_YCM_REF],
               [Git reference for YouCompleteMe])
 
+# At present, all platforms that do not use the upstream ycm-core distribution
+# of YouCompleteMe are cases where we need to use the system clangd binary.
+# This approach will need to be revised if that changes in the future.
+AM_CONDITIONAL([VIM_YCM_SYSTEM_CLANGD], [test "x$VIM_YCM_OWNER" != xycm-core])
+AM_COND_IF([VIM_YCM_SYSTEM_CLANGD],
+           [YCM_CLANGD_BINARY_PATH_FILE=data/vim/ycm-clangd-binary-path
+            AC_CONFIG_FILES([data/vim/ycm-clangd-binary-path])],
+           [YCM_CLANGD_BINARY_PATH_FILE=/dev/null])
+AC_SUBST_FILE([YCM_CLANGD_BINARY_PATH_FILE])
+
+# gvim
 QH_VAR_ENSURE([GVIM_FONT],
               [gvim font],
               [Monospace])
