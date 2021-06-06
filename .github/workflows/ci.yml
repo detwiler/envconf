@@ -19,6 +19,12 @@ jobs:
           - image: ubuntu:rolling
             vim-ycm-owner: ycm-core
             vim-ycm-ref: master
+          - image: ubuntu:latest
+            vim-ycm-owner: ycm-core
+            vim-ycm-ref: master
+          - image: ubuntu:18.04
+            vim-ycm-owner: detwiler
+            vim-ycm-ref: ubuntu-1804
 
     env:
       DEBIAN_FRONTEND: noninteractive
