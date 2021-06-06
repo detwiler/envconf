@@ -34,7 +34,7 @@ jobs:
     steps:
       - name: Upgrade Packages
         run: |
-          source /etc/os-release
+          . /etc/os-release
           case $ID in
               alpine) apk update && apk upgrade && apk add git tar;;
               fedora) dnf -y upgrade && dnf -y install git-core which;;
