@@ -1,5 +1,4 @@
-name: ci
-on: [push]
+name: ci on: [push]
 jobs:
 
   build-test:
@@ -22,9 +21,6 @@ jobs:
           - image: ubuntu:latest
             vim-ycm-owner: ycm-core
             vim-ycm-ref: master
-          - image: ubuntu:18.04
-            vim-ycm-owner: detwiler
-            vim-ycm-ref: ubuntu-1804
 
     env:
       DEBIAN_FRONTEND: noninteractive
@@ -37,8 +33,8 @@ jobs:
     steps:
       - name: Upgrade Packages
         run: |
-          os_id=`sed -ne 's/^ID=//p' /etc/os-release`
-          case $os_id in
+          . /etc/os-release`
+          case $ID in
               alpine) apk update && apk upgrade && apk add git tar;;
               fedora) dnf -y upgrade && dnf -y install git-core which;;
               ubuntu) apt-get -y update && apt-get -y upgrade && apt-get -y install git;;
