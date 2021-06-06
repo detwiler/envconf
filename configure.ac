@@ -126,12 +126,14 @@ AM_COND_IF([HAVE_WIN_PY3],
 
 ## conan ##
 
+QH_REQUIRE_PROG([CLANG], [clang clang-10], [path to clang])
 EC_COMPILER_C_VERSION_MAJOR([CONAN_CLANG_VERSIONS],
                             [clang version for conan],
-                            [clang])
+                            [$CLANG])
+QH_REQUIRE_PROG([GCC], [gcc], [path to gcc])
 EC_COMPILER_C_VERSION_MAJOR([CONAN_GCC_VERSIONS],
                             [gcc version for conan],
-                            [gcc])
+                            [$GCC])
 
 QH_VAR_ENSURE([CONAN_USERNAME],
               [User name required by conan-package-tools],
@@ -299,7 +301,7 @@ AM_COND_IF([HAVE_GVIM], [AC_CONFIG_FILES([data/vim/gvimrc])])
 QH_REQUIRE_PROG([CURL], [curl], [path to curl])
 
 # YouCompleteMe requirements
-QH_REQUIRE_PROG([CLANGD], [clangd], [path to clangd])
+QH_REQUIRE_PROG([CLANGD], [clangd clangd-10], [path to clangd])
 QH_REQUIRE_PROG([CMAKE], [cmake], [path to cmake])
 QH_REQUIRE_PROG([GCXX], [g++], [path to g++])
 

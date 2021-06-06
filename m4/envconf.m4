@@ -17,8 +17,8 @@ AS_VAR_SET_IF([$1],
                AS_VAR_SET([CC], [$3])
                AS_ECHO_N(['setting $1 to computed value... '])
                AS_CASE([$3],
-                       [gcc], [AC_COMPUTE_INT([$1], [__GNUC__])],
-                       [clang], [AC_COMPUTE_INT([$1], [__clang_major__])],
+                       [*gcc*], [AC_COMPUTE_INT([$1], [__GNUC__])],
+                       [*clang*], [AC_COMPUTE_INT([$1], [__clang_major__])],
                        [AC_MSG_ERROR([unsupported compiler: $3])])
                AS_IF([test "x$$1" = x],
                      [AC_MSG_RESULT([empty])
