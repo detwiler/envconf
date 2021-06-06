@@ -6,5 +6,5 @@
 [submodule "quickhatch-autotools"]
 	path = .quickhatch
 	url = https://github.com/quickhatch/quickhatch-autotools.git
-	branch = milestone-0.5.0
+	branch = master
 	shallow = true
