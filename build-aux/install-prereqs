@@ -14,11 +14,9 @@ tar
 
 test -r $OS_RELEASE_FILE || exit
 
-os_id=`sed -ne 's/^ID=//p' $OS_RELEASE_FILE`
+. $OS_RELEASE_FILE
 
-test -n $os_id || exit
-
-case $os_id in
+case $ID in
     alpine) $SUDO apk add $pkgs_common;;
     fedora) $SUDO dnf --assumeyes install $pkgs_common;;
     ubuntu) $SUDO apt-get --assume-yes install $pkgs_common;;
