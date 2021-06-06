@@ -7,3 +7,4 @@ init.vim
 vim-plug.vim
 vimrc
 ycm.vim
+ycm-clangd-binary-path

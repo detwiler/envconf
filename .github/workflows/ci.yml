@@ -11,28 +11,21 @@ jobs:
       matrix:
         include:
           - image: alpine:latest
-            vim-ycm-owner: detwiler
-            vim-ycm-ref: llvm-10
           - image: fedora:latest
-            vim-ycm-owner: ycm-core
-            vim-ycm-ref: master
           - image: ubuntu:rolling
-            vim-ycm-owner: ycm-core
-            vim-ycm-ref: master
+          - image: ubuntu:latest
 
     env:
       DEBIAN_FRONTEND: noninteractive
       GNULIB_SRCDIR: "$HOME/.gnulib"
       GNULIB_URL: 'https://github.com/coreutils/gnulib.git'
       USER: ${{ github.repository_owner }}
-      VIM_YCM_OWNER: ${{ matrix.vim-ycm-owner }}
-      VIM_YCM_REF: ${{ matrix.vim-ycm-ref }}
 
     steps:
       - name: Upgrade Packages
         run: |
-          os_id=`sed -ne 's/^ID=//p' /etc/os-release`
-          case $os_id in
+          . /etc/os-release
+          case $ID in
               alpine) apk update && apk upgrade && apk add git tar;;
               fedora) dnf -y upgrade && dnf -y install git-core which;;
               ubuntu) apt-get -y update && apt-get -y upgrade && apt-get -y install git;;

@@ -1,29 +1,53 @@
 # envconf.m4
 
-# EC_COMPILER_C_VERSION_MAJOR(VARIABLE, DESCRIPTION, COMPILER)
+# EC_VIM_YCM_OWNER(VARIABLE, DESCRIPTION)
 # ----------------------------------------------------------
-# Set VARIABLE to value of C COMPILER's major version number, and make it
-# precious by passing to AC_ARG_VAR along with DESCRIPTION.
-# Supported compilers: clang, gcc
-AC_DEFUN([EC_COMPILER_C_VERSION_MAJOR],
+# Set the GitHub owner for the Vim plugin YouCompleteMe.  Ensure the literal
+# shell VARIABLE is set, and make it precious by passing to AC_ARG_VAR along
+# with DESCRIPTION.  If not set, set the contents to the computed value for
+# os-release ID and VERSION_ID.
+AC_DEFUN([EC_VIM_YCM_OWNER],
 [
 AC_ARG_VAR([$1],[$2])
 AC_MSG_CHECKING([if $1 is set])
 AS_VAR_SET_IF([$1],
               [AC_MSG_RESULT([$$1])],
               [AC_MSG_RESULT([no])
-               AC_LANG_PUSH([C])
-               AS_VAR_COPY([_ec_cc], [CC])
-               AS_VAR_SET([CC], [$3])
+               AS_VAR_COPY([_ec_version], [VERSION])
+               QH_OS_RELEASE
                AS_ECHO_N(['setting $1 to computed value... '])
-               AS_CASE([$3],
-                       [gcc], [AC_COMPUTE_INT([$1], [__GNUC__])],
-                       [clang], [AC_COMPUTE_INT([$1], [__clang_major__])],
-                       [AC_MSG_ERROR([unsupported compiler: $3])])
-               AS_IF([test "x$$1" = x],
-                     [AC_MSG_RESULT([empty])
-                      AC_MSG_WARN([$1 set to empty value!])],
-                     [AC_MSG_RESULT([$$1])])
-               AS_VAR_COPY([CC], [_ec_cc])
-               AC_LANG_POP([C])])
-]) # EC_COMPILER_C_VERSION_MAJOR
+               AS_CASE([$ID],
+                       [alpine], [AS_VAR_SET([$1], [detwiler])],
+                       [ubuntu], [AS_CASE([$VERSION_ID],
+                                          [18.04], [AS_VAR_SET([$1], [detwiler])],
+                                          [AS_VAR_SET([$1], [ycm-core])])],
+                       [AS_VAR_SET([$1], [ycm-core])])
+               AS_VAR_COPY([VERSION], [_ec_version])
+               AC_MSG_RESULT([$$1])])
+]) # EC_VIM_YCM_OWNER
+
+# EC_VIM_YCM_REF(VARIABLE, DESCRIPTION)
+# ----------------------------------------------------------
+# Set the Git reference for the Vim plugin YouCompleteMe.  Ensure the literal
+# shell VARIABLE is set, and make it precious by passing to AC_ARG_VAR along
+# with DESCRIPTION.  If not set, set the contents to the computed value for
+# os-release ID and VERSION_ID.
+AC_DEFUN([EC_VIM_YCM_REF],
+[
+AC_ARG_VAR([$1],[$2])
+AC_MSG_CHECKING([if $1 is set])
+AS_VAR_SET_IF([$1],
+              [AC_MSG_RESULT([$$1])],
+              [AC_MSG_RESULT([no])
+               AS_VAR_COPY([_ec_version], [VERSION])
+               QH_OS_RELEASE
+               AS_ECHO_N(['setting $1 to computed value... '])
+               AS_CASE([$ID],
+                       [alpine], [AS_VAR_SET([$1], [llvm-10])],
+                       [ubuntu], [AS_CASE([$VERSION_ID],
+                                          [18.04], [AS_VAR_SET([$1], [ubuntu-1804])],
+                                          [AS_VAR_SET([$1], [master])])],
+                       [AS_VAR_SET([$1], [master])])
+               AS_VAR_COPY([VERSION], [_ec_version])
+               AC_MSG_RESULT([$$1])])
+]) # EC_VIM_YCM_REF

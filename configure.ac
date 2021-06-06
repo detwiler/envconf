@@ -126,12 +126,14 @@ AM_COND_IF([HAVE_WIN_PY3],
 
 ## conan ##
 
-EC_COMPILER_C_VERSION_MAJOR([CONAN_CLANG_VERSIONS],
+QH_REQUIRE_PROG([CLANG], [clang clang-10], [path to clang])
+QH_COMPILER_C_VERSION_MAJOR([CONAN_CLANG_VERSIONS],
                             [clang version for conan],
-                            [clang])
-EC_COMPILER_C_VERSION_MAJOR([CONAN_GCC_VERSIONS],
+                            [$CLANG])
+QH_REQUIRE_PROG([GCC], [gcc], [path to gcc])
+QH_COMPILER_C_VERSION_MAJOR([CONAN_GCC_VERSIONS],
                             [gcc version for conan],
-                            [gcc])
+                            [$GCC])
 
 QH_VAR_ENSURE([CONAN_USERNAME],
               [User name required by conan-package-tools],
@@ -299,7 +301,7 @@ AM_COND_IF([HAVE_GVIM], [AC_CONFIG_FILES([data/vim/gvimrc])])
 QH_REQUIRE_PROG([CURL], [curl], [path to curl])
 
 # YouCompleteMe requirements
-QH_REQUIRE_PROG([CLANGD], [clangd], [path to clangd])
+QH_REQUIRE_PROG([CLANGD], [clangd clangd-10], [path to clangd])
 QH_REQUIRE_PROG([CMAKE], [cmake], [path to cmake])
 QH_REQUIRE_PROG([GCXX], [g++], [path to g++])
 
@@ -307,14 +309,23 @@ QH_VAR_ENSURE([VIM_CMAKE_BUILD_DIR],
               [vim-cmake plugin build directory],
               [.ycm-build])
 
-QH_VAR_ENSURE([VIM_YCM_OWNER],
-              [GitHub owner for YouCompleteMe],
-              [ycm-core])
+EC_VIM_YCM_OWNER([VIM_YCM_OWNER],
+                 [GitHub owner for YouCompleteMe])
 
-QH_VAR_ENSURE([VIM_YCM_REF],
-              [Git reference for YouCompleteMe],
-              [master])
+EC_VIM_YCM_REF([VIM_YCM_REF],
+              [Git reference for YouCompleteMe])
 
+# At present, all platforms that do not use the upstream ycm-core distribution
+# of YouCompleteMe are cases where we need to use the system clangd binary.
+# This approach will need to be revised if that changes in the future.
+AM_CONDITIONAL([VIM_YCM_SYSTEM_CLANGD], [test "x$VIM_YCM_OWNER" != xycm-core])
+AM_COND_IF([VIM_YCM_SYSTEM_CLANGD],
+           [YCM_CLANGD_BINARY_PATH_FILE=data/vim/ycm-clangd-binary-path
+            AC_CONFIG_FILES([data/vim/ycm-clangd-binary-path])],
+           [YCM_CLANGD_BINARY_PATH_FILE=/dev/null])
+AC_SUBST_FILE([YCM_CLANGD_BINARY_PATH_FILE])
+
+# gvim
 QH_VAR_ENSURE([GVIM_FONT],
               [gvim font],
               [Monospace])
