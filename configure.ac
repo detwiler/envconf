@@ -127,11 +127,11 @@ AM_COND_IF([HAVE_WIN_PY3],
 ## conan ##
 
 QH_REQUIRE_PROG([CLANG], [clang clang-10], [path to clang])
-EC_COMPILER_C_VERSION_MAJOR([CONAN_CLANG_VERSIONS],
+QH_COMPILER_C_VERSION_MAJOR([CONAN_CLANG_VERSIONS],
                             [clang version for conan],
                             [$CLANG])
 QH_REQUIRE_PROG([GCC], [gcc], [path to gcc])
-EC_COMPILER_C_VERSION_MAJOR([CONAN_GCC_VERSIONS],
+QH_COMPILER_C_VERSION_MAJOR([CONAN_GCC_VERSIONS],
                             [gcc version for conan],
                             [$GCC])
 
@@ -309,13 +309,11 @@ QH_VAR_ENSURE([VIM_CMAKE_BUILD_DIR],
               [vim-cmake plugin build directory],
               [.ycm-build])
 
-QH_VAR_ENSURE([VIM_YCM_OWNER],
-              [GitHub owner for YouCompleteMe],
-              [ycm-core])
+EC_VIM_YCM_OWNER([VIM_YCM_OWNER],
+                 [GitHub owner for YouCompleteMe])
 
-QH_VAR_ENSURE([VIM_YCM_REF],
-              [Git reference for YouCompleteMe],
-              [master])
+EC_VIM_YCM_REF([VIM_YCM_REF],
+              [Git reference for YouCompleteMe])
 
 QH_VAR_ENSURE([GVIM_FONT],
               [gvim font],
