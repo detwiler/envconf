@@ -10,8 +10,7 @@ vagrantconf = vagrant.conf
 
 # directory variables
 sshdir = $(homedir)/.ssh
-confdirname = config.d
-confdir = $(sshdir)/$(confdirname)
+confdir = $(sshdir)/config.d
 keydir = $(sshdir)/keys.d
 knownhostsdir = $(sshdir)/known_hosts.d
 
@@ -20,19 +19,24 @@ static_data = $(sshconf)
 
 dist_ssh_DATA = $(static_data)
 
+static_conf_data = $(githubconf) \
+		   $(gitlabconf) \
+		   $(vagrantconf)
+
+dist_conf_DATA = $(static_conf_data)
+
+# install/uninstall targets
+.PHONY: sshdir-perms
+sshdir-perms:
+	chmod 0700 $(DESTDIR)$(sshdir)
+
 .PHONY: ssh-data-perms
 ssh-data-perms:
 	cd $(DESTDIR)$(sshdir) && chmod 0600 $(dist_ssh_DATA)
 
 .PHONY: confdir-perms
 confdir-perms:
-	cd $(DESTDIR)$(sshdir) && chmod 0700 $(confdirname)
-
-static_conf_data = $(githubconf) \
-		   $(gitlabconf) \
-		   $(vagrantconf)
-
-dist_conf_DATA = $(static_conf_data)
+	chmod 0700 $(DESTDIR)$(confdir)
 
 .PHONY: conf-data-perms
 conf-data-perms:
@@ -56,4 +60,4 @@ install-data-local: $(keydir) $(knownhostsdir)
 
 uninstall-local: rm-keydir rm-knownhostsdir
 
-install-data-hook: confdir-perms ssh-data-perms conf-data-perms
+install-data-hook: sshdir-perms ssh-data-perms confdir-perms conf-data-perms
