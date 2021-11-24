@@ -365,6 +365,7 @@ AC_CONFIG_FILES([Makefile
                  data/man/Makefile
                  data/readline/Makefile
                  data/ruby/Makefile
+                 data/ssh/Makefile
                  data/vim/Makefile
                  data/vim/cmake.vim
                  data/vim/ycm.vim

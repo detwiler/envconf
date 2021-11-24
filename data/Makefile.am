@@ -7,6 +7,7 @@ SUBDIRS = autoconf \
 	  man \
 	  readline \
 	  ruby \
+	  ssh \
 	  vim
 
 if HAVE_DIRCOLORS

@@ -1,0 +1,7 @@
+# vim: set filetype=sshconfig:
+
+Include ~/.ssh/config.d/*.conf
+
+Host *
+	ForwardAgent yes
+	UserKnownHostsFile ~/.ssh/known_hosts.d/%k
