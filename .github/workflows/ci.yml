@@ -65,7 +65,7 @@ jobs:
           fi
 
       - name: Bootstrap
-        run: ./bootstrap --install-prereqs --install-reqs
+        run: ./bootstrap --install-buildreqs --install-reqs
 
       - name: Configure
         run: ./configure --prefix=$RUNNER_TEMP/.local --sysconfdir=$RUNNER_TEMP/.config
