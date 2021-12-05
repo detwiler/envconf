@@ -9,6 +9,7 @@ automake
 coreutils
 git
 gzip
+make
 tar
 '
 
