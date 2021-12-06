@@ -29,7 +29,7 @@ case $ID in
     centos)
         $SUDO dnf --assumeyes config-manager --set-enabled powertools
         $SUDO dnf --assumeyes install $pkgs_centos_epel
-        $SUDO dnf --assumeyes install $pkgs_common
+        $SUDO dnf --assumeyes install --allowerasing $pkgs_common
         ;;
     fedora)
         $SUDO dnf --assumeyes install $pkgs_common
