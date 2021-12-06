@@ -26,9 +26,7 @@ vim
 '
 
 pkgs_centos='
-awscli
 clang-tools-extra
-ctags
 gcc-c++
 platform-python-devel
 python3-pip
@@ -71,6 +69,7 @@ case $ID in
                 epel-release
                 epel-next-release
                 '
+                pkgs_centos="$pkgs_centos awscli ctags"
                 ;;
             9)
                 epel_repo=crb
@@ -83,6 +82,11 @@ case $ID in
         $SUDO dnf --assumeyes config-manager --set-enabled $epel_repo
         $SUDO dnf --assumeyes install $pkgs_epel
         $SUDO dnf --assumeyes install $pkgs_common $pkgs_centos
+        case $VERSION_ID in
+            9)
+                $SUDO pip3 install --upgrade awscli
+                ;;
+        esac
         ;;
     fedora)
         $SUDO dnf --assumeyes install $pkgs_common $pkgs_fedora
