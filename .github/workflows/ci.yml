@@ -11,6 +11,7 @@ jobs:
       matrix:
         include:
           - image: alpine:latest
+          - image: centos:latest
           - image: fedora:latest
           - image: ubuntu:rolling
           - image: ubuntu:latest
