@@ -81,7 +81,7 @@ case $ID in
         esac
         $SUDO dnf --assumeyes config-manager --set-enabled $epel_repo
         $SUDO dnf --assumeyes install $pkgs_epel
-        $SUDO dnf --assumeyes install $pkgs_common $pkgs_centos
+        $SUDO dnf --assumeyes install --allowerasing $pkgs_common $pkgs_centos
         case $VERSION_ID in
             9)
                 $SUDO pip3 install --upgrade awscli
