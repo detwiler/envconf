@@ -1,5 +1,6 @@
 # .gitignore
 
+/.package-name
 /.version
 /ChangeLog
 /envconf-release
