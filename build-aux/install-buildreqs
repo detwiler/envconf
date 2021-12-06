@@ -13,12 +13,28 @@ make
 tar
 '
 
+pkgs_centos_epel='
+epel-release
+epel-next-release
+'
+
 test -r $OS_RELEASE_FILE || exit
 
 . $OS_RELEASE_FILE
 
 case $ID in
-    alpine) $SUDO apk add $pkgs_common;;
-    fedora) $SUDO dnf --assumeyes install $pkgs_common;;
-    ubuntu) $SUDO apt-get --assume-yes install $pkgs_common;;
+    alpine)
+        $SUDO apk add $pkgs_common
+        ;;
+    centos)
+        $SUDO dnf --assumeyes config-manager --set-enabled powertools
+        $SUDO dnf --assumeyes install $pkgs_centos_epel
+        $SUDO dnf --assumeyes install $pkgs_common
+        ;;
+    fedora)
+        $SUDO dnf --assumeyes install $pkgs_common
+        ;;
+    ubuntu)
+        $SUDO apt-get --assume-yes install $pkgs_common
+        ;;
 esac

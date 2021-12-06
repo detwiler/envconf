@@ -25,6 +25,21 @@ py3-pip
 vim
 '
 
+pkgs_centos_epel='
+epel-release
+epel-next-release
+'
+
+pkgs_centos='
+awscli
+clang-tools-extra
+ctags
+gcc-c++
+platform-python-devel
+python3-pip
+vim-enhanced
+'
+
 pkgs_fedora='
 awscli
 clang-tools-extra
@@ -50,7 +65,18 @@ test -r $OS_RELEASE_FILE || exit
 . $OS_RELEASE_FILE
 
 case $ID in
-    alpine) $SUDO apk add $pkgs_common $pkgs_alpine;;
-    fedora) $SUDO dnf --assumeyes install $pkgs_common $pkgs_fedora;;
-    ubuntu) $SUDO apt-get --assume-yes install $pkgs_common $pkgs_ubuntu;;
+    alpine)
+        $SUDO apk add $pkgs_common $pkgs_alpine
+        ;;
+    centos)
+        $SUDO dnf --assumeyes config-manager --set-enabled powertools
+        $SUDO dnf --assumeyes install $pkgs_centos_epel
+        $SUDO dnf --assumeyes install $pkgs_common $pkgs_centos
+        ;;
+    fedora)
+        $SUDO dnf --assumeyes install $pkgs_common $pkgs_fedora
+        ;;
+    ubuntu)
+        $SUDO apt-get --assume-yes install $pkgs_common $pkgs_ubuntu
+        ;;
 esac
