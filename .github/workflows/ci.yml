@@ -12,6 +12,7 @@ jobs:
         include:
           - image: alpine:latest
           - image: centos:latest
+          - image: quay.io/centos/centos:stream9
           - image: fedora:latest
           - image: ubuntu:rolling
           - image: ubuntu:latest
