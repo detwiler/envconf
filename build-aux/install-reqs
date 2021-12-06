@@ -25,11 +25,6 @@ py3-pip
 vim
 '
 
-pkgs_centos_epel='
-epel-release
-epel-next-release
-'
-
 pkgs_centos='
 awscli
 clang-tools-extra
@@ -69,8 +64,24 @@ case $ID in
         $SUDO apk add $pkgs_common $pkgs_alpine
         ;;
     centos)
-        $SUDO dnf --assumeyes config-manager --set-enabled powertools
-        $SUDO dnf --assumeyes install $pkgs_centos_epel
+        case $VERSION_ID in
+            8)
+                epel_repo=powertools
+                pkgs_epel='
+                epel-release
+                epel-next-release
+                '
+                ;;
+            9)
+                epel_repo=crb
+                pkgs_epel='
+                https://dl.fedoraproject.org/pub/epel/9/Everything/x86_64/Packages/e/epel-release-9-2.el9.noarch.rpm
+                https://dl.fedoraproject.org/pub/epel/9/Everything/x86_64/Packages/e/epel-next-release-9-2.el9.noarch.rpm
+                '
+                ;;
+        esac
+        $SUDO dnf --assumeyes config-manager --set-enabled $epel_repo
+        $SUDO dnf --assumeyes install $pkgs_epel
         $SUDO dnf --assumeyes install $pkgs_common $pkgs_centos
         ;;
     fedora)
