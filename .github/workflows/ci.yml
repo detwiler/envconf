@@ -28,7 +28,7 @@ jobs:
           . /etc/os-release
           case $ID in
               alpine) apk update && apk upgrade && apk add git tar;;
-              fedora) dnf -y upgrade && dnf -y install git-core which;;
+              centos|fedora) dnf -y upgrade && dnf -y install git-core which;;
               ubuntu) apt-get -y update && apt-get -y upgrade && apt-get -y install git;;
           esac
 
