@@ -18,6 +18,9 @@ AS_VAR_SET_IF([$1],
                AS_ECHO_N(['setting $1 to computed value... '])
                AS_CASE([$ID],
                        [alpine], [AS_VAR_SET([$1], [detwiler])],
+                       [centos], [AS_CASE([$VERSION_ID],
+                                          [8], [AS_VAR_SET([$1], [detwiler])],
+                                          [AS_VAR_SET([$1], [ycm-core])])],
                        [ubuntu], [AS_CASE([$VERSION_ID],
                                           [18.04], [AS_VAR_SET([$1], [detwiler])],
                                           [AS_VAR_SET([$1], [ycm-core])])],
@@ -44,8 +47,11 @@ AS_VAR_SET_IF([$1],
                AS_ECHO_N(['setting $1 to computed value... '])
                AS_CASE([$ID],
                        [alpine], [AS_VAR_SET([$1], [llvm-10])],
+                       [centos], [AS_CASE([$VERSION_ID],
+                                          [8], [AS_VAR_SET([$1], [vim-7.4.1578])],
+                                          [AS_VAR_SET([$1], [master])])],
                        [ubuntu], [AS_CASE([$VERSION_ID],
-                                          [18.04], [AS_VAR_SET([$1], [ubuntu-1804])],
+                                          [18.04], [AS_VAR_SET([$1], [vim-7.4.1578])],
                                           [AS_VAR_SET([$1], [master])])],
                        [AS_VAR_SET([$1], [master])])
                AS_VAR_COPY([VERSION], [_ec_version])

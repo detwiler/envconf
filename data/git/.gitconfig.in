@@ -11,7 +11,7 @@
 [gpg]
         program = @GPG@
 [alias]
-	subupdate = submodule update --remote --rebase
+	subupdate = submodule update --remote --merge
 	subpush = push --recurse-submodules=on-demand
 [diff]
 	submodule = log
