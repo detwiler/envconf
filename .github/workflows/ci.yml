@@ -10,12 +10,16 @@ jobs:
     strategy:
       matrix:
         include:
+          - image: alpine:3.13
+          - image: alpine:3.14
           - image: alpine:latest
+          - image: alpine:edge
           - image: centos:latest
           - image: quay.io/centos/centos:stream9
+          - image: fedora:34
           - image: fedora:latest
-          - image: ubuntu:rolling
           - image: ubuntu:latest
+          - image: ubuntu:rolling
 
     env:
       DEBIAN_FRONTEND: noninteractive

@@ -46,7 +46,11 @@ AS_VAR_SET_IF([$1],
                QH_OS_RELEASE
                AS_ECHO_N(['setting $1 to computed value... '])
                AS_CASE([$ID],
-                       [alpine], [AS_VAR_SET([$1], [llvm-10])],
+                       [alpine], [AS_CASE([$VERSION_ID],
+                                          [3.13*], [AS_VAR_SET([$1], [llvm-10])],
+                                          [3.14*], [AS_VAR_SET([$1], [llvm-11])],
+                                          [3.15*], [AS_VAR_SET([$1], [llvm-12])],
+                                          [AS_VAR_SET([$1], [master])])],
                        [centos], [AS_CASE([$VERSION_ID],
                                           [8], [AS_VAR_SET([$1], [vim-7.4.1578])],
                                           [AS_VAR_SET([$1], [master])])],
