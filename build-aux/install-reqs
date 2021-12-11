@@ -20,6 +20,7 @@ ctags
 g++
 git-diff-highlight
 less
+linux-headers
 python3-dev
 py3-pip
 vim
