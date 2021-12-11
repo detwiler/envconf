@@ -18,7 +18,6 @@ jobs:
           - image: quay.io/centos/centos:stream9
           - image: fedora:34
           - image: fedora:latest
-          - image: fedora:rawhide
           - image: ubuntu:latest
           - image: ubuntu:rolling
 
