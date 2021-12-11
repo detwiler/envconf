@@ -17,8 +17,9 @@ jobs:
           - image: centos:latest
           - image: quay.io/centos/centos:stream9
           - image: fedora:latest
-          - image: ubuntu:rolling
+          - image: ubuntu:18.04
           - image: ubuntu:latest
+          - image: ubuntu:rolling
 
     env:
       DEBIAN_FRONTEND: noninteractive
