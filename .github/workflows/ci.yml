@@ -16,8 +16,9 @@ jobs:
           - image: alpine:edge
           - image: centos:latest
           - image: quay.io/centos/centos:stream9
+          - image: fedora:34
           - image: fedora:latest
-          - image: ubuntu:18.04
+          - image: fedora:rawhide
           - image: ubuntu:latest
           - image: ubuntu:rolling
 
