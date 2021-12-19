@@ -24,6 +24,7 @@ Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-surround'
 Plug '@VIM_YCM_OWNER@/YouCompleteMe', {'branch': '@VIM_YCM_REF@', 'do': '@PYTHON@ install.py --clangd-completer'}
 Plug 'vivien/vim-linux-coding-style'
+Plug 'mmarchini/bpftrace.vim'
 
 " Initialize plugin system
 call plug#end()
