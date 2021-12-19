@@ -13,7 +13,6 @@ jobs:
           - image: alpine:3.13
           - image: alpine:3.14
           - image: alpine:latest
-          - image: alpine:edge
           - image: centos:latest
           - image: quay.io/centos/centos:stream9
           - image: fedora:34
