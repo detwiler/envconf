@@ -31,10 +31,6 @@ dist_profile_DATA = $(static_data)
 conf_data = $(git) \
 	    $(editor)
 
-if ENABLE_CONAN
-conf_data += $(conan)
-endif
-
 if HAVE_GNULIB_SRCDIR
 conf_data += $(gnulib)
 endif
@@ -47,6 +43,10 @@ DISTCLEANFILES = $(conf_data)
 make_data = $(go) \
 	    $(info) \
 	    $(vim)
+
+if ENABLE_CONAN
+make_data += $(conan)
+endif
 
 if HAVE_GVIM
 make_data += $(gvim)
@@ -66,6 +66,11 @@ CLEANFILES = $(make_output)
 
 # sed command to build data/scripts
 EDIT = -e 's:@bindir[@]:$(bindir):g' \
+       -e 's:@CONAN_CLANG_VERSIONS[@]:$(CONAN_CLANG_VERSIONS):g' \
+       -e 's:@CONAN_GCC_VERSIONS[@]:$(CONAN_GCC_VERSIONS):g' \
+       -e 's:@CONAN_PIP_COMMAND[@]:$(CONAN_PIP_COMMAND):g' \
+       -e 's:@CONAN_USER_HOME[@]:$(CONAN_USER_HOME):g' \
+       -e 's:@CONAN_USERNAME[@]:$(CONAN_USERNAME):g' \
        -e 's:@GOPATH[@]:$(GOPATH):g' \
        -e 's:@infodir[@]:$(infodir):g' \
        -e 's:@vimdir[@]:$(vimdir):g'

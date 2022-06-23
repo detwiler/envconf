@@ -150,10 +150,12 @@ AM_COND_IF([ENABLE_CONAN],
 					[gcc version for conan],
 					[$GCC])
 	    QH_REQUIRE_PROG([CONAN_PIP_COMMAND], [pip3], [path to pip3])
+	    QH_VAR_ENSURE([CONAN_USER_HOME],
+			  [Conan user configuration directory],
+			  ["\$(sysconfdir)/conan/\$(TOOLBOX_NAME)"])
 	    QH_VAR_ENSURE([CONAN_USERNAME],
 			  [User name required by conan-package-tools],
-			  [$USER])
-            AC_CONFIG_FILES([data/bash/common/profile.d/conan.sh])])
+			  [$USER])])
 
 ## coreutils ##
 
