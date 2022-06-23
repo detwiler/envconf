@@ -1,11 +1,29 @@
+# Determin toolbox name
+function __toolbox_name()
+{
+  if [[ -f @TOOLBOX_ENV_FILE@ ]]; then
+    if [[ -f @CONTAINER_ENV_FILE@ ]]; then
+      toolbox_name=$(source @CONTAINER_ENV_FILE@ && printf $name)
+    else
+      toolbox_name=$(hostname)
+    fi
+  else
+    toolbox_name=$(hostname)
+  fi
+    printf "$toolbox_name"
+} # toolbox_name()
+export -f __toolbox_name
+
+_toolbox_name=$(__toolbox_name)
+
 # Source global definitions
-if [ -f "@pkgconfdir@/global-bash" ]; then
-  source "@pkgconfdir@/global-bash"
+if [ -f "@pkgconfdir@/$_toolbox_name/global-bash" ]; then
+  source "@pkgconfdir@/$_toolbox_name/global-bash"
 fi
 
 # User specific aliases and functions
-if [ -f "@pkgconfdir@/functions" ]; then
-  source "@pkgconfdir@/functions"
+if [ -f "@pkgconfdir@/$_toolbox_name/functions" ]; then
+  source "@pkgconfdir@/$_toolbox_name/functions"
 fi
 
 # Set PATH so it includes user's private bin dirs if they exist
@@ -13,15 +31,17 @@ pathmung @bindir@
 pathmung @sbindir@
 
 # Add Homebrew directories to PATH
-if [ -f "@pkgconfdir@/homebrew-pathmung" ]; then
-  source "@pkgconfdir@/homebrew-pathmung"
+if [ -f "@pkgconfdir@/$_toolbox_name/homebrew-pathmung" ]; then
+  source "@pkgconfdir@/$_toolbox_name/homebrew-pathmung"
 fi
 
 # Add Windows Python 3 directories to PATH
-if [ -f "@pkgconfdir@/win-python-pathmung" ]; then
-  source "@pkgconfdir@/win-python-pathmung"
+if [ -f "@pkgconfdir@/$_toolbox_name/win-python-pathmung" ]; then
+  source "@pkgconfdir@/$_toolbox_name/win-python-pathmung"
 fi
 
-if [ -f "@pkgconfdir@/bashrc" ]; then
-  source "@pkgconfdir@/bashrc"
+if [ -f "@pkgconfdir@/$_toolbox_name/bashrc" ]; then
+  source "@pkgconfdir@/$_toolbox_name/bashrc"
 fi
+
+unset _toolbox_name

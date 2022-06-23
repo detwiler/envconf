@@ -25,14 +25,18 @@ AS_IF([test "x$GREP" = xno],
 AM_CONDITIONAL([HOST_OS_DARWIN], [echo $host_os | $GREP darwin &>/dev/null])
 AM_CONDITIONAL([HOST_OS_MINGW], [echo $host_os | $GREP mingw &>/dev/null])
 
+# set TOOLBOX_NAME
+EC_TOOLBOX_NAME([TOOLBOX_NAME], [Toolbox name])
+
 AC_PREFIX_DEFAULT([$HOME/.local])
 
 AC_SUBST([homedir], [$HOME])
 AC_SUBST([pkgconfdir], ["\$(sysconfdir)/\$(PACKAGE)"])
-AC_SUBST([bashrcdir], ["\$(pkgconfdir)/bashrc.d"])
-AC_SUBST([profiledir], ["\$(pkgconfdir)/profile.d"])
-AC_SUBST([vimdir], ["\$(sysconfdir)/vim"])
-AC_SUBST([vimconfdir], ["\$(pkgconfdir)/vim"])
+AC_SUBST([toolboxdir], ["\$(pkgconfdir)/\$(TOOLBOX_NAME)"])
+AC_SUBST([bashrcdir], ["\$(toolboxdir)/bashrc.d"])
+AC_SUBST([profiledir], ["\$(toolboxdir)/profile.d"])
+AC_SUBST([vimdir], ["\$(sysconfdir)/vim/\$(TOOLBOX_NAME)"])
+AC_SUBST([vimconfdir], ["\$(toolboxdir)/vim"])
 
 QH_VAR_ENSURE([WORKDIR],
               [path to local work directory],
@@ -41,6 +45,14 @@ QH_VAR_ENSURE([WORKDIR],
 QH_VAR_ENSURE([REFDIR],
               [path to local directory with reference repositories],
               [$WORKDIR/ref])
+
+QH_VAR_ENSURE([TOOLBOX_ENV_FILE],
+	      [path to toolbox environment file],
+              [/run/.toolboxenv])
+
+QH_VAR_ENSURE([CONTAINER_ENV_FILE],
+	      [path to container environment file],
+              [/run/.containerenv])
 
 ### Checks for programs. ###
 
@@ -54,17 +66,18 @@ AC_PROG_SED
 QH_ARG_ENABLE([aws_cli], [yes])
 AM_CONDITIONAL([ENABLE_AWS_CLI], [test "x$enable_aws_cli" = xyes])
 AM_COND_IF([ENABLE_AWS_CLI],
-           [QH_REQUIRE_PROG([AWS], [aws], [path to aws])
-            QH_VAR_ENSURE([AWS_CONFIG_DIR],
-                          [path to aws-cli configuration directory],
-                          [$HOME/.aws])
-            QH_VAR_ENSURE([AWS_CONFIG_FILE],
-                          [path to aws-cli config file],
-                          [$AWS_CONFIG_DIR/config])
-            QH_VAR_ENSURE([AWS_SHARED_CREDENTIALS_FILE],
-                          [path to aws-cli shared credentials file],
-                          [$AWS_CONFIG_DIR/credentials])])
+           [QH_REQUIRE_PROG([AWS], [aws], [path to aws])])
 AM_CONDITIONAL([HAVE_AWS_CLI], [test "x$AWS" != x])
+QH_VAR_ENSURE([AWS_CONFIG_DIR],
+	  [path to aws-cli configuration directory],
+	  [$HOME/.aws])
+QH_VAR_ENSURE([AWS_CONFIG_FILE],
+	  [path to aws-cli config file],
+	  [$AWS_CONFIG_DIR/config])
+QH_VAR_ENSURE([AWS_SHARED_CREDENTIALS_FILE],
+	  [path to aws-cli shared credentials file],
+	  [$AWS_CONFIG_DIR/credentials])
+AC_CONFIG_FILES([data/bash/common/bashrc.d/aws-functions.sh])
 
 ## bash ##
 
@@ -108,7 +121,6 @@ QH_VAR_ENSURE([PS1_AWS_COLOR],  [bash prompt aws profile color], [33])
 
 AM_PATH_PYTHON([3.0], [],
 	       [AC_MSG_ERROR([could not find python version >= 3.0])])
-QH_REQUIRE_PROG([CONAN_PIP_COMMAND], [pip3], [path to pip3])
 
 AC_CACHE_CHECK([for Windows native Python 3],
                [ac_cv_path_WIN_PY3],
@@ -126,18 +138,22 @@ AM_COND_IF([HAVE_WIN_PY3],
 
 ## conan ##
 
-QH_REQUIRE_PROG([CLANG], [clang clang-10], [path to clang])
-QH_COMPILER_C_VERSION_MAJOR([CONAN_CLANG_VERSIONS],
-                            [clang version for conan],
-                            [$CLANG])
-QH_REQUIRE_PROG([GCC], [gcc], [path to gcc])
-QH_COMPILER_C_VERSION_MAJOR([CONAN_GCC_VERSIONS],
-                            [gcc version for conan],
-                            [$GCC])
-
-QH_VAR_ENSURE([CONAN_USERNAME],
-              [User name required by conan-package-tools],
-              [$USER])
+QH_ARG_ENABLE([conan], [yes])
+AM_CONDITIONAL([ENABLE_CONAN], [test "x$enable_conan" = xyes])
+AM_COND_IF([ENABLE_CONAN],
+	   [QH_REQUIRE_PROG([CLANG], [clang clang-10], [path to clang])
+	    QH_COMPILER_C_VERSION_MAJOR([CONAN_CLANG_VERSIONS],
+					[clang version for conan],
+					[$CLANG])
+	    QH_REQUIRE_PROG([GCC], [gcc], [path to gcc])
+	    QH_COMPILER_C_VERSION_MAJOR([CONAN_GCC_VERSIONS],
+					[gcc version for conan],
+					[$GCC])
+	    QH_REQUIRE_PROG([CONAN_PIP_COMMAND], [pip3], [path to pip3])
+	    QH_VAR_ENSURE([CONAN_USERNAME],
+			  [User name required by conan-package-tools],
+			  [$USER])
+            AC_CONFIG_FILES([data/bash/common/profile.d/conan.sh])])
 
 ## coreutils ##
 
@@ -292,52 +308,58 @@ AC_SUBST_FILE([XDG_BASEDIR_FILE])
 
 ## vim ##
 
-QH_REQUIRE_PROG([VIM], [vim], [path to vim])
-AC_CHECK_PROGS([GVIM], [gvim])
-AM_CONDITIONAL([HAVE_GVIM], [test "x$GVIM" = xgvim])
-AM_COND_IF([HAVE_GVIM], [AC_CONFIG_FILES([data/vim/gvimrc])])
-
-# vim-plug requirements
-QH_REQUIRE_PROG([CURL], [curl], [path to curl])
+QH_REQUIRE_PROG([VIM], [vim vi], [path to vim])
 
 # YouCompleteMe requirements
-QH_REQUIRE_PROG([CLANGD], [clangd clangd-10], [path to clangd])
-QH_REQUIRE_PROG([CMAKE], [cmake], [path to cmake])
-QH_REQUIRE_PROG([GCXX], [g++], [path to g++])
-
-QH_VAR_ENSURE([VIM_CMAKE_BUILD_DIR],
-              [vim-cmake plugin build directory],
-              [.ycm-build])
-
-EC_VIM_YCM_OWNER([VIM_YCM_OWNER],
-                 [GitHub owner for YouCompleteMe])
-
-EC_VIM_YCM_REF([VIM_YCM_REF],
-              [Git reference for YouCompleteMe])
+QH_ARG_ENABLE([ycm], [yes])
+AM_CONDITIONAL([ENABLE_YCM], [test "x$enable_ycm" = xyes])
+AM_COND_IF([ENABLE_YCM],
+	   [QH_REQUIRE_PROG([CLANGD], [clangd clangd-10], [path to clangd])
+	    QH_REQUIRE_PROG([CMAKE], [cmake], [path to cmake])
+	    QH_REQUIRE_PROG([GCXX], [g++], [path to g++])
+	    QH_VAR_ENSURE([VIM_CMAKE_BUILD_DIR],
+			  [vim-cmake plugin build directory], [.ycm-build])
+	    AC_CONFIG_FILES([data/vim/cmake.vim])
+	    EC_VIM_YCM_OWNER([VIM_YCM_OWNER], [GitHub owner for YouCompleteMe])
+	    EC_VIM_YCM_REF([VIM_YCM_REF], [Git reference for YouCompleteMe])
+	    VIM_PLUG_YCM_FILE=data/vim/vim-plug-ycm
+	    AC_CONFIG_FILES([data/vim/vim-plug-ycm])
+	    VIMRC_YCM_FILE=data/vim/vimrc-ycm],
+	   [VIM_PLUG_YCM_FILE=/dev/null
+	    VIMRC_YCM_FILE=/dev/null])
+AC_SUBST_FILE([VIMRC_YCM_FILE])
 
 # At present, all platforms that do not use the upstream ycm-core distribution
 # of YouCompleteMe are cases where we need to use the system clangd binary.
 # This approach will need to be revised if that changes in the future.
 AM_CONDITIONAL([VIM_YCM_SYSTEM_CLANGD], [test "x$VIM_YCM_OWNER" != xycm-core])
-AM_COND_IF([VIM_YCM_SYSTEM_CLANGD],
-           [YCM_CLANGD_BINARY_PATH_FILE=data/vim/ycm-clangd-binary-path
-            AC_CONFIG_FILES([data/vim/ycm-clangd-binary-path])],
-           [YCM_CLANGD_BINARY_PATH_FILE=/dev/null])
-AC_SUBST_FILE([YCM_CLANGD_BINARY_PATH_FILE])
+AM_COND_IF([ENABLE_YCM],
+	   [AM_COND_IF([VIM_YCM_SYSTEM_CLANGD],
+		       [YCM_CLANGD_BINARY_PATH_FILE=data/vim/ycm-clangd-binary-path
+			AC_CONFIG_FILES([data/vim/ycm-clangd-binary-path])],
+		       [YCM_CLANGD_BINARY_PATH_FILE=/dev/null])
+	    AC_SUBST_FILE([YCM_CLANGD_BINARY_PATH_FILE])
+	    AC_CONFIG_FILES([data/vim/ycm.vim])])
+
+# vim-plug requirements
+QH_REQUIRE_PROG([CURL], [curl], [path to curl])
+AC_SUBST_FILE([VIM_PLUG_YCM_FILE])
 
 # gvim
-QH_VAR_ENSURE([GVIM_FONT],
-              [gvim font],
-              [Monospace])
 
-QH_VAR_ENSURE([GVIM_FONT_SIZE],
-              [gvim font size],
-              [11])
+AC_CHECK_PROGS([GVIM], [gvim])
+AM_CONDITIONAL([HAVE_GVIM], [test "x$GVIM" = xgvim])
+AM_COND_IF([HAVE_GVIM],
+	   [QH_VAR_ENSURE([GVIM_FONT], [gvim font], [Monospace])
+	    QH_VAR_ENSURE([GVIM_FONT_SIZE], [gvim font size], [11])
+	    AM_COND_IF([HOST_OS_DARWIN], [GVIM_FONT_SEPARATOR=:h], [GVIM_FONT_SEPARATOR='\ '])
+	    AC_SUBST([GVIM_FONT_SEPARATOR])
+	    AC_CONFIG_FILES([data/vim/gvimrc])])
 
-AM_COND_IF([HOST_OS_DARWIN],
-           [GVIM_FONT_SEPARATOR=:h],
-           [GVIM_FONT_SEPARATOR='\ '])
-AC_SUBST([GVIM_FONT_SEPARATOR])
+# ruby
+
+AC_CHECK_PROGS([RUBY], [ruby])
+AM_CONDITIONAL([HAVE_RUBY], [test "x$RUBY" = xruby])
 
 ## configure output files
 
@@ -350,12 +372,10 @@ AC_CONFIG_FILES([Makefile
                  data/bash/common/functions
                  data/bash/common/global-bash
                  data/bash/common/bashrc.d/Makefile
-                 data/bash/common/bashrc.d/aws-functions.sh
                  data/bash/common/bashrc.d/ls.sh
                  data/bash/common/bashrc.d/ps1.sh
                  data/bash/common/bashrc.d/vi.sh
                  data/bash/common/profile.d/Makefile
-                 data/bash/common/profile.d/conan.sh
                  data/bash/common/profile.d/git.sh
                  data/bash/common/profile.d/editor.sh
                  data/dircolors/Makefile
@@ -367,7 +387,7 @@ AC_CONFIG_FILES([Makefile
                  data/ruby/Makefile
                  data/ssh/Makefile
                  data/vim/Makefile
-                 data/vim/cmake.vim
-                 data/vim/ycm.vim
+                 data/vim/vim-plug.vim.in
+                 data/vim/vimrc.in
                  ])
 AC_OUTPUT

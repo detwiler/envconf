@@ -1,0 +1,8 @@
+" vim: set ft=vim :
+
+source %vimconfdir%/init.vim
+source %vimconfdir%/map.vim
+source $VIMRUNTIME/vimrc_example.vim
+@VIMRC_YCM_FILE@
+source %vimconfdir%/vim-plug.vim
+source %vimconfdir%/option.vim

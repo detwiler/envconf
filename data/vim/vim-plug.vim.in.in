@@ -18,11 +18,10 @@ autocmd VimEnter * if len(filter(values(g:plugs), '!isdirectory(v:val.dir)'))
 call plug#begin('@vimpluggeddir@')
 
 " plugins
-Plug 'vhdirk/vim-cmake'
 Plug 'tpope/vim-dispatch'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-surround'
-Plug '@VIM_YCM_OWNER@/YouCompleteMe', {'branch': '@VIM_YCM_REF@', 'do': '@PYTHON@ install.py --clangd-completer'}
+@VIM_PLUG_YCM_FILE@
 Plug 'vivien/vim-linux-coding-style'
 Plug 'mmarchini/bpftrace.vim'
 

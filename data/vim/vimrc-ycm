@@ -1,0 +1,2 @@
+source %vimconfdir%/cmake.vim
+source %vimconfdir%/ycm.vim

@@ -6,10 +6,13 @@ SUBDIRS = autoconf \
 	  gnupg \
 	  man \
 	  readline \
-	  ruby \
 	  ssh \
 	  vim
 
 if HAVE_DIRCOLORS
 SUBDIRS += dircolors
+endif
+
+if HAVE_RUBY
+SUBDIRS += ruby
 endif

@@ -1,4 +1,3 @@
-
 # source the system wide bashrc if it exists
 if [ -f /etc/bash.bashrc ] ; then
   source /etc/bash.bashrc
@@ -9,7 +8,11 @@ if [ -f "$HOME/.bashrc" ] ; then
   source "$HOME/.bashrc"
 fi
 
+_toolbox_name=$(__toolbox_name)
+
 # source customizations
-if [ -f "@pkgconfdir@/profile" ]; then
-  source "@pkgconfdir@/profile"
+if [ -f "@pkgconfdir@/$_toolbox_name/profile" ]; then
+  source "@pkgconfdir@/$_toolbox_name/profile"
 fi
+
+unset _toolbox_name

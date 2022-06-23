@@ -19,7 +19,7 @@ ACLOCAL_AMFLAGS = -I m4 -I .quickhatch/m4
 BUILT_SOURCES = $(gvg_version) \
 		$(pkg_name)
 
-pkgconf_DATA = $(pkg_release)
+toolbox_DATA = $(pkg_release)
 
 CLEANFILES = $(gvg_version) \
 	     $(pkg_name) \
@@ -31,6 +31,18 @@ EXTRA_DIST = $(gvg_version) \
 	     README.md
 
 AM_DISTCHECK_CONFIGURE_FLAGS = HOME=$(top_distdir)
+
+if !ENABLE_AWS_CLI
+AM_DISTCHECK_CONFIGURE_FLAGS += --disable-aws-cli
+endif
+
+if !ENABLE_CONAN
+AM_DISTCHECK_CONFIGURE_FLAGS += --disable-conan
+endif
+
+if !ENABLE_YCM
+AM_DISTCHECK_CONFIGURE_FLAGS += --disable-ycm
+endif
 
 $(gvg_version):
 	$(AM_V_GEN)echo $(VERSION) > $@-t && mv $@-t $@

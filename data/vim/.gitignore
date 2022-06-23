@@ -5,6 +5,9 @@ cmake.vim
 gvimrc
 init.vim
 vim-plug.vim
+vim-plug.vim.in
+vim-plug-ycm
 vimrc
+vimrc.in
 ycm.vim
 ycm-clangd-binary-path
