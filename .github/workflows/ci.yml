@@ -43,7 +43,9 @@ jobs:
 
       # see: https://github.com/actions/checkout/issues/290
       - name: Fetch Tags
-        run: git fetch --force --tags
+        run: |
+          git config --add safe.directory $(pwd)
+          git fetch --force --tags
 
       - name: Configure Gnulib Cache Key
         run: echo "GNULIB_CACHE_KEY=`git submodule status .gnulib | sed -re 's/^.([0-9,a-f]{1,}) .*$/\1/'`" >>$GITHUB_ENV
