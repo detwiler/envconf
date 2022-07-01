@@ -44,7 +44,7 @@ jobs:
       # see: https://github.com/actions/checkout/issues/290
       - name: Fetch Tags
         run: |
-          git config --add safe.directory $(pwd)
+          git config --global --add safe.directory $(pwd)
           git fetch --force --tags
 
       - name: Configure Gnulib Cache Key
