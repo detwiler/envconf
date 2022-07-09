@@ -86,8 +86,8 @@ jobs:
 
       - name: Integration Test
         run: |
-          vim -es -u $RUNNER_TEMP/.config/vim/vimrc -i NONE -c PlugInstall -c qa
-          find $RUNNER_TEMP/.config/vim/plugged/YouCompleteMe -name 'ycm_core*.so' | grep .
+          vim -es -u $RUNNER_TEMP/.config/vim/$(__toolbox_name)/vimrc -i NONE -c PlugInstall -c qa
+          find $RUNNER_TEMP/.config/vim/$(__toolbox_name)/plugged/YouCompleteMe -name 'ycm_core*.so' | grep .
 
       - name: Configure Project Name and Version
         run: |
