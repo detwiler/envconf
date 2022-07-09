@@ -1,2 +1,2 @@
 Plug 'vhdirk/vim-cmake'
-Plug '@VIM_YCM_OWNER@/YouCompleteMe', {'branch': '@VIM_YCM_REF@', 'do': '@PYTHON@ install.py --clangd-completer --force-sudo'}
+Plug '@VIM_YCM_OWNER@/YouCompleteMe', {'branch': '@VIM_YCM_REF@', 'do': '@PYTHON@ install.py @VIM_YCM_ARGS@'}

@@ -324,6 +324,7 @@ AM_COND_IF([ENABLE_YCM],
 	    AC_CONFIG_FILES([data/vim/cmake.vim])
 	    EC_VIM_YCM_OWNER([VIM_YCM_OWNER], [GitHub owner for YouCompleteMe])
 	    EC_VIM_YCM_REF([VIM_YCM_REF], [Git reference for YouCompleteMe])
+	    EC_VIM_YCM_ARGS([VIM_YCM_ARGS], [Arguments for YouCompleteMe install script])
 	    VIM_PLUG_YCM_FILE=data/vim/vim-plug-ycm
 	    AC_CONFIG_FILES([data/vim/vim-plug-ycm])
 	    VIMRC_YCM_FILE=data/vim/vimrc-ycm],

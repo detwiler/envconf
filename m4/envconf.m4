@@ -62,6 +62,38 @@ AS_VAR_SET_IF([$1],
                AC_MSG_RESULT([$$1])])
 ]) # EC_VIM_YCM_REF
 
+# EC_VIM_YCM_ARGS(VARIABLE, DESCRIPTION)
+# ----------------------------------------------------------
+# Set the arguments for the Vim plugin YouCompleteMe's installation script.
+# Ensure the literal shell VARIABLE is set, and make it precious by passing to
+# AC_ARG_VAR along with DESCRIPTION.  If not set, set the contents to the
+# computed value for os-release ID and VERSION_ID.
+AC_DEFUN([EC_VIM_YCM_ARGS],
+[
+AC_ARG_VAR([$1],[$2])
+AC_MSG_CHECKING([if $1 is set])
+AS_VAR_SET_IF([$1],
+              [AC_MSG_RESULT([$$1])],
+              [AC_MSG_RESULT([no])
+               AS_VAR_COPY([_ec_version], [VERSION])
+               QH_OS_RELEASE
+               AS_ECHO_N(['setting $1 to computed value... '])
+               AS_CASE([$ID],
+                       [alpine], [AS_CASE([$VERSION_ID],
+                                          [3.13*], [AS_VAR_SET([$1], [--clangd-completer])],
+                                          [3.14*], [AS_VAR_SET([$1], [--clangd-completer])],
+                                          [AS_VAR_SET([$1], ['--clangd-completer --force-sudo'])])],
+                       [centos], [AS_CASE([$VERSION_ID],
+                                          [8], [AS_VAR_SET([$1], [--clangd-completer])],
+                                          [AS_VAR_SET([$1], ['--clangd-completer --force-sudo'])])],
+                       [ubuntu], [AS_CASE([$VERSION_ID],
+                                          [18.04], [AS_VAR_SET([$1], [--clangd-completer])],
+                                          [AS_VAR_SET([$1], ['--clangd-completer --force-sudo'])])],
+                       [AS_VAR_SET([$1], ['--clangd-completer --force-sudo'])])
+               AS_VAR_COPY([VERSION], [_ec_version])
+               AC_MSG_RESULT([$$1])])
+]) # EC_VIM_YCM_ARGS
+
 # EC_TOOLBOX_ENV
 # ----------------------------------------------------------
 # Find the container environment file and source it.
