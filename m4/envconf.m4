@@ -91,6 +91,6 @@ AS_VAR_SET_IF([$1],
                AS_ECHO_N(['setting $1 to computed value... '])
                AS_VAR_SET([$1],[$name])
                AS_IF([test "x$$1" = x],
-                     [AS_VAR_SET([$1],[`hostnamectl hostname`])])
+                     [AS_VAR_SET([$1],[$HOSTNAME])])
                AC_MSG_RESULT([$$1])])
 ]) # EC_TOOLBOX_NAME
