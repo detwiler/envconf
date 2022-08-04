@@ -52,6 +52,8 @@ if HAVE_GVIM
 make_data += $(gvim)
 endif
 
+$(make_data): Makefile
+
 profile_DATA += $(make_data)
 
 # variables to support building our output

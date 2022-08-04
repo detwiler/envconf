@@ -53,9 +53,13 @@ vimconf_make_data = $(init) \
 		    $(vim_plug)
 vimconf_DATA += $(vimconf_make_data)
 
+make_data = $(vimconf_make_data) \
+	    $(vim_make_data)
+
+$(make_data): Makefile
+
 # variables to support building our output
-make_output = $(vimconf_make_data) \
-	      $(vim_make_data)
+make_output = $(make_data)
 
 make_sources = $(addsuffix .in,$(make_output))
 
