@@ -312,16 +312,13 @@ AC_SUBST_FILE([XDG_BASEDIR_FILE])
 
 QH_REQUIRE_PROG([VIM], [vim vi], [path to vim])
 
-# YouCompleteMe requirements
+# Vim YouCompleteMe requirements
 QH_ARG_ENABLE([ycm], [yes])
 AM_CONDITIONAL([ENABLE_YCM], [test "x$enable_ycm" = xyes])
 AM_COND_IF([ENABLE_YCM],
 	   [QH_REQUIRE_PROG([CLANGD], [clangd clangd-10], [path to clangd])
 	    QH_REQUIRE_PROG([CMAKE], [cmake], [path to cmake])
 	    QH_REQUIRE_PROG([GCXX], [g++], [path to g++])
-	    QH_VAR_ENSURE([VIM_CMAKE_BUILD_DIR],
-			  [vim-cmake plugin build directory], [.ycm-build])
-	    AC_CONFIG_FILES([data/vim/cmake.vim])
 	    EC_VIM_YCM_OWNER([VIM_YCM_OWNER], [GitHub owner for YouCompleteMe])
 	    EC_VIM_YCM_REF([VIM_YCM_REF], [Git reference for YouCompleteMe])
 	    EC_VIM_YCM_ARGS([VIM_YCM_ARGS], [Arguments for YouCompleteMe install script])
@@ -344,12 +341,25 @@ AM_COND_IF([ENABLE_YCM],
 	    AC_SUBST_FILE([YCM_CLANGD_BINARY_PATH_FILE])
 	    AC_CONFIG_FILES([data/vim/ycm.vim])])
 
+# Vim CMake requirements
+QH_ARG_ENABLE([vim_cmake], [yes])
+AM_CONDITIONAL([ENABLE_VIM_CMAKE], [test "x$enable_vim_cmake" = xyes])
+AM_COND_IF([ENABLE_VIM_CMAKE],
+	   [QH_REQUIRE_PROG([CMAKE], [cmake], [path to cmake])
+	    QH_VAR_ENSURE([VIM_CMAKE_BUILD_DIR],
+			  [vim-cmake plugin build directory], [.ycm-build])
+	    AC_CONFIG_FILES([data/vim/cmake.vim])
+            VIM_PLUG_CMAKE_FILE=data/vim/vim-plug-cmake
+	    VIMRC_CMAKE_FILE=data/vim/vimrc-cmake],
+           [VIM_PLUG_CMAKE_FILE=/dev/null
+            VIMRC_CMAKE_FILE=/dev/null])
+AC_SUBST_FILE([VIMRC_CMAKE_FILE])
+
 # vim-plug requirements
 QH_REQUIRE_PROG([CURL], [curl], [path to curl])
 AC_SUBST_FILE([VIM_PLUG_YCM_FILE])
 
 # gvim
-
 AC_CHECK_PROGS([GVIM], [gvim])
 AM_CONDITIONAL([HAVE_GVIM], [test "x$GVIM" = xgvim])
 AM_COND_IF([HAVE_GVIM],
@@ -359,7 +369,7 @@ AM_COND_IF([HAVE_GVIM],
 	    AC_SUBST([GVIM_FONT_SEPARATOR])
 	    AC_CONFIG_FILES([data/vim/gvimrc])])
 
-# ruby
+## ruby ##
 
 AC_CHECK_PROGS([RUBY], [ruby])
 AM_CONDITIONAL([HAVE_RUBY], [test "x$RUBY" = xruby])

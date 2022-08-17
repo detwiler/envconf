@@ -40,9 +40,11 @@ if !ENABLE_CONAN
 AM_DISTCHECK_CONFIGURE_FLAGS += --disable-conan
 endif
 
-if !ENABLE_YCM
-AM_DISTCHECK_CONFIGURE_FLAGS += --disable-ycm
+if !ENABLE_VIM_CMAKE
+AM_DISTCHECK_CONFIGURE_FLAGS += --disable-vim-cmake
 endif
+
+AM_DISTCHECK_CONFIGURE_FLAGS += --disable-ycm
 
 $(gvg_version):
 	$(AM_V_GEN)echo $(VERSION) > $@-t && mv $@-t $@

@@ -33,10 +33,14 @@ vim_DATA = $(vim_conf_data)
 
 vimconf_conf_data =
 
-if ENABLE_YCM
+if ENABLE_VIM_CMAKE
 vimconf_conf_data += $(cmake)
+endif
+
+if ENABLE_YCM
 vimconf_conf_data += $(ycm)
 endif
+
 
 vimconf_DATA = $(vimconf_conf_data)
 
@@ -77,3 +81,17 @@ EDIT = -e 's:@vimautoloaddir[@]:$(vimautoloaddir):g' \
        -e 's:%vimconfdir%:$(vimconfdir):g' \
        -e 's:@vimdir[@]:$(vimdir):g' \
        -e 's:@vimpluggeddir[@]:$(vimpluggeddir):g'
+
+.PHONY: vim-plug-install
+vim-plug-install:
+	$(AM_V_GEN)$(VIM) -es -u $(DESTDIR)$(vimdir)/vimrc -i NONE -c PlugInstall -c qa
+
+.PHONY: vim-plug-uninstall
+vim-plug-uninstall:
+	$(AM_V_GEN)rm -rf $(DESTDIR)$(vimautoloaddir) && \
+	  rm -rf $(DESTDIR)$(vimpluggeddir)
+
+if ENABLE_YCM
+install-data-hook: vim-plug-install
+uninstall-hook: vim-plug-uninstall
+endif
