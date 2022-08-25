@@ -25,8 +25,14 @@ AS_IF([test "x$GREP" = xno],
 AM_CONDITIONAL([HOST_OS_DARWIN], [echo $host_os | $GREP darwin &>/dev/null])
 AM_CONDITIONAL([HOST_OS_MINGW], [echo $host_os | $GREP mingw &>/dev/null])
 
+# option to provision toolbox host environment
+QH_ARG_ENABLE([toolbox_host], [no])
+AM_CONDITIONAL([ENABLE_TOOLBOX_HOST], [test "x$enable_toolbox_host" != xno])
+
 # set TOOLBOX_NAME
-EC_TOOLBOX_NAME([TOOLBOX_NAME], [Toolbox name])
+AM_COND_IF([ENABLE_TOOLBOX_HOST],
+           [QH_VAR_ENSURE([TOOLBOX_NAME], [Toolbox name], [`flatpak-spawn --host hostname`])],
+           [EC_TOOLBOX_NAME([TOOLBOX_NAME], [Toolbox name])])
 
 AC_PREFIX_DEFAULT([$HOME/.local])
 
@@ -63,7 +69,10 @@ AC_PROG_SED
 
 ## aws-cli ##
 
-QH_ARG_ENABLE([aws_cli], [yes])
+AM_COND_IF([ENABLE_TOOLBOX_HOST],
+           [_ec_aws_cli_default=no],
+           [_ec_aws_cli_default=yes])
+QH_ARG_ENABLE([aws_cli], [$_ec_aws_cli_default])
 AM_CONDITIONAL([ENABLE_AWS_CLI], [test "x$enable_aws_cli" = xyes])
 AM_COND_IF([ENABLE_AWS_CLI],
            [QH_REQUIRE_PROG([AWS], [aws], [path to aws])])
@@ -111,8 +120,16 @@ AM_CONDITIONAL([BIND_INPUTRC], [test "x$INPUTRC" != x])
 # customization of PS1 color
 # Text color codes:
 # 30=black 31=red 32=green 33=yellow 34=blue 35=magenta 36=cyan 37=white
-QH_VAR_ENSURE([PS1_USER_COLOR], [bash prompt username color],    [32])
-QH_VAR_ENSURE([PS1_HOST_COLOR], [bash prompt hostname color],    [34])
+AM_COND_IF([ENABLE_TOOLBOX_HOST],
+           [_ec_host_default=31],
+           [_ec_host_default=34])
+
+AS_IF([test "x`id --user`" = x0],
+      [_ec_user_default=31],
+      [_ec_user_default=32])
+
+QH_VAR_ENSURE([PS1_USER_COLOR], [bash prompt username color],    [$_ec_user_default])
+QH_VAR_ENSURE([PS1_HOST_COLOR], [bash prompt hostname color],    [$_ec_host_default])
 QH_VAR_ENSURE([PS1_GIT_COLOR],  [bash prompt git status color],  [32])
 QH_VAR_ENSURE([PS1_PWD_COLOR],  [bash prompt pwd color],          [0])
 QH_VAR_ENSURE([PS1_AWS_COLOR],  [bash prompt aws profile color], [33])
@@ -138,7 +155,10 @@ AM_COND_IF([HAVE_WIN_PY3],
 
 ## conan ##
 
-QH_ARG_ENABLE([conan], [yes])
+AM_COND_IF([ENABLE_TOOLBOX_HOST],
+           [_ec_conan_default=no],
+           [_ec_conan_default=yes])
+QH_ARG_ENABLE([conan], [$_ec_conan_default])
 AM_CONDITIONAL([ENABLE_CONAN], [test "x$enable_conan" = xyes])
 AM_COND_IF([ENABLE_CONAN],
 	   [QH_REQUIRE_PROG([CLANG], [clang clang-10], [path to clang])
@@ -342,7 +362,10 @@ AM_COND_IF([ENABLE_YCM],
 	    AC_CONFIG_FILES([data/vim/ycm.vim])])
 
 # Vim CMake requirements
-QH_ARG_ENABLE([vim_cmake], [yes])
+AM_COND_IF([ENABLE_TOOLBOX_HOST],
+           [_ec_vim_cmake_default=no],
+           [_ec_vim_cmake_default=yes])
+QH_ARG_ENABLE([vim_cmake], [$_ec_vim_cmake_default])
 AM_CONDITIONAL([ENABLE_VIM_CMAKE], [test "x$enable_vim_cmake" = xyes])
 AM_COND_IF([ENABLE_VIM_CMAKE],
 	   [QH_REQUIRE_PROG([CMAKE], [cmake], [path to cmake])
