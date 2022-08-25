@@ -10,8 +10,8 @@ jobs:
     strategy:
       matrix:
         include:
-          - image: alpine:3.14
           - image: alpine:latest
+          - image: quay.io/centos/centos:stream8
           - image: quay.io/centos/centos:stream9
           - image: fedora:latest
           - image: ubuntu:latest
