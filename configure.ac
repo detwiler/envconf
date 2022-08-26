@@ -275,11 +275,11 @@ AM_CONDITIONAL([LOCAL_GIT_PROMPT],
 
 ## gnulib ##
 
-QH_VAR_ENSURE([GNULIB_SRCDIR],
-              [path to gnulib source directory],
+QH_VAR_ENSURE([GNULIB_REFDIR],
+              [path to gnulib git repository clone],
               [$REFDIR/gnulib])
-AM_CONDITIONAL([HAVE_GNULIB_SRCDIR], [test -d $GNULIB_SRCDIR])
-AM_COND_IF([HAVE_GNULIB_SRCDIR],
+AM_CONDITIONAL([HAVE_GNULIB_REFDIR], [test -d $GNULIB_REFDIR])
+AM_COND_IF([HAVE_GNULIB_REFDIR],
            [AC_CONFIG_FILES([data/bash/common/profile.d/gnulib.sh])])
 
 ## go ##

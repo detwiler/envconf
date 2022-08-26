@@ -74,18 +74,18 @@ mk-bindir:
 
 $(gnulib_tool): mk-bindir
 	$(AM_V_GEN)cd $(DESTDIR)$(bindir) && \
-	  test -h $@ || $(LN_S) $(GNULIB_SRCDIR)/$@ $@
+	  test -h $@ || $(LN_S) $(GNULIB_REFDIR)/$@ $@
 
 $(vc_list_files): mk-bindir
 	$(AM_V_GEN)cd $(DESTDIR)$(bindir) && \
-	  test -h $@ || $(LN_S) $(GNULIB_SRCDIR)/build-aux/$@ $@
+	  test -h $@ || $(LN_S) $(GNULIB_REFDIR)/build-aux/$@ $@
 
 .PHONY: rm-gnulib-scripts
 rm-gnulib-scripts:
 	$(AM_V_GEN)cd $(DESTDIR)$(bindir) && \
 	  rm -f $(gnulib_scripts)
 
-if HAVE_GNULIB_SRCDIR
+if HAVE_GNULIB_REFDIR
 install_data_targets += $(gnulib_scripts)
 uninstall_targets += rm-gnulib-scripts
 endif

@@ -31,7 +31,7 @@ dist_profile_DATA = $(static_data)
 conf_data = $(git) \
 	    $(editor)
 
-if HAVE_GNULIB_SRCDIR
+if HAVE_GNULIB_REFDIR
 conf_data += $(gnulib)
 endif
 
