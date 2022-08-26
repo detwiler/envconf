@@ -19,7 +19,7 @@ ACLOCAL_AMFLAGS = -I m4 -I .quickhatch/m4
 BUILT_SOURCES = $(gvg_version) \
 		$(pkg_name)
 
-pkgconf_DATA = $(pkg_release)
+toolbox_DATA = $(pkg_release)
 
 CLEANFILES = $(gvg_version) \
 	     $(pkg_name) \
@@ -31,6 +31,20 @@ EXTRA_DIST = $(gvg_version) \
 	     README.md
 
 AM_DISTCHECK_CONFIGURE_FLAGS = HOME=$(top_distdir)
+
+if !ENABLE_AWS_CLI
+AM_DISTCHECK_CONFIGURE_FLAGS += --disable-aws-cli
+endif
+
+if !ENABLE_CONAN
+AM_DISTCHECK_CONFIGURE_FLAGS += --disable-conan
+endif
+
+if !ENABLE_VIM_CMAKE
+AM_DISTCHECK_CONFIGURE_FLAGS += --disable-vim-cmake
+endif
+
+AM_DISTCHECK_CONFIGURE_FLAGS += --disable-ycm
 
 $(gvg_version):
 	$(AM_V_GEN)echo $(VERSION) > $@-t && mv $@-t $@
@@ -60,18 +74,18 @@ mk-bindir:
 
 $(gnulib_tool): mk-bindir
 	$(AM_V_GEN)cd $(DESTDIR)$(bindir) && \
-	  test -h $@ || $(LN_S) $(GNULIB_SRCDIR)/$@ $@
+	  test -h $@ || $(LN_S) $(GNULIB_REFDIR)/$@ $@
 
 $(vc_list_files): mk-bindir
 	$(AM_V_GEN)cd $(DESTDIR)$(bindir) && \
-	  test -h $@ || $(LN_S) $(GNULIB_SRCDIR)/build-aux/$@ $@
+	  test -h $@ || $(LN_S) $(GNULIB_REFDIR)/build-aux/$@ $@
 
 .PHONY: rm-gnulib-scripts
 rm-gnulib-scripts:
 	$(AM_V_GEN)cd $(DESTDIR)$(bindir) && \
 	  rm -f $(gnulib_scripts)
 
-if HAVE_GNULIB_SRCDIR
+if HAVE_GNULIB_REFDIR
 install_data_targets += $(gnulib_scripts)
 uninstall_targets += rm-gnulib-scripts
 endif

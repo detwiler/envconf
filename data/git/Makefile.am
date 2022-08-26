@@ -6,6 +6,7 @@ include $(top_srcdir)/rules.mk
 gitconfig = .gitconfig
 gitignore_core = .gitignore-core
 gitconfig_signing_key = gitconfig-signing-key
+pager_diff_highlight = pager-diff-hightlight
 
 # static data/scripts (not generated; require explicit distribution)
 static_data = $(gitignore_core)
@@ -18,7 +19,8 @@ conf_data = $(gitconfig)
 home_DATA = $(conf_data)
 
 DISTCLEANFILES = $(conf_data) \
-		 $(gitconfig_signing_key)
+		 $(gitconfig_signing_key) \
+		 $(pager_diff_highlight)
 
 EXTRA_DIST = cred-helper-manager \
 	     cred-helper-pass
