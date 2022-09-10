@@ -118,21 +118,17 @@ AM_COND_IF([HOST_OS_DARWIN],
 AM_CONDITIONAL([BIND_INPUTRC], [test "x$INPUTRC" != x])
 
 # customization of PS1 color
-# Text color codes:
-# 30=black 31=red 32=green 33=yellow 34=blue 35=magenta 36=cyan 37=white
+EC_PS1_DEFAULT
 AM_COND_IF([ENABLE_TOOLBOX_HOST],
-           [_ec_host_default=31],
-           [_ec_host_default=34])
+           [AS_CASE([$TERM],
+                    [*256*], [AS_VAR_SET([_ec_ps1_host_default], ['38;5;245'])],
+                             [AS_VAR_SET([_ec_ps1_host_default], [37])])])
 
-AS_IF([test "x`id --user`" = x0],
-      [_ec_user_default=31],
-      [_ec_user_default=32])
-
-QH_VAR_ENSURE([PS1_USER_COLOR], [bash prompt username color],    [$_ec_user_default])
-QH_VAR_ENSURE([PS1_HOST_COLOR], [bash prompt hostname color],    [$_ec_host_default])
-QH_VAR_ENSURE([PS1_GIT_COLOR],  [bash prompt git status color],  [32])
-QH_VAR_ENSURE([PS1_PWD_COLOR],  [bash prompt pwd color],          [0])
-QH_VAR_ENSURE([PS1_AWS_COLOR],  [bash prompt aws profile color], [33])
+QH_VAR_ENSURE([PS1_USER_COLOR], [bash prompt username color],    [$_ec_ps1_user_default])
+QH_VAR_ENSURE([PS1_HOST_COLOR], [bash prompt hostname color],    [$_ec_ps1_host_default])
+QH_VAR_ENSURE([PS1_GIT_COLOR],  [bash prompt git status color],  [$_ec_ps1_git_default])
+QH_VAR_ENSURE([PS1_PWD_COLOR],  [bash prompt pwd color],         [0])
+QH_VAR_ENSURE([PS1_AWS_COLOR],  [bash prompt aws profile color], [$_ec_ps1_aws_default])
 
 ## python ##
 
