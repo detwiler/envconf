@@ -16,7 +16,6 @@ jobs:
           - image: debian:latest
           - image: fedora:latest
           - image: registry.access.redhat.com/ubi9/ubi
-          - image: debian:latest
           - image: ubuntu:20.04
           - image: ubuntu:latest
           - image: ubuntu:rolling
