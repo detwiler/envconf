@@ -58,6 +58,15 @@ python3-pip
 vim-enhanced
 '
 
+pkgs_rhel='
+clang-tools-extra
+ctags
+gcc-c++
+platform-python-devel
+python3-pip
+vim-enhanced
+'
+
 test -r $OS_RELEASE_FILE || exit
 
 . $OS_RELEASE_FILE
@@ -79,11 +88,16 @@ case $ID in
         $SUDO dnf --assumeyes --refresh install epel-release epel-next-release
         $SUDO dnf --assumeyes --refresh install --allowerasing $pkgs_common $pkgs_centos
         ;;
-    fedora)
-        $SUDO dnf --assumeyes --refresh install $pkgs_common $pkgs_fedora
-        ;;
     debian|ubuntu)
         $SUDO apt-get --assume-yes update
         $SUDO apt-get --assume-yes install $pkgs_common $pkgs_debian
+        ;;
+    fedora)
+        $SUDO dnf --assumeyes --refresh install $pkgs_common $pkgs_fedora
+        ;;
+    rhel)
+        $SUDO dnf --assumeyes --refresh install epel-release
+        $SUDO dnf --assumeyes --refresh install --allowerasing $pkgs_common $pkgs_rhel
+        $SUDO pip3 install awscli
         ;;
 esac

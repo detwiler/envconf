@@ -35,11 +35,15 @@ case $ID in
         $SUDO dnf --assumeyes --refresh install epel-release epel-next-release
         $SUDO dnf --assumeyes --refresh install --allowerasing $pkgs_common
         ;;
-    fedora)
-        $SUDO dnf --assumeyes --refresh install $pkgs_common
-        ;;
     debian|ubuntu)
         $SUDO apt-get --assume-yes update
         $SUDO apt-get --assume-yes install $pkgs_common
+        ;;
+    fedora)
+        $SUDO dnf --assumeyes --refresh install $pkgs_common
+        ;;
+    rhel)
+        $SUDO dnf --assumeyes --refresh install epel-release
+        $SUDO dnf --assumeyes --refresh install --allowerasing $pkgs_common
         ;;
 esac
