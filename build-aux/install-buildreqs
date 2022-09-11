@@ -19,6 +19,7 @@ test -r $OS_RELEASE_FILE || exit
 
 case $ID in
     alpine)
+        $SUDO apk update
         $SUDO apk add $pkgs_common
         ;;
     centos)
@@ -31,13 +32,14 @@ case $ID in
                 ;;
         esac
         $SUDO dnf --assumeyes config-manager --set-enabled $extra_repos
-        $SUDO dnf --assumeyes install epel-release epel-next-release
-        $SUDO dnf --assumeyes install --allowerasing $pkgs_common
+        $SUDO dnf --assumeyes --refresh install epel-release epel-next-release
+        $SUDO dnf --assumeyes --refresh install --allowerasing $pkgs_common
         ;;
     fedora)
-        $SUDO dnf --assumeyes install $pkgs_common
+        $SUDO dnf --assumeyes --refresh install $pkgs_common
         ;;
-    ubuntu)
+    debian|ubuntu)
+        $SUDO apt-get --assume-yes update
         $SUDO apt-get --assume-yes install $pkgs_common
         ;;
 esac

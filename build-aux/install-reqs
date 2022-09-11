@@ -36,6 +36,18 @@ python3-pip
 vim-enhanced
 '
 
+pkgs_debian='
+awscli
+apt-utils
+clangd
+exuberant-ctags
+g++
+locales-all
+python3-dev
+python3-pip
+vim-nox
+'
+
 pkgs_fedora='
 awscli
 clang-tools-extra
@@ -44,16 +56,6 @@ gcc-c++
 python3-devel
 python3-pip
 vim-enhanced
-'
-
-pkgs_ubuntu='
-awscli
-clangd
-exuberant-ctags
-g++
-python3-dev
-python3-pip
-vim
 '
 
 test -r $OS_RELEASE_FILE || exit
@@ -74,13 +76,14 @@ case $ID in
                 ;;
         esac
         $SUDO dnf --assumeyes config-manager --set-enabled $extra_repos
-        $SUDO dnf --assumeyes install epel-release epel-next-release
-        $SUDO dnf --assumeyes install --allowerasing $pkgs_common $pkgs_centos
+        $SUDO dnf --assumeyes --refresh install epel-release epel-next-release
+        $SUDO dnf --assumeyes --regresh install --allowerasing $pkgs_common $pkgs_centos
         ;;
     fedora)
-        $SUDO dnf --assumeyes install $pkgs_common $pkgs_fedora
+        $SUDO dnf --assumeyes --refresh install $pkgs_common $pkgs_fedora
         ;;
-    ubuntu)
-        $SUDO apt-get --assume-yes install $pkgs_common $pkgs_ubuntu
+    debian|ubuntu)
+        $SUDO apt-get --assume-yes update
+        $SUDO apt-get --assume-yes install $pkgs_common $pkgs_debian
         ;;
 esac
