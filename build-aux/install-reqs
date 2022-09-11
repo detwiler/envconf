@@ -77,7 +77,7 @@ case $ID in
         esac
         $SUDO dnf --assumeyes config-manager --set-enabled $extra_repos
         $SUDO dnf --assumeyes --refresh install epel-release epel-next-release
-        $SUDO dnf --assumeyes --regresh install --allowerasing $pkgs_common $pkgs_centos
+        $SUDO dnf --assumeyes --refresh install --allowerasing $pkgs_common $pkgs_centos
         ;;
     fedora)
         $SUDO dnf --assumeyes --refresh install $pkgs_common $pkgs_fedora
