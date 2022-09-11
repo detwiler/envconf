@@ -19,11 +19,16 @@ call plug#begin('@vimpluggeddir@')
 
 " plugins
 Plug 'mmarchini/bpftrace.vim'
+
+if ( v:version >= 802 )
+    Plug 'vim/colorschemes'
+endif
+
+@VIM_PLUG_CMAKE_FILE@
 Plug 'tpope/vim-dispatch'
 Plug 'tpope/vim-fugitive'
-Plug 'tpope/vim-surround'
-@VIM_PLUG_CMAKE_FILE@
 Plug 'vivien/vim-linux-coding-style'
+Plug 'tpope/vim-surround'
 @VIM_PLUG_YCM_FILE@
 
 " Initialize plugin system

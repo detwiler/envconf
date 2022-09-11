@@ -36,6 +36,18 @@ python3-pip
 vim-enhanced
 '
 
+pkgs_debian='
+awscli
+apt-utils
+clangd
+exuberant-ctags
+g++
+locales-all
+python3-dev
+python3-pip
+vim-nox
+'
+
 pkgs_fedora='
 awscli
 clang-tools-extra
@@ -46,14 +58,13 @@ python3-pip
 vim-enhanced
 '
 
-pkgs_ubuntu='
-awscli
-clangd
-exuberant-ctags
-g++
-python3-dev
+pkgs_rhel='
+clang-tools-extra
+ctags
+gcc-c++
+platform-python-devel
 python3-pip
-vim
+vim-enhanced
 '
 
 test -r $OS_RELEASE_FILE || exit
@@ -74,13 +85,19 @@ case $ID in
                 ;;
         esac
         $SUDO dnf --assumeyes config-manager --set-enabled $extra_repos
-        $SUDO dnf --assumeyes install epel-release epel-next-release
-        $SUDO dnf --assumeyes install --allowerasing $pkgs_common $pkgs_centos
+        $SUDO dnf --assumeyes --refresh install epel-release epel-next-release
+        $SUDO dnf --assumeyes --refresh install --allowerasing $pkgs_common $pkgs_centos
+        ;;
+    debian|ubuntu)
+        $SUDO apt-get --assume-yes update
+        $SUDO apt-get --assume-yes install $pkgs_common $pkgs_debian
         ;;
     fedora)
-        $SUDO dnf --assumeyes install $pkgs_common $pkgs_fedora
+        $SUDO dnf --assumeyes --refresh install $pkgs_common $pkgs_fedora
         ;;
-    ubuntu)
-        $SUDO apt-get --assume-yes install $pkgs_common $pkgs_ubuntu
+    rhel)
+        $SUDO dnf --assumeyes --refresh install https://dl.fedoraproject.org/pub/epel/epel-release-latest-9.noarch.rpm
+        $SUDO dnf --assumeyes --refresh install --allowerasing $pkgs_common $pkgs_rhel
+        $SUDO pip3 install awscli
         ;;
 esac

@@ -13,7 +13,9 @@ jobs:
           - image: alpine:latest
           - image: quay.io/centos/centos:stream8
           - image: quay.io/centos/centos:stream9
+          - image: debian:latest
           - image: fedora:latest
+          - image: registry.access.redhat.com/ubi9/ubi
           - image: ubuntu:20.04
           - image: ubuntu:latest
           - image: ubuntu:rolling
@@ -30,8 +32,8 @@ jobs:
           . /etc/os-release
           case $ID in
               alpine) apk update && apk upgrade && apk add git tar;;
-              centos|fedora) dnf -y upgrade && dnf -y install dnf-plugins-core git-core which;;
-              ubuntu) apt-get -y update && apt-get -y upgrade && apt-get -y install git;;
+              centos|fedora|rhel) dnf -y upgrade && dnf -y install dnf-plugins-core git-core which;;
+              debian|ubuntu) apt-get -y update && apt-get -y upgrade && apt-get -y install git;;
           esac
 
       - name: Checkout
@@ -86,7 +88,6 @@ jobs:
 
       - name: Integration Test
         run: |
-          vim -es -u $RUNNER_TEMP/.config/vim/$HOSTNAME/vimrc -i NONE -c PlugInstall -c qa
           find $RUNNER_TEMP/.config/vim/$HOSTNAME/plugged/YouCompleteMe -name 'ycm_core*.so' | grep .
 
       - name: Configure Project Name and Version
