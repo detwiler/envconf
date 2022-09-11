@@ -43,7 +43,7 @@ case $ID in
         $SUDO dnf --assumeyes --refresh install $pkgs_common
         ;;
     rhel)
-        $SUDO dnf --assumeyes --refresh install epel-release
+        $SUDO dnf --assumeyes --refresh install https://dl.fedoraproject.org/pub/epel/epel-release-latest-9.noarch.rpm
         $SUDO dnf --assumeyes --refresh install --allowerasing $pkgs_common
         ;;
 esac
