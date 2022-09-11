@@ -8,4 +8,8 @@ set shiftwidth=4
 set tags+=./tags,tags
 set wildmode=list:longest
 
+if has('termguicolors')
+    set termguicolors
+endif
+
 colorscheme desert

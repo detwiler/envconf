@@ -45,19 +45,9 @@ conf-data-perms:
 $(keydir):
 	$(MKDIR_P) -m 0700 $(DESTDIR)$@
 
-.PHONY: rm-keydir
-rm-keydir:
-	rmdir $(DESTDIR)$(keydir)
-
 $(knownhostsdir):
 	$(MKDIR_P) -m 0700 $(DESTDIR)$@
 
-.PHONY: rm-knownhostsdir
-rm-knownhostsdir:
-	rmdir $(DESTDIR)$(knownhostsdir)
-
 install-data-local: $(keydir) $(knownhostsdir)
-
-uninstall-local: rm-keydir rm-knownhostsdir
 
 install-data-hook: sshdir-perms ssh-data-perms confdir-perms conf-data-perms
