@@ -35,7 +35,11 @@ jobs:
               alpine) apk update && apk upgrade && apk add git tar;;
               centos)
                   case $VERSION_ID in
-                        7) yum -y install dnf;;
+                        7)
+                                 yum -y install dnf
+                                 dnf -y install centos-release-scl
+                                 dnf -y install rh-git227-git-core
+                        ;;
                   esac
                   dnf -y upgrade && dnf -y install dnf-plugins-core git-core which
               ;;
@@ -47,6 +51,7 @@ jobs:
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
+        run: which scl && scl enable rh-git227 bash || true
 
       - name: Configure Gnulib Cache Key
         run: echo "GNULIB_CACHE_KEY=`git submodule status .gnulib | sed -re 's/^.([0-9,a-f]{1,}) .*$/\1/'`" >>$GITHUB_ENV
