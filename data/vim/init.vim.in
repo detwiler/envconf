@@ -2,7 +2,7 @@
 
 set runtimepath^=@vimdir@
 set runtimepath+=@vimdir@/after
-if has('viminfofile')
+if exists('&viminfofile')
   set viminfofile=@vimdir@/viminfo
 endif
 set directory^=@vimdir@/swap//
