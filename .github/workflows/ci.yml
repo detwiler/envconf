@@ -11,6 +11,7 @@ jobs:
       matrix:
         include:
           - image: alpine:latest
+          - image: quay.io/centos/centos:centos7
           - image: quay.io/centos/centos:stream8
           - image: quay.io/centos/centos:stream9
           - image: debian:latest
