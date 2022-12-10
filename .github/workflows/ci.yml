@@ -95,7 +95,7 @@ jobs:
 
       # FIXME: figure out why vim-plug PlugInstall is failing on CentOS 7
       - name: Install
-        if: !(endsWith(matrix.image, 'centos7'))
+        if: endsWith(matrix.image, 'centos7') != true
         run: make install
 
       - name: Integration Test
