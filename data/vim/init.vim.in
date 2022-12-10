@@ -2,7 +2,9 @@
 
 set runtimepath^=@vimdir@
 set runtimepath+=@vimdir@/after
-set viminfofile=@vimdir@/viminfo
+if has('viminfofile')
+  set viminfofile=@vimdir@/viminfo
+endif
 set directory^=@vimdir@/swap//
 set backupdir^=@vimdir@/backup//
 set undodir^=@vimdir@/undo//

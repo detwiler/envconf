@@ -44,7 +44,7 @@ if !ENABLE_VIM_CMAKE
 AM_DISTCHECK_CONFIGURE_FLAGS += --disable-vim-cmake
 endif
 
-AM_DISTCHECK_CONFIGURE_FLAGS += --disable-ycm
+AM_DISTCHECK_CONFIGURE_FLAGS += --disable-vim-plug-install
 
 $(gvg_version):
 	$(AM_V_GEN)echo $(VERSION) > $@-t && mv $@-t $@

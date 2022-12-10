@@ -332,8 +332,7 @@ QH_REQUIRE_PROG([VIM], [vim vi], [path to vim])
 QH_ARG_ENABLE([ycm], [yes])
 AM_CONDITIONAL([ENABLE_YCM], [test "x$enable_ycm" = xyes])
 AM_COND_IF([ENABLE_YCM],
-	   [QH_REQUIRE_PROG([CLANGD], [clangd clangd-10], [path to clangd])
-	    QH_REQUIRE_PROG([CMAKE], [cmake], [path to cmake])
+	   [QH_REQUIRE_PROG([CMAKE], [cmake], [path to cmake])
 	    QH_REQUIRE_PROG([GCXX], [g++], [path to g++])
 	    EC_VIM_YCM_OWNER([VIM_YCM_OWNER], [GitHub owner for YouCompleteMe])
 	    EC_VIM_YCM_REF([VIM_YCM_REF], [Git reference for YouCompleteMe])
@@ -345,13 +344,12 @@ AM_COND_IF([ENABLE_YCM],
 	    VIMRC_YCM_FILE=/dev/null])
 AC_SUBST_FILE([VIMRC_YCM_FILE])
 
-# At present, all platforms that do not use the upstream ycm-core distribution
-# of YouCompleteMe are cases where we need to use the system clangd binary.
-# This approach will need to be revised if that changes in the future.
-AM_CONDITIONAL([VIM_YCM_SYSTEM_CLANGD], [test "x$VIM_YCM_OWNER" != xycm-core])
+AM_CONDITIONAL([VIM_YCM_SYSTEM_CLANGD],
+	       [test "x$VIM_YCM_OWNER" = "xdetwiler" && test "x$VIM_YCM_REF" != "xvim-7.4.143"])
 AM_COND_IF([ENABLE_YCM],
 	   [AM_COND_IF([VIM_YCM_SYSTEM_CLANGD],
-		       [YCM_CLANGD_BINARY_PATH_FILE=data/vim/ycm-clangd-binary-path
+		       [QH_REQUIRE_PROG([CLANGD], [clangd clangd-10], [path to clangd])
+			YCM_CLANGD_BINARY_PATH_FILE=data/vim/ycm-clangd-binary-path
 			AC_CONFIG_FILES([data/vim/ycm-clangd-binary-path])],
 		       [YCM_CLANGD_BINARY_PATH_FILE=/dev/null])
 	    AC_SUBST_FILE([YCM_CLANGD_BINARY_PATH_FILE])
@@ -372,9 +370,12 @@ AM_COND_IF([ENABLE_VIM_CMAKE],
 	    VIMRC_CMAKE_FILE=data/vim/vimrc-cmake],
            [VIM_PLUG_CMAKE_FILE=/dev/null
             VIMRC_CMAKE_FILE=/dev/null])
+AC_SUBST_FILE([VIM_PLUG_CMAKE_FILE])
 AC_SUBST_FILE([VIMRC_CMAKE_FILE])
 
 # vim-plug requirements
+QH_ARG_ENABLE([vim_plug_install], [yes])
+AM_CONDITIONAL([ENABLE_VIM_PLUG_INSTALL], [test "x$enable_vim_plug_install" = xyes])
 QH_REQUIRE_PROG([CURL], [curl], [path to curl])
 AC_SUBST_FILE([VIM_PLUG_YCM_FILE])
 

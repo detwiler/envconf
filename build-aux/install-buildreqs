@@ -24,16 +24,24 @@ case $ID in
         ;;
     centos)
         case $VERSION_ID in
+            7)
+                repo_pkgs='centos-release-scl epel-release'
+                enable_repos=
+                pkgs_centos=rh-git227
+		$SUDO yum --assumeyes install dnf
+                ;;
             8)
-                extra_repos=powertools
+                repo_pkgs='epel-release epel-next-release'
+                enable_repos=powertools
                 ;;
             9)
-                extra_repos=crb
+                repo_pkgs='epel-release epel-next-release'
+                enable_repos=crb
                 ;;
         esac
-        $SUDO dnf --assumeyes config-manager --set-enabled $extra_repos
-        $SUDO dnf --assumeyes --refresh install epel-release epel-next-release
-        $SUDO dnf --assumeyes --refresh install --allowerasing $pkgs_common
+        test "x$enable_repos" != x && $SUDO dnf --assumeyes config-manager --set-enabled $enable_repos
+        $SUDO dnf --assumeyes --refresh install $repo_pkgs
+        $SUDO dnf --assumeyes --refresh install --allowerasing $pkgs_common $pkgs_centos
         ;;
     debian|ubuntu)
         $SUDO apt-get --assume-yes update
