@@ -72,8 +72,12 @@ jobs:
               git clone $GNULIB_URL $GNULIB_REFDIR
           fi
 
+      # bootstrap initializes submodules
+      # see: https://github.com/actions/checkout/issues/915
       - name: Bootstrap
-        run: ./bootstrap --install-buildreqs --install-reqs
+        run: |
+          git config --global --add safe.directory $(pwd)
+          ./bootstrap --install-buildreqs --install-reqs
 
       - name: Configure
         run: ./configure --prefix=$RUNNER_TEMP/.local --sysconfdir=$RUNNER_TEMP/.config
