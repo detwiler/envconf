@@ -80,7 +80,7 @@ case $ID in
                 repo_pkgs=epel-release
                 enable_repos=
 		pkgs_centos="$pkgs_centos python3-devel"
-		$SUDO yum --assumeyes install dnf
+		$SUDO yum --assumeyes install dnf dnf-plugins-core
                 ;;
             8)
                 repo_pkgs='epel-release epel-next-release'

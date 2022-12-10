@@ -28,7 +28,7 @@ case $ID in
                 repo_pkgs='centos-release-scl epel-release'
                 enable_repos=
                 pkgs_centos=rh-git227
-		$SUDO yum --assumeyes install dnf
+		$SUDO yum --assumeyes install dnf dnf-plugins-core
                 ;;
             8)
                 repo_pkgs='epel-release epel-next-release'

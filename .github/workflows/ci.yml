@@ -33,7 +33,13 @@ jobs:
           . /etc/os-release
           case $ID in
               alpine) apk update && apk upgrade && apk add git tar;;
-              centos|fedora|rhel) dnf -y upgrade && dnf -y install dnf-plugins-core git-core which;;
+              centos)
+                  case $VERSION_ID in
+                        7) yum -y install dnf;;
+                  esac
+                  dnf -y upgrade && dnf -y install dnf-plugins-core git-core which
+              ;;
+              fedora|rhel) dnf -y upgrade && dnf -y install dnf-plugins-core git-core which;;
               debian|ubuntu) apt-get -y update && apt-get -y upgrade && apt-get -y install git;;
           esac
 
