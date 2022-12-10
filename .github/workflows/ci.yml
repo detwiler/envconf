@@ -25,6 +25,7 @@ jobs:
       DEBIAN_FRONTEND: noninteractive
       GNULIB_REFDIR: "$HOME/.gnulib"
       GNULIB_URL: 'https://github.com/coreutils/gnulib.git'
+      LD_LIBRARY_PATH: '/opt/rh/httpd24/root/usr/lib64'
       USER: ${{ github.repository_owner }}
 
     steps:
