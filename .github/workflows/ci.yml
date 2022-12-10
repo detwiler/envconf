@@ -44,15 +44,9 @@ jobs:
           esac
 
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0
-
-      # see: https://github.com/actions/checkout/issues/290
-      - name: Fetch Tags
-        run: |
-          git config --global --add safe.directory $(pwd)
-          git fetch --force --tags
 
       - name: Configure Gnulib Cache Key
         run: echo "GNULIB_CACHE_KEY=`git submodule status .gnulib | sed -re 's/^.([0-9,a-f]{1,}) .*$/\1/'`" >>$GITHUB_ENV
