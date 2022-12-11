@@ -4,6 +4,8 @@ set runtimepath^=@vimdir@
 set runtimepath+=@vimdir@/after
 if exists('&viminfofile')
   set viminfofile=@vimdir@/viminfo
+else
+  set viminfo+=n@vimdir@/viminfo
 endif
 set directory^=@vimdir@/swap//
 set backupdir^=@vimdir@/backup//
