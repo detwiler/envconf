@@ -106,6 +106,7 @@ AM_CONDITIONAL([ENABLE_SCL], [test "x$enable_scl" = xyes])
 AM_COND_IF([ENABLE_SCL],
 	   [QH_REQUIRE_PROG([SCL], [scl], [path to scl])
 	    QH_REQUIRE_PROG([SCL_ENABLED], [scl_enabled], [path to scl_enabled])
+	    QH_REQUIRE_PROG([SCL_SOURCE], [scl_source], [path to scl_source])
 	    QH_VAR_ENSURE([SCL_LIST],
 			  [software collections list],
 			  [`$SCL --list`])
