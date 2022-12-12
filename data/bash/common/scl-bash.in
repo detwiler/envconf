@@ -1,0 +1,10 @@
+# login to scl-enabled bash
+
+# only do this in interactive shells
+if echo $- | grep i &> /dev/null; then
+    for scl in @SCL_LIST@; do
+        if ! @SCL_ENABLED@ $scl; then
+            @SCL@ enable @SCL_LIST@ $BASH
+        fi
+    done
+fi

@@ -21,14 +21,21 @@ if [ -f "@pkgconfdir@/$_toolbox_name/global-bash" ]; then
   source "@pkgconfdir@/$_toolbox_name/global-bash"
 fi
 
+# Enable software collections
+if [ -f "@pkgconfdir@/$_toolbox_name/scl-bash" ]; then
+  source "@pkgconfdir@/$_toolbox_name/scl-bash"
+fi
+
 # User specific aliases and functions
 if [ -f "@pkgconfdir@/$_toolbox_name/functions" ]; then
   source "@pkgconfdir@/$_toolbox_name/functions"
 fi
 
 # Set PATH so it includes user's private bin dirs if they exist
-pathmung @bindir@
-pathmung @sbindir@
+if type -t pathmung &>/dev/null; then
+    pathmung @bindir@
+    pathmung @sbindir@
+fi
 
 # Add Homebrew directories to PATH
 if [ -f "@pkgconfdir@/$_toolbox_name/homebrew-pathmung" ]; then
