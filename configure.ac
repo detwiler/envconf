@@ -168,10 +168,13 @@ AM_COND_IF([ENABLE_TOOLBOX_HOST],
 QH_ARG_ENABLE([conan], [$_ec_conan_default])
 AM_CONDITIONAL([ENABLE_CONAN], [test "x$enable_conan" = xyes])
 AM_COND_IF([ENABLE_CONAN],
-	   [QH_REQUIRE_PROG([CLANG], [clang clang-10], [path to clang])
-	    QH_COMPILER_C_VERSION_MAJOR([CONAN_CLANG_VERSIONS],
-					[clang version for conan],
-					[$CLANG])
+	   [AC_ARG_VAR([CLANG], [clang program])
+            AC_PATH_PROGS([CLANG], [clang clang-10], [no])
+            AM_CONDITIONAL([HAVE_CLANG], [test "x$CLANG" != xno])
+	    AM_COND_IF([HAVE_CLANG],
+                       [QH_COMPILER_C_VERSION_MAJOR([CONAN_CLANG_VERSIONS],
+                                                    [clang version for conan],
+                                                    [$CLANG])])
 	    QH_REQUIRE_PROG([GCC], [gcc], [path to gcc])
 	    QH_COMPILER_C_VERSION_MAJOR([CONAN_GCC_VERSIONS],
 					[gcc version for conan],
