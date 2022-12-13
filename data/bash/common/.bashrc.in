@@ -21,11 +21,6 @@ if [ -f "@pkgconfdir@/$_toolbox_name/global-bash" ]; then
   source "@pkgconfdir@/$_toolbox_name/global-bash"
 fi
 
-# Enable software collections
-if [ -f "@pkgconfdir@/$_toolbox_name/scl-bash" ]; then
-  source "@pkgconfdir@/$_toolbox_name/scl-bash"
-fi
-
 # User specific aliases and functions
 if [ -f "@pkgconfdir@/$_toolbox_name/functions" ]; then
   source "@pkgconfdir@/$_toolbox_name/functions"

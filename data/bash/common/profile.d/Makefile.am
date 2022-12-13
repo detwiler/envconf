@@ -14,6 +14,7 @@ gpg = gpg.sh
 gvim = gvim.sh
 info = info.sh
 macosx = macosx.sh
+scl = scl.sh
 vim = vim.sh
 
 # static data/scripts (not generated; require explicit distribution)
@@ -33,6 +34,10 @@ conf_data = $(git) \
 
 if HAVE_GNULIB_REFDIR
 conf_data += $(gnulib)
+endif
+
+if ENABLE_SCL
+conf_data += $(scl)
 endif
 
 profile_DATA = $(conf_data)

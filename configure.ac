@@ -110,7 +110,7 @@ AM_COND_IF([ENABLE_SCL],
 	    QH_VAR_ENSURE([SCL_LIST],
 			  [software collections list],
 			  [`$SCL --list`])
-            AC_CONFIG_FILES([data/bash/common/scl-bash])])
+            AC_CONFIG_FILES([data/bash/common/profile.d/scl.sh])])
 
 # bash-completion not enabled by default on Darwin
 AM_COND_IF([HOST_OS_DARWIN],
