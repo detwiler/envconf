@@ -1,18 +1,24 @@
 # source the system wide bashrc if it exists
 if [ -f /etc/bash.bashrc ] ; then
-  source /etc/bash.bashrc
+    source /etc/bash.bashrc
 fi
 
 # source the users bashrc if it exists
 if [ -f "$HOME/.bashrc" ] ; then
-  source "$HOME/.bashrc"
+    source "$HOME/.bashrc"
 fi
 
 _toolbox_name=$(__toolbox_name)
 
 # source customizations
 if [ -f "@pkgconfdir@/$_toolbox_name/profile" ]; then
-  source "@pkgconfdir@/$_toolbox_name/profile"
+    source "@pkgconfdir@/$_toolbox_name/profile"
+fi
+
+# Set PATH so it includes user's private bin dirs if they exist
+if type -t pathmung &>/dev/null; then
+    pathmung @bindir@
+    pathmung @sbindir@
 fi
 
 unset _toolbox_name
