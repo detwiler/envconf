@@ -141,6 +141,14 @@ QH_VAR_ENSURE([PS1_GIT_COLOR],  [bash prompt git status color],  [$_ec_ps1_git_d
 QH_VAR_ENSURE([PS1_PWD_COLOR],  [bash prompt pwd color],         [0])
 QH_VAR_ENSURE([PS1_AWS_COLOR],  [bash prompt aws profile color], [$_ec_ps1_aws_default])
 
+## cmake ##
+#
+# cmake3 #
+AC_ARG_VAR([CMAKE], [cmake program])
+AC_CHECK_PROGS([CMAKE], [cmake3 cmake], [cmake])
+AM_CONDITIONAL([HAVE_CMAKE3], [test "x$CMAKE" = xcmake3])
+AM_COND_IF([HAVE_CMAKE3], [AC_CONFIG_FILES([data/bash/common/bashrc.d/cmake3.sh])])
+
 ## python ##
 
 AM_PATH_PYTHON([3.0], [],
@@ -346,7 +354,7 @@ QH_REQUIRE_PROG([VIM], [vim vi], [path to vim])
 QH_ARG_ENABLE([ycm], [yes])
 AM_CONDITIONAL([ENABLE_YCM], [test "x$enable_ycm" = xyes])
 AM_COND_IF([ENABLE_YCM],
-	   [QH_REQUIRE_PROG([CMAKE], [cmake], [path to cmake])
+	   [QH_REQUIRE_PROG([CMAKE], [cmake cmake3], [path to cmake])
 	    QH_REQUIRE_PROG([GCXX], [g++], [path to g++])
 	    EC_VIM_YCM_OWNER([VIM_YCM_OWNER], [GitHub owner for YouCompleteMe])
 	    EC_VIM_YCM_REF([VIM_YCM_REF], [Git reference for YouCompleteMe])
@@ -376,7 +384,7 @@ AM_COND_IF([ENABLE_TOOLBOX_HOST],
 QH_ARG_ENABLE([vim_cmake], [$_ec_vim_cmake_default])
 AM_CONDITIONAL([ENABLE_VIM_CMAKE], [test "x$enable_vim_cmake" = xyes])
 AM_COND_IF([ENABLE_VIM_CMAKE],
-	   [QH_REQUIRE_PROG([CMAKE], [cmake], [path to cmake])
+	   [QH_REQUIRE_PROG([CMAKE], [cmake cmake3], [path to cmake])
 	    QH_VAR_ENSURE([VIM_CMAKE_BUILD_DIR],
 			  [vim-cmake plugin build directory], [.ycm-build])
 	    AC_CONFIG_FILES([data/vim/cmake.vim])
