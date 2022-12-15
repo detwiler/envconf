@@ -101,17 +101,6 @@ AM_COND_IF([HAVE_BASH_PATH],
            [MULTI_BASH_HACK=data/bash/common/single-bash.sh])
 AC_SUBST_FILE([MULTI_BASH_HACK])
 
-QH_ARG_ENABLE([scl], [no])
-AM_CONDITIONAL([ENABLE_SCL], [test "x$enable_scl" = xyes])
-AM_COND_IF([ENABLE_SCL],
-	   [QH_REQUIRE_PROG([SCL], [scl], [path to scl])
-	    QH_REQUIRE_PROG([SCL_ENABLED], [scl_enabled], [path to scl_enabled])
-	    QH_REQUIRE_PROG([SCL_SOURCE], [scl_source], [path to scl_source])
-	    QH_VAR_ENSURE([SCL_LIST],
-			  [software collections list],
-			  [`$SCL --list`])
-            AC_CONFIG_FILES([data/bash/common/profile.d/scl.sh])])
-
 # bash-completion not enabled by default on Darwin
 AM_COND_IF([HOST_OS_DARWIN],
            [QH_VAR_ENSURE([BASH_COMPLETION],
@@ -333,6 +322,19 @@ AM_COND_IF([HOST_OS_DARWIN],
                           [Homebrew prefix],
                           [/usr/local])
             AC_CONFIG_FILES([data/bash/common/homebrew-pathmung])])
+
+## software collections ##
+
+QH_ARG_ENABLE([scl], [no])
+AM_CONDITIONAL([ENABLE_SCL], [test "x$enable_scl" = xyes])
+AM_COND_IF([ENABLE_SCL],
+	   [QH_REQUIRE_PROG([SCL], [scl], [path to scl])
+	    QH_REQUIRE_PROG([SCL_ENABLED], [scl_enabled], [path to scl_enabled])
+	    QH_REQUIRE_PROG([SCL_SOURCE], [scl_source], [path to scl_source])
+	    QH_VAR_ENSURE([SCL_LIST],
+			  [software collections list],
+			  [`$SCL --list`])
+            AC_CONFIG_FILES([data/bash/common/profile.d/scl.sh])])
 
 ## systemd ##
 
