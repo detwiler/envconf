@@ -15,10 +15,4 @@ if [ -f "@pkgconfdir@/$_toolbox_name/profile" ]; then
     source "@pkgconfdir@/$_toolbox_name/profile"
 fi
 
-# Set PATH so it includes user's private bin dirs if they exist
-if type -t pathmung &>/dev/null; then
-    pathmung @bindir@
-    pathmung @sbindir@
-fi
-
 unset _toolbox_name

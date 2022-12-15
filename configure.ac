@@ -134,7 +134,7 @@ QH_VAR_ENSURE([PS1_AWS_COLOR],  [bash prompt aws profile color], [$_ec_ps1_aws_d
 #
 # cmake3 #
 AC_ARG_VAR([CMAKE], [cmake program])
-AC_CHECK_PROGS([CMAKE], [cmake3 cmake], [cmake])
+AC_CHECK_PROGS([CMAKE], [cmake cmake3], [no])
 AM_CONDITIONAL([HAVE_CMAKE3], [test "x$CMAKE" = xcmake3])
 AM_COND_IF([HAVE_CMAKE3], [AC_CONFIG_FILES([data/bash/common/bashrc.d/cmake3.sh])])
 

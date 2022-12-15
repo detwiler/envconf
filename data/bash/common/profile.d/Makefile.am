@@ -17,6 +17,7 @@ macosx = macosx.sh
 python = python.sh
 scl = scl.sh
 vim = vim.sh
+zz_path = zz-path.sh
 
 # static data/scripts (not generated; require explicit distribution)
 static_data = $(bash_completion) \
@@ -49,7 +50,8 @@ DISTCLEANFILES = $(conf_data)
 make_data = $(go) \
 	    $(info) \
 	    $(python) \
-	    $(vim)
+	    $(vim) \
+	    $(zz_path)
 
 if ENABLE_CONAN
 make_data += $(conan)
@@ -83,4 +85,5 @@ EDIT = -e 's:@bindir[@]:$(bindir):g' \
        -e 's:@GOPATH[@]:$(GOPATH):g' \
        -e 's:@infodir[@]:$(infodir):g' \
        -e 's:@prefix[@]:$(prefix):g' \
+       -e 's:@sbindir[@]:$(sbindir):g' \
        -e 's:@vimdir[@]:$(vimdir):g'

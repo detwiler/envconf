@@ -1,0 +1,3 @@
+# Set PATH so it includes user's private bin dirs if they exist
+pathmung @bindir@
+pathmung @sbindir@

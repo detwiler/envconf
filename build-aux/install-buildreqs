@@ -18,10 +18,24 @@ test -r $OS_RELEASE_FILE || exit
 . $OS_RELEASE_FILE
 
 case $ID in
+    almalinux)
+        case $VERSION_ID in
+            8*)
+                enable_repos='plus powertools'
+                ;;
+            9*)
+                enable_repos='plus crb'
+                ;;
+        esac
+        $SUDO dnf --assumeyes config-manager --set-enabled $enable_repos
+        $SUDO dnf --assumeyes --refresh install epel-release
+        $SUDO dnf --assumeyes --refresh install --allowerasing $pkgs_common
+        ;;
     alpine)
         $SUDO apk update
         $SUDO apk add $pkgs_common
         ;;
+
     centos)
         case $VERSION_ID in
             7)
@@ -43,6 +57,7 @@ case $ID in
         $SUDO dnf --assumeyes --refresh install $repo_pkgs
         $SUDO dnf --assumeyes --refresh install --allowerasing $pkgs_common $pkgs_centos
         ;;
+
     debian|ubuntu)
         $SUDO apt-get --assume-yes update
         $SUDO apt-get --assume-yes install $pkgs_common

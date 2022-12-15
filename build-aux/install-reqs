@@ -71,6 +71,20 @@ test -r $OS_RELEASE_FILE || exit
 . $OS_RELEASE_FILE
 
 case $ID in
+    almalinux)
+        pkgs_centos="$pkgs_centos clang-tools-extra platform-python-devel"
+        case $VERSION_ID in
+            8*)
+                enable_repos='plus powertools'
+                ;;
+            9*)
+                enable_repos='plus crb'
+                ;;
+        esac
+        $SUDO dnf --assumeyes config-manager --set-enabled $enable_repos
+        $SUDO dnf --assumeyes --refresh install epel-release
+        $SUDO dnf --assumeyes --refresh install --allowerasing $pkgs_common $pkgs_centos
+        ;;
     alpine)
         $SUDO apk add $pkgs_common $pkgs_alpine
         ;;
