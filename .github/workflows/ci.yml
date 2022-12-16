@@ -11,7 +11,7 @@ jobs:
       matrix:
         include:
           - image: almalinux:latest
-          - image: almalinux:9-base
+          - image: almalinux/9-base:latest
           - image: alpine:latest
           - image: quay.io/centos/centos:centos7
           - image: quay.io/centos/centos:stream8
