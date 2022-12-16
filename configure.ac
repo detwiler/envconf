@@ -167,11 +167,6 @@ AM_CONDITIONAL([ENABLE_CONAN], [test "x$enable_conan" = xyes])
 AM_COND_IF([ENABLE_CONAN],
 	   [AC_ARG_VAR([CLANG], [clang program])
             AC_PATH_PROGS([CLANG], [clang clang-10], [no])
-            AM_CONDITIONAL([HAVE_CLANG], [test "x$CLANG" != xno])
-	    AM_COND_IF([HAVE_CLANG],
-                       [QH_COMPILER_C_VERSION_MAJOR([CONAN_CLANG_VERSIONS],
-                                                    [clang version for conan],
-                                                    [$CLANG])])
 	    QH_REQUIRE_PROG([GCC], [gcc], [path to gcc])
 	    QH_COMPILER_C_VERSION_MAJOR([CONAN_GCC_VERSIONS],
 					[gcc version for conan],
@@ -183,6 +178,12 @@ AM_COND_IF([ENABLE_CONAN],
 	    QH_VAR_ENSURE([CONAN_USERNAME],
 			  [User name required by conan-package-tools],
 			  [$USER])])
+AM_CONDITIONAL([HAVE_CLANG], [test "x$CLANG" != xno])
+AM_COND_IF([ENABLE_CONAN],
+	   [AM_COND_IF([HAVE_CLANG],
+	               [QH_COMPILER_C_VERSION_MAJOR([CONAN_CLANG_VERSIONS],
+					            [clang version for conan],
+					            [$CLANG])])])
 
 ## coreutils ##
 

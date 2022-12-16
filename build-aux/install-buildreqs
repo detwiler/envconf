@@ -18,7 +18,8 @@ test -r $OS_RELEASE_FILE || exit
 . $OS_RELEASE_FILE
 
 case $ID in
-    almalinux)
+
+    almalinux|rocky)
         case $VERSION_ID in
             8*)
                 enable_repos='plus powertools'
@@ -31,6 +32,7 @@ case $ID in
         $SUDO dnf --assumeyes --refresh install epel-release
         $SUDO dnf --assumeyes --refresh install --allowerasing $pkgs_common
         ;;
+
     alpine)
         $SUDO apk update
         $SUDO apk add $pkgs_common
@@ -62,11 +64,14 @@ case $ID in
         $SUDO apt-get --assume-yes update
         $SUDO apt-get --assume-yes install $pkgs_common
         ;;
+
     fedora)
         $SUDO dnf --assumeyes --refresh install $pkgs_common
         ;;
+
     rhel)
         $SUDO dnf --assumeyes --refresh install https://dl.fedoraproject.org/pub/epel/epel-release-latest-9.noarch.rpm
         $SUDO dnf --assumeyes --refresh install --allowerasing $pkgs_common
         ;;
+
 esac

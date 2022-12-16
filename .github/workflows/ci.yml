@@ -11,7 +11,7 @@ jobs:
       matrix:
         include:
           - image: almalinux:latest
-          - image: almalinux/9-base:latest
+          - image: almalinux:9
           - image: alpine:latest
           - image: quay.io/centos/centos:centos7
           - image: quay.io/centos/centos:stream8
@@ -19,6 +19,8 @@ jobs:
           - image: debian:latest
           - image: fedora:latest
           - image: registry.access.redhat.com/ubi9/ubi
+          - image: rockylinux:8
+          - image: rockylinux:9
           - image: ubuntu:20.04
           - image: ubuntu:latest
           - image: ubuntu:rolling

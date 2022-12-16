@@ -71,7 +71,8 @@ test -r $OS_RELEASE_FILE || exit
 . $OS_RELEASE_FILE
 
 case $ID in
-    almalinux)
+
+    almalinux|rocky)
         pkgs_centos="$pkgs_centos clang-tools-extra platform-python-devel"
         case $VERSION_ID in
             8*)
@@ -85,9 +86,11 @@ case $ID in
         $SUDO dnf --assumeyes --refresh install epel-release
         $SUDO dnf --assumeyes --refresh install --allowerasing $pkgs_common $pkgs_centos
         ;;
+
     alpine)
         $SUDO apk add $pkgs_common $pkgs_alpine
         ;;
+
     centos)
         case $VERSION_ID in
             7)
@@ -111,16 +114,20 @@ case $ID in
         $SUDO dnf --assumeyes --refresh install $repo_pkgs
         $SUDO dnf --assumeyes --refresh install --allowerasing $pkgs_common $pkgs_centos
         ;;
+
     debian|ubuntu)
         $SUDO apt-get --assume-yes update
         $SUDO apt-get --assume-yes install $pkgs_common $pkgs_debian
         ;;
+
     fedora)
         $SUDO dnf --assumeyes --refresh install $pkgs_common $pkgs_fedora
         ;;
+
     rhel)
         $SUDO dnf --assumeyes --refresh install https://dl.fedoraproject.org/pub/epel/epel-release-latest-9.noarch.rpm
         $SUDO dnf --assumeyes --refresh install --allowerasing $pkgs_common $pkgs_rhel
         $SUDO pip3 install awscli
         ;;
+
 esac
