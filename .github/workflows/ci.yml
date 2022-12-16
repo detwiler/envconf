@@ -37,9 +37,8 @@ jobs:
         run: |
           . /etc/os-release
           case $ID in
-              almalinux) dnf -y upgrade && dnf -y install dnf-plugins-core git-core which;;
               alpine) apk update && apk upgrade && apk add git tar;;
-              centos)
+              almalinux|centos|rocky)
                   case $VERSION_ID in
                         7)
                                  yum -y install centos-release-scl dnf dnf-plugins-core
