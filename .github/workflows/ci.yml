@@ -10,6 +10,7 @@ jobs:
     strategy:
       matrix:
         include:
+          - image: almalinux:latest
           - image: alpine:latest
           - image: quay.io/centos/centos:centos7
           - image: quay.io/centos/centos:stream8
@@ -33,6 +34,7 @@ jobs:
         run: |
           . /etc/os-release
           case $ID in
+              almalinux) dnf -y upgrade && dnf -y install dnf-plugins-core git-core which;;
               alpine) apk update && apk upgrade && apk add git tar;;
               centos)
                   case $VERSION_ID in
