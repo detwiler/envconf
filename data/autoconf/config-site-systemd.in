@@ -1,4 +1,3 @@
 # vim:ft=sh
 
 test "$sysconfdir" = '${prefix}/etc' && sysconfdir=`@SYSTEMD_PATH@ user-configuration`
-test "$libdir" = '${exec_prefix}/lib' && libdir=`@SYSTEMD_PATH@ user-library-arch`

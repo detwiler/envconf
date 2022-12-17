@@ -1,10 +1,8 @@
-@XDG_BASEDIR_FILE@
+# vim:ft=sh
 
-test "$includedir" = '${prefix}/include' && includedir="$HOME/.local/include"
+@XDG_BASEDIR_FILE@
 
 # set FLAGS accordingly
 test "x$CFLAGS" = x && CFLAGS='-march=native'
 test "x$CPPFLAGS" = x && CPPFLAGS="-I$includedir"
 test "x$LDFLAGS" = x && LDFLAGS="-L$libdir -Wl,-rpath,$libdir"
-
-# vim:ft=sh
