@@ -20,7 +20,7 @@ ACLOCAL_AMFLAGS = -I m4 -I .quickhatch/m4
 BUILT_SOURCES = $(gvg_version) \
 		$(pkg_name)
 
-toolbox_DATA = $(pkg_release)
+dist_toolbox_DATA = $(pkg_release)
 
 CLEANFILES = $(gvg_version) \
 	     $(pkg_name) \
