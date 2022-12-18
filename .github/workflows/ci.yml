@@ -57,12 +57,20 @@ jobs:
         with:
           fetch-depth: 0
 
+      # This step addresses issues with actions/checkout
+      # see: https://github.com/actions/checkout/issues/290
+      # see: https://github.com/actions/checkout/issues/915
+      - name: Post Checkout Hacks
+        run: |
+          git config --global --add safe.directory $(pwd)
+          git fetch --force --tags
+
       - name: Configure Gnulib Cache Key
         run: echo "GNULIB_CACHE_KEY=`git submodule status .gnulib | sed -re 's/^.([0-9,a-f]{1,}) .*$/\1/'`" >>$GITHUB_ENV
 
       - name: Cache Gnulib Repository
         id: cache-gnulib
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         env:
           cache-name: cache-gnulib
         with:
@@ -81,12 +89,8 @@ jobs:
               git clone $GNULIB_URL $GNULIB_REFDIR
           fi
 
-      # bootstrap initializes submodules, so we need safe.directory
-      # see: https://github.com/actions/checkout/issues/915
       - name: Bootstrap
-        run: |
-          git config --global --add safe.directory $(pwd)
-          ./bootstrap --install-buildreqs --install-reqs
+        run: ./bootstrap --install-buildreqs --install-reqs
 
       - name: Configure
         run: ./configure --prefix=$RUNNER_TEMP/.local --sysconfdir=$RUNNER_TEMP/.config
@@ -114,7 +118,7 @@ jobs:
           echo "PROJECT_VERSION=`cat .version`" >>$GITHUB_ENV
 
       - name: Upload Distribution Artifacts
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: distribution-artifacts
           if-no-files-found: error
@@ -131,7 +135,7 @@ jobs:
 
     steps:
       - name: Download Distribution Artifacts
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: distribution-artifacts
 
@@ -142,20 +146,8 @@ jobs:
 
       - name: Create Release
         id: create-release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        uses: softprops/action-gh-release@v1
         with:
-          tag_name: v${{ env.PROJECT_VERSION }}
-          release_name: Release ${{ env.PROJECT_VERSION }}
-
-      - name: Upload Release Asset
-        id: upload-release-asset
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create-release.outputs.upload_url }}
-          asset_path: ${{ env.PROJECT_NAME }}-${{ env.PROJECT_VERSION }}.tar.gz
-          asset_name: ${{ env.PROJECT_NAME }}-${{ env.PROJECT_VERSION }}.tar.gz
-          asset_content_type: application/gzip
+          name: Release ${{ env.PROJECT_VERSION }}
+          files: ${{ env.PROJECT_NAME }}-${{ env.PROJECT_VERSION }}.tar.gz
+          fail_on_unmatched_files: true
