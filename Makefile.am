@@ -5,6 +5,7 @@ SUBDIRS = data
 gvg_version = $(top_srcdir)/.version
 pkg_name = $(top_srcdir)/.package-name
 pkg_release = $(PACKAGE)-release
+cmake = cmake
 gnulib_tool = gnulib-tool
 vc_list_files = vc-list-files
 gnulib_scripts = $(gnulib_tool) \
@@ -19,7 +20,7 @@ ACLOCAL_AMFLAGS = -I m4 -I .quickhatch/m4
 BUILT_SOURCES = $(gvg_version) \
 		$(pkg_name)
 
-toolbox_DATA = $(pkg_release)
+dist_toolbox_DATA = $(pkg_release)
 
 CLEANFILES = $(gvg_version) \
 	     $(pkg_name) \
@@ -44,7 +45,7 @@ if !ENABLE_VIM_CMAKE
 AM_DISTCHECK_CONFIGURE_FLAGS += --disable-vim-cmake
 endif
 
-AM_DISTCHECK_CONFIGURE_FLAGS += --disable-ycm
+AM_DISTCHECK_CONFIGURE_FLAGS += --disable-vim-plug-install
 
 $(gvg_version):
 	$(AM_V_GEN)echo $(VERSION) > $@-t && mv $@-t $@
@@ -72,6 +73,10 @@ mk-bindir:
 	$(AM_V_GEN)test -e $(DESTDIR)$(bindir) \
 	  || $(MKDIR_P) $(DESTDIR)$(bindir)
 
+$(cmake): mk-bindir
+	$(AM_V_GEN)cd $(DESTDIR)$(bindir) && \
+	  test -h $@ || $(LN_S) $(CMAKE) $@
+
 $(gnulib_tool): mk-bindir
 	$(AM_V_GEN)cd $(DESTDIR)$(bindir) && \
 	  test -h $@ || $(LN_S) $(GNULIB_REFDIR)/$@ $@
@@ -79,6 +84,11 @@ $(gnulib_tool): mk-bindir
 $(vc_list_files): mk-bindir
 	$(AM_V_GEN)cd $(DESTDIR)$(bindir) && \
 	  test -h $@ || $(LN_S) $(GNULIB_REFDIR)/build-aux/$@ $@
+
+.PHONY: rm-cmake
+rm-cmake:
+	$(AM_V_GEN)cd $(DESTDIR)$(bindir) && \
+	  rm -f $(cmake)
 
 .PHONY: rm-gnulib-scripts
 rm-gnulib-scripts:
@@ -88,6 +98,11 @@ rm-gnulib-scripts:
 if HAVE_GNULIB_REFDIR
 install_data_targets += $(gnulib_scripts)
 uninstall_targets += rm-gnulib-scripts
+endif
+
+if HAVE_CMAKE3
+install_data_targets += $(cmake)
+uninstall_targets += rm-cmake
 endif
 
 .PHONY: mk-gnupgdir

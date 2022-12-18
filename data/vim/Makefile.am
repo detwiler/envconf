@@ -91,7 +91,7 @@ vim-plug-uninstall:
 	$(AM_V_GEN)rm -rf $(DESTDIR)$(vimautoloaddir) && \
 	  rm -rf $(DESTDIR)$(vimpluggeddir)
 
-if ENABLE_YCM
+if ENABLE_VIM_PLUG_INSTALL
 install-data-hook: vim-plug-install
 uninstall-hook: vim-plug-uninstall
 endif

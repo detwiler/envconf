@@ -130,6 +130,14 @@ QH_VAR_ENSURE([PS1_GIT_COLOR],  [bash prompt git status color],  [$_ec_ps1_git_d
 QH_VAR_ENSURE([PS1_PWD_COLOR],  [bash prompt pwd color],         [0])
 QH_VAR_ENSURE([PS1_AWS_COLOR],  [bash prompt aws profile color], [$_ec_ps1_aws_default])
 
+## cmake ##
+#
+# cmake3 #
+AC_ARG_VAR([CMAKE], [cmake program])
+AC_CHECK_PROGS([CMAKE], [cmake cmake3], [no])
+AM_CONDITIONAL([HAVE_CMAKE3], [test "x$CMAKE" = xcmake3])
+AM_COND_IF([HAVE_CMAKE3], [AC_CONFIG_FILES([data/bash/common/bashrc.d/cmake3.sh])])
+
 ## python ##
 
 AM_PATH_PYTHON([3.0], [],
@@ -157,10 +165,8 @@ AM_COND_IF([ENABLE_TOOLBOX_HOST],
 QH_ARG_ENABLE([conan], [$_ec_conan_default])
 AM_CONDITIONAL([ENABLE_CONAN], [test "x$enable_conan" = xyes])
 AM_COND_IF([ENABLE_CONAN],
-	   [QH_REQUIRE_PROG([CLANG], [clang clang-10], [path to clang])
-	    QH_COMPILER_C_VERSION_MAJOR([CONAN_CLANG_VERSIONS],
-					[clang version for conan],
-					[$CLANG])
+	   [AC_ARG_VAR([CLANG], [clang program])
+            AC_PATH_PROGS([CLANG], [clang clang-10], [no])
 	    QH_REQUIRE_PROG([GCC], [gcc], [path to gcc])
 	    QH_COMPILER_C_VERSION_MAJOR([CONAN_GCC_VERSIONS],
 					[gcc version for conan],
@@ -172,6 +178,12 @@ AM_COND_IF([ENABLE_CONAN],
 	    QH_VAR_ENSURE([CONAN_USERNAME],
 			  [User name required by conan-package-tools],
 			  [$USER])])
+AM_CONDITIONAL([HAVE_CLANG], [test "x$CLANG" != xno])
+AM_COND_IF([ENABLE_CONAN],
+	   [AM_COND_IF([HAVE_CLANG],
+	               [QH_COMPILER_C_VERSION_MAJOR([CONAN_CLANG_VERSIONS],
+					            [clang version for conan],
+					            [$CLANG])])])
 
 ## coreutils ##
 
@@ -312,6 +324,19 @@ AM_COND_IF([HOST_OS_DARWIN],
                           [/usr/local])
             AC_CONFIG_FILES([data/bash/common/homebrew-pathmung])])
 
+## software collections ##
+
+QH_ARG_ENABLE([scl], [no])
+AM_CONDITIONAL([ENABLE_SCL], [test "x$enable_scl" = xyes])
+AM_COND_IF([ENABLE_SCL],
+	   [QH_REQUIRE_PROG([SCL], [scl], [path to scl])
+	    QH_REQUIRE_PROG([SCL_ENABLED], [scl_enabled], [path to scl_enabled])
+	    QH_REQUIRE_PROG([SCL_SOURCE], [scl_source], [path to scl_source])
+	    QH_VAR_ENSURE([SCL_LIST],
+			  [software collections list],
+			  [`$SCL --list`])
+            AC_CONFIG_FILES([data/bash/common/profile.d/scl.sh])])
+
 ## systemd ##
 
 # check for systemd-path
@@ -332,8 +357,7 @@ QH_REQUIRE_PROG([VIM], [vim vi], [path to vim])
 QH_ARG_ENABLE([ycm], [yes])
 AM_CONDITIONAL([ENABLE_YCM], [test "x$enable_ycm" = xyes])
 AM_COND_IF([ENABLE_YCM],
-	   [QH_REQUIRE_PROG([CLANGD], [clangd clangd-10], [path to clangd])
-	    QH_REQUIRE_PROG([CMAKE], [cmake], [path to cmake])
+	   [QH_REQUIRE_PROG([CMAKE], [cmake cmake3], [path to cmake])
 	    QH_REQUIRE_PROG([GCXX], [g++], [path to g++])
 	    EC_VIM_YCM_OWNER([VIM_YCM_OWNER], [GitHub owner for YouCompleteMe])
 	    EC_VIM_YCM_REF([VIM_YCM_REF], [Git reference for YouCompleteMe])
@@ -345,13 +369,12 @@ AM_COND_IF([ENABLE_YCM],
 	    VIMRC_YCM_FILE=/dev/null])
 AC_SUBST_FILE([VIMRC_YCM_FILE])
 
-# At present, all platforms that do not use the upstream ycm-core distribution
-# of YouCompleteMe are cases where we need to use the system clangd binary.
-# This approach will need to be revised if that changes in the future.
-AM_CONDITIONAL([VIM_YCM_SYSTEM_CLANGD], [test "x$VIM_YCM_OWNER" != xycm-core])
+AM_CONDITIONAL([VIM_YCM_SYSTEM_CLANGD],
+	       [test "x$VIM_YCM_OWNER" = "xdetwiler" && test "x$VIM_YCM_REF" != "xvim-7.4.143"])
 AM_COND_IF([ENABLE_YCM],
 	   [AM_COND_IF([VIM_YCM_SYSTEM_CLANGD],
-		       [YCM_CLANGD_BINARY_PATH_FILE=data/vim/ycm-clangd-binary-path
+		       [QH_REQUIRE_PROG([CLANGD], [clangd clangd-10], [path to clangd])
+			YCM_CLANGD_BINARY_PATH_FILE=data/vim/ycm-clangd-binary-path
 			AC_CONFIG_FILES([data/vim/ycm-clangd-binary-path])],
 		       [YCM_CLANGD_BINARY_PATH_FILE=/dev/null])
 	    AC_SUBST_FILE([YCM_CLANGD_BINARY_PATH_FILE])
@@ -364,7 +387,7 @@ AM_COND_IF([ENABLE_TOOLBOX_HOST],
 QH_ARG_ENABLE([vim_cmake], [$_ec_vim_cmake_default])
 AM_CONDITIONAL([ENABLE_VIM_CMAKE], [test "x$enable_vim_cmake" = xyes])
 AM_COND_IF([ENABLE_VIM_CMAKE],
-	   [QH_REQUIRE_PROG([CMAKE], [cmake], [path to cmake])
+	   [QH_REQUIRE_PROG([CMAKE], [cmake cmake3], [path to cmake])
 	    QH_VAR_ENSURE([VIM_CMAKE_BUILD_DIR],
 			  [vim-cmake plugin build directory], [.ycm-build])
 	    AC_CONFIG_FILES([data/vim/cmake.vim])
@@ -372,9 +395,12 @@ AM_COND_IF([ENABLE_VIM_CMAKE],
 	    VIMRC_CMAKE_FILE=data/vim/vimrc-cmake],
            [VIM_PLUG_CMAKE_FILE=/dev/null
             VIMRC_CMAKE_FILE=/dev/null])
+AC_SUBST_FILE([VIM_PLUG_CMAKE_FILE])
 AC_SUBST_FILE([VIMRC_CMAKE_FILE])
 
 # vim-plug requirements
+QH_ARG_ENABLE([vim_plug_install], [yes])
+AM_CONDITIONAL([ENABLE_VIM_PLUG_INSTALL], [test "x$enable_vim_plug_install" = xyes])
 QH_REQUIRE_PROG([CURL], [curl], [path to curl])
 AC_SUBST_FILE([VIM_PLUG_YCM_FILE])
 

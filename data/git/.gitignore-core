@@ -19,3 +19,4 @@ cscope.*
 # YouCompleteMe
 .clangd/
 /.ycm*
+compile_commands.json

@@ -28,10 +28,9 @@ vim
 
 pkgs_centos='
 awscli
-clang-tools-extra
+clang
 ctags
 gcc-c++
-platform-python-devel
 python3-pip
 vim-enhanced
 '
@@ -72,32 +71,63 @@ test -r $OS_RELEASE_FILE || exit
 . $OS_RELEASE_FILE
 
 case $ID in
+
+    almalinux|rocky)
+        pkgs_centos="$pkgs_centos clang-tools-extra platform-python-devel"
+        case $VERSION_ID in
+            8*)
+                enable_repos='plus powertools'
+                ;;
+            9*)
+                enable_repos='plus crb'
+                ;;
+        esac
+        $SUDO dnf --assumeyes config-manager --set-enabled $enable_repos
+        $SUDO dnf --assumeyes --refresh install epel-release
+        $SUDO dnf --assumeyes --refresh install --allowerasing $pkgs_common $pkgs_centos
+        ;;
+
     alpine)
         $SUDO apk add $pkgs_common $pkgs_alpine
         ;;
+
     centos)
         case $VERSION_ID in
+            7)
+                repo_pkgs=epel-release
+                enable_repos=
+		pkgs_centos="$pkgs_centos python3-devel"
+		$SUDO yum --assumeyes install dnf dnf-plugins-core
+                ;;
             8)
-                extra_repos=powertools
+                repo_pkgs='epel-release epel-next-release'
+                enable_repos=powertools
+		pkgs_centos="$pkgs_centos clang-tools-extra platform-python-devel"
                 ;;
             9)
-                extra_repos=crb
+                repo_pkgs='epel-release epel-next-release'
+                enable_repos=crb
+		pkgs_centos="$pkgs_centos clang-tools-extra platform-python-devel"
                 ;;
         esac
-        $SUDO dnf --assumeyes config-manager --set-enabled $extra_repos
-        $SUDO dnf --assumeyes --refresh install epel-release epel-next-release
+        test "x$enable_repos" != x && $SUDO dnf --assumeyes config-manager --set-enabled $enable_repos
+        $SUDO dnf --assumeyes --refresh install $repo_pkgs
         $SUDO dnf --assumeyes --refresh install --allowerasing $pkgs_common $pkgs_centos
         ;;
+
     debian|ubuntu)
         $SUDO apt-get --assume-yes update
         $SUDO apt-get --assume-yes install $pkgs_common $pkgs_debian
         ;;
+
     fedora)
         $SUDO dnf --assumeyes --refresh install $pkgs_common $pkgs_fedora
         ;;
+
     rhel)
         $SUDO dnf --assumeyes --refresh install https://dl.fedoraproject.org/pub/epel/epel-release-latest-9.noarch.rpm
         $SUDO dnf --assumeyes --refresh install --allowerasing $pkgs_common $pkgs_rhel
         $SUDO pip3 install awscli
         ;;
+
 esac

@@ -6,6 +6,7 @@ include $(top_srcdir)/rules.mk
 aws_cli_completion = aws-cli-completion.sh
 aws_functions = aws-functions.sh
 bash_completion = bash-completion.sh
+cmake3 = cmake3.sh
 ctags = ctags.sh
 ctags_alias = ctags-alias.sh
 files = files.sh
@@ -48,6 +49,10 @@ conf_data += $(aws_functions)
 
 if !HOST_OS_MINGW
 conf_data += $(ps1)
+endif
+
+if HAVE_CMAKE3
+conf_data += $(cmake3)
 endif
 
 if HAVE_EXUBERANT_CTAGS

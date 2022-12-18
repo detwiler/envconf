@@ -1,0 +1,18 @@
+# login to scl-enabled bash
+
+# only do this in interactive shells
+if echo $- | grep i &> /dev/null; then
+    for scl in @SCL_LIST@; do
+        if ! @SCL_ENABLED@ $scl; then
+            source @SCL_SOURCE@ enable $scl
+        fi
+        # source the bash-completion for any git software collection
+        if @GREP@ git <<<$scl &>/dev/null; then
+            completion=$(find /opt/rh/$scl -path '*/bash-completion/*git' 2>/dev/null)
+            if [[ -r $completion ]]; then
+                source $completion
+            fi
+            unset completion
+        fi
+    done
+fi
