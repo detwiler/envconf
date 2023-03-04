@@ -8,7 +8,7 @@ AC_INIT([envconf],
 AC_PREREQ([2.64])
 AC_CONFIG_AUX_DIR([build-aux])
 AC_CONFIG_MACRO_DIR([m4])
-AC_CONFIG_SRCDIR([data/bash/common/bashrc.in])
+AC_CONFIG_SRCDIR([data/bash/bashrc.in])
 
 AM_INIT_AUTOMAKE([-Wall -Wno-portability -Werror foreign])
 AM_SILENT_RULES([yes])
@@ -86,7 +86,7 @@ QH_VAR_ENSURE([AWS_CONFIG_FILE],
 QH_VAR_ENSURE([AWS_SHARED_CREDENTIALS_FILE],
 	  [path to aws-cli shared credentials file],
 	  [$AWS_CONFIG_DIR/credentials])
-AC_CONFIG_FILES([data/bash/common/bashrc.d/aws-functions.sh])
+AC_CONFIG_FILES([data/bash/bashrc.d/aws-functions.sh])
 
 ## bash ##
 
@@ -96,9 +96,9 @@ AC_ARG_VAR([BASH_PATH], [path to alternate bash executable])
 AM_CONDITIONAL([HAVE_BASH_PATH], [test "x$BASH_PATH" != x])
 AM_COND_IF([HAVE_BASH_PATH],
            [AC_SUBST([BASH_PATH])
-            MULTI_BASH_HACK=data/bash/common/multi-bash-hack.sh
-            AC_CONFIG_FILES([data/bash/common/multi-bash-hack.sh])],
-           [MULTI_BASH_HACK=data/bash/common/single-bash.sh])
+            MULTI_BASH_HACK=data/bash/multi-bash-hack.sh
+            AC_CONFIG_FILES([data/bash/multi-bash-hack.sh])],
+           [MULTI_BASH_HACK=data/bash/single-bash.sh])
 AC_SUBST_FILE([MULTI_BASH_HACK])
 
 # bash-completion not enabled by default on Darwin
@@ -112,7 +112,7 @@ AM_COND_IF([HOST_OS_DARWIN],
             QH_VAR_ENSURE([BASH_COMPLETION_COMPAT_DIR],
                           [path to bash completion compat directory],
                           [/usr/local/etc/bash_completion.d])
-            AC_CONFIG_FILES([data/bash/common/bashrc.d/bash-completion.sh])])
+            AC_CONFIG_FILES([data/bash/bashrc.d/bash-completion.sh])])
 
 # readline configuration
 AM_CONDITIONAL([BIND_INPUTRC], [test "x$INPUTRC" != x])
@@ -136,7 +136,7 @@ QH_VAR_ENSURE([PS1_AWS_COLOR],  [bash prompt aws profile color], [$_ec_ps1_aws_d
 AC_ARG_VAR([CMAKE], [cmake program])
 AC_CHECK_PROGS([CMAKE], [cmake cmake3], [no])
 AM_CONDITIONAL([HAVE_CMAKE3], [test "x$CMAKE" = xcmake3])
-AM_COND_IF([HAVE_CMAKE3], [AC_CONFIG_FILES([data/bash/common/bashrc.d/cmake3.sh])])
+AM_COND_IF([HAVE_CMAKE3], [AC_CONFIG_FILES([data/bash/bashrc.d/cmake3.sh])])
 
 ## python ##
 
@@ -155,7 +155,7 @@ AM_CONDITIONAL([HAVE_WIN_PY3], [test "x$ac_cv_path_WIN_PY3" != x])
 AM_COND_IF([HAVE_WIN_PY3],
            [AC_SUBST([WIN_PY3_BASEDIR], [`dirname $ac_cv_path_WIN_PY3`])
             AC_SUBST([WIN_PY3_SCRIPTDIR], [$WIN_PY3_BASEDIR/Scripts])
-            AC_CONFIG_FILES([data/bash/common/win-python-pathmung])])
+            AC_CONFIG_FILES([data/bash/win-python-pathmung])])
 
 ## conan ##
 
@@ -193,8 +193,8 @@ AM_CONDITIONAL([HAVE_DIRCOLORS], [test "x$have_dircolors" = xyes])
 # check for ls that supports --color
 AM_CONDITIONAL([EC_LSCOLOR], [ls --color &> /dev/null])
 AM_COND_IF([EC_LSCOLOR],
-           [LS_ALIASES=data/bash/common/bashrc.d/ls-color.aliases],
-           [LS_ALIASES=data/bash/common/bashrc.d/ls.aliases])
+           [LS_ALIASES=data/bash/bashrc.d/ls-color.aliases],
+           [LS_ALIASES=data/bash/bashrc.d/ls.aliases])
 AC_SUBST_FILE([LS_ALIASES])
 
 ## ctags ##
@@ -211,7 +211,7 @@ AM_CONDITIONAL([HAVE_EXUBERANT_CTAGS], [test "x$ac_cv_path_EXUBERANT_CTAGS" != x
 AM_COND_IF([HAVE_EXUBERANT_CTAGS],
            [AC_SUBST([EXUBERANT_CTAGS],
                      [$ac_cv_path_EXUBERANT_CTAGS])
-            AC_CONFIG_FILES([data/bash/common/bashrc.d/ctags-alias.sh])])
+            AC_CONFIG_FILES([data/bash/bashrc.d/ctags-alias.sh])])
 
 ## gpg ##
 
@@ -219,7 +219,7 @@ AM_COND_IF([HAVE_EXUBERANT_CTAGS],
 AC_ARG_VAR([GPG], [gpg program])
 AC_CHECK_PROGS([GPG], [gpg2 gpg], [gpg])
 AM_CONDITIONAL([HAVE_GPG2], [test "x$GPG" = xgpg2])
-AM_COND_IF([HAVE_GPG2], [AC_CONFIG_FILES([data/bash/common/bashrc.d/gpg2.sh])])
+AM_COND_IF([HAVE_GPG2], [AC_CONFIG_FILES([data/bash/bashrc.d/gpg2.sh])])
 
 # gpg-agent
 AC_ARG_VAR([GPG_AGENT], [gpg-agent program])
@@ -288,7 +288,7 @@ QH_VAR_ENSURE([GNULIB_REFDIR],
               [$REFDIR/gnulib])
 AM_CONDITIONAL([HAVE_GNULIB_REFDIR], [test -d $GNULIB_REFDIR])
 AM_COND_IF([HAVE_GNULIB_REFDIR],
-           [AC_CONFIG_FILES([data/bash/common/profile.d/gnulib.sh])])
+           [AC_CONFIG_FILES([data/bash/profile.d/gnulib.sh])])
 
 ## go ##
 
@@ -314,7 +314,7 @@ AC_CACHE_CHECK([for grep that supports --color],
 AM_CONDITIONAL([HAVE_GREP_COLOR], [test "x$ac_cv_path_GREP_COLOR" != x])
 AM_COND_IF([HAVE_GREP_COLOR],
            [AC_SUBST([GREP_COLOR], [$ac_cv_path_GREP_COLOR])
-            AC_CONFIG_FILES([data/bash/common/bashrc.d/grep.sh])])
+            AC_CONFIG_FILES([data/bash/bashrc.d/grep.sh])])
 
 ## homebrew paths ##
 
@@ -322,7 +322,7 @@ AM_COND_IF([HOST_OS_DARWIN],
            [QH_VAR_ENSURE([HOMEBREW_PREFIX],
                           [Homebrew prefix],
                           [/usr/local])
-            AC_CONFIG_FILES([data/bash/common/homebrew-pathmung])])
+            AC_CONFIG_FILES([data/bash/homebrew-pathmung])])
 
 ## software collections ##
 
@@ -335,7 +335,7 @@ AM_COND_IF([ENABLE_SCL],
 	    QH_VAR_ENSURE([SCL_LIST],
 			  [software collections list],
 			  [`$SCL --list`])
-            AC_CONFIG_FILES([data/bash/common/profile.d/scl.sh])])
+            AC_CONFIG_FILES([data/bash/profile.d/scl.sh])])
 
 ## systemd ##
 
@@ -426,16 +426,15 @@ AC_CONFIG_FILES([Makefile
                  data/autoconf/Makefile
                  data/autoconf/config.site
                  data/bash/Makefile
-                 data/bash/common/Makefile
-                 data/bash/common/functions
-                 data/bash/common/global-bash
-                 data/bash/common/bashrc.d/Makefile
-                 data/bash/common/bashrc.d/ls.sh
-                 data/bash/common/bashrc.d/ps1.sh
-                 data/bash/common/bashrc.d/vi.sh
-                 data/bash/common/profile.d/Makefile
-                 data/bash/common/profile.d/git.sh
-                 data/bash/common/profile.d/editor.sh
+                 data/bash/functions
+                 data/bash/global-bash
+                 data/bash/bashrc.d/Makefile
+                 data/bash/bashrc.d/ls.sh
+                 data/bash/bashrc.d/ps1.sh
+                 data/bash/bashrc.d/vi.sh
+                 data/bash/profile.d/Makefile
+                 data/bash/profile.d/git.sh
+                 data/bash/profile.d/editor.sh
                  data/dircolors/Makefile
                  data/git/Makefile
                  data/git/.gitconfig
