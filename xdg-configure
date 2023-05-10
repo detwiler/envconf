@@ -1,0 +1,145 @@
+#! /usr/bin/env bash
+
+# fail if any command in a pipeline fails
+set -o pipefail
+
+me=$(basename $0)
+medir=$(dirname $0)
+
+# use gnulib's boostrap function library
+source "$medir"/bootstrap-funclib.sh
+
+function usage()
+{
+	cat <<- EOF
+
+	Usage: $me [OPTIONS] -- [CONFIGURE-ARG]...
+
+	Call envconf's configure script with key installation directory options
+	aligned with the XDG Base Directory Specification. Optionally, compute
+	XDG-ish installation directory options that allow isolation of this
+	envconf installation from other envconf installations. In this way,
+	envconf installations can reside alongside each other on a per-host,
+	per-toolbox, or per-distro basis. This can help mitigate issues that
+	arise when a home directory is shared across multiple hosts, distros,
+	or tooolboxes.
+
+
+	Options:
+
+	  -d, --distro		distro-based installation directories
+	  -h, --host		host-based installation directories
+	  -t, --toolbox		toolbox-based installation directories
+	  --dry-run		display installation directories, but do
+	  			not call configure
+	  --help		display this help and exit
+
+	Arguments:
+
+	  [CONFIGURE-ARG]	additional configure options and arguments
+
+	EOF
+} # usage
+
+function config_toolbox()
+{
+    if [[ -e /run/.toolboxenv ]]; then
+        if [[ -r /run/.containerenv ]]; then
+            source /run/.containerenv
+            local toolbox="$name"
+            prefix="$prefix/$toolbox"
+            sysconfdir="$sysconfdir/$toolbox"
+            localstatedir="$prefix/state"
+            sharedstatedir="$sharedstatedir/$toolbox"
+            return
+        else
+            local file='/run/.containerenv'
+        fi
+    else
+        local file='/run/.toolboxenv'
+    fi
+    die "Could not read Toolbox file: $file"
+}
+
+function config_host()
+{
+    local host="$(hostname)"
+    prefix="$prefix/$host"
+    sysconfdir="$sysconfdir/$host"
+    localstatedir="$prefix/state"
+    sharedstatedir="$sharedstatedir/$host"
+}
+
+function config_distro()
+{
+    if [[ -r /etc/os-release ]]; then
+        source /etc/os-release
+    elif [[ -r /usr/lib/os-release ]]; then
+        source /usr/lib/os-release
+    else
+        die 'Could not read os-release file.'
+    fi
+    local distro="$ID-$VERSION_ID"
+    prefix="$prefix/$distro"
+    sysconfdir="$sysconfdir/$distro"
+    localstatedir="$prefix/state"
+    sharedstatedir="$sharedstatedir/$distro"
+}
+
+function display_config()
+{
+    local fmt='Calling configure with...\n'
+    fmt="$fmt\tprefix:\t\t%s\n"
+    fmt="$fmt\tsysconfdir:\t%s\n"
+    fmt="$fmt\tlocalstatedir:\t%s\n"
+    fmt="$fmt\tsharedstatedir:\t%s\n"
+    fmt="$fmt\targuments:\t%s\n"
+    printf "$fmt" $prefix $sysconfdir $localstatedir $sharedstatedir "${1:-none}"
+}
+
+short_opts='dht'
+long_opts='distro,dry-run,help,host,toolbox'
+
+if ! options=$(getopt --options $short_opts --longoptions $long_opts --name $me -- "$@"); then
+  die "Option parsing failed"
+fi
+eval set -- "$options"
+
+# defaults
+# this prefix will result in XDG_DATA_HOME=$prefix/share
+prefix="$HOME/.local"
+# XDG_CONFIG_HOME
+sysconfdir="$HOME/.config"
+# XDG_STATE_HOME
+localstatedir="$prefix/state"
+# XDG_CACHE_HOME
+sharedstatedir="$HOME/.cache"
+dryrun=''
+
+while true; do
+  case "$1" in
+    --help) usage; exit 0 ;;
+    -d|--distro) config_distro; shift ;;
+    --dry-run) dryrun=true; shift ;;
+    -h|--host) config_host; shift ;;
+    -t|--toolbox) config_toolbox; shift ;;
+    --) shift; break ;;
+    *) die 'Option parsing failed' ;;
+  esac
+done
+
+display_config "$*"
+
+if [[ -n $dryrun ]]; then
+    echo 'Dry run. Exiting.'
+    exit 0
+else
+    echo
+fi
+
+./configure \
+    --prefix="$prefix" \
+    --sysconfdir="$sysconfdir" \
+    --localstatedir="$localstatedir" \
+    --sharedstatedir="$sharedstatedir" \
+    "$@"

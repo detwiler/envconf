@@ -1,12 +1,12 @@
 " vim: set ft=vim :
 
-set runtimepath^=@vimdir@
-set runtimepath+=@vimdir@/after
+set runtimepath^=%vimconfdir%
+set runtimepath+=%vimconfdir%/after
 if exists('&viminfofile')
-  set viminfofile=@vimdir@/viminfo
+  set viminfofile=%vimconfdir%/viminfo
 else
-  set viminfo+=n@vimdir@/viminfo
+  set viminfo+=n%vimconfdir%/viminfo
 endif
-set directory^=@vimdir@/swap//
-set backupdir^=@vimdir@/backup//
-set undodir^=@vimdir@/undo//
+set directory^=%vimconfdir%/swap//
+set backupdir^=%vimconfdir%/backup//
+set undodir^=%vimconfdir%/undo//

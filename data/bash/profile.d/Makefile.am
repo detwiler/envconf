@@ -4,29 +4,21 @@ include $(top_srcdir)/rules.mk
 
 # data/script variables
 bash = bash.sh
-bash_completion = bash-completion.sh
 conan = conan.sh
 editor = editor.sh
 git = git.sh
 gnulib = gnulib.sh
 go = go.sh
 gpg = gpg.sh
-gvim = gvim.sh
 info = info.sh
-macosx = macosx.sh
 python = python.sh
 scl = scl.sh
 vim = vim.sh
 zz_path = zz-path.sh
 
 # static data/scripts (not generated; require explicit distribution)
-static_data = $(bash_completion) \
-	      $(bash) \
+static_data = $(bash) \
 	      $(gpg)
-
-if HOST_OS_DARWIN
-static_data += $(macosx)
-endif
 
 dist_profile_DATA = $(static_data)
 
@@ -53,12 +45,8 @@ make_data = $(go) \
 	    $(vim) \
 	    $(zz_path)
 
-if ENABLE_CONAN
+if HAVE_CONAN
 make_data += $(conan)
-endif
-
-if HAVE_GVIM
-make_data += $(gvim)
 endif
 
 $(make_data): Makefile
@@ -86,4 +74,4 @@ EDIT = -e 's:@bindir[@]:$(bindir):g' \
        -e 's:@infodir[@]:$(infodir):g' \
        -e 's:@prefix[@]:$(prefix):g' \
        -e 's:@sbindir[@]:$(sbindir):g' \
-       -e 's:@vimdir[@]:$(vimdir):g'
+       -e 's:@vimconfdir[@]:$(vimconfdir):g'

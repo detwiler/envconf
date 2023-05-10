@@ -3,11 +3,11 @@
 
 # usage pathmung <dir> [after]
 #
-function pathmung()
+pathmung()
 {
   if ! echo $PATH | @EGREP@ -s "(^|:)$1($|:)" &> /dev/null ; then
-    if [[ -e $1 ]]; then
-      if [[ "$2" == "after" ]] ; then
+    if [ -e $1 ]; then
+      if [ "$2" = "after" ] ; then
         export PATH=$PATH:$1
       else
         export PATH=$1:$PATH
@@ -18,10 +18,10 @@ function pathmung()
 
 # usage pathmung_force <dir> [after]
 #
-function pathmung_force()
+pathmung_force()
 {
-  if [[ -e $1 ]]; then
-    if [[ "$2" == "after" ]] ; then
+  if [ -e $1 ]; then
+    if [ "$2" = "after" ] ; then
       export PATH=$PATH:$1
     else
       export PATH=$1:$PATH

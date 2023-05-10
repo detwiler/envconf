@@ -7,7 +7,8 @@ SUBDIRS = autoconf \
 	  man \
 	  readline \
 	  ssh \
-	  vim
+	  vim \
+	  xdg
 
 if HAVE_DIRCOLORS
 SUBDIRS += dircolors

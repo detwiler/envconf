@@ -1,0 +1,59 @@
+# set the default XDG base directories
+XDG_CONFIG_HOME_DEFAULT="$HOME/.config"
+XDG_DATA_HOME_DEFAULT="$HOME/.local/share"
+XDG_STATE_HOME_DEFAULT="$HOME/.local/state"
+XDG_CACHE_HOME_DEFAULT="$HOME/.cache"
+
+# find XDG init file and source it
+# check the default location
+if [ -r "$XDG_CONFIG_HOME_DEFAULT/@PACKAGE_NAME@/xdgrc" ];
+    xdgrc="$XDG_CONFIG_HOME_DEFAULT/@PACKAGE_NAME@/xdgrc"
+fi
+
+# check the distro override location
+if [ -r /etc/os-release ]; then
+    . /etc/os-release
+elif [ -r /usr/lib/os-release ]; then
+    . /usr/lib/os-release
+fi
+distro="${ID}${VERSION_ID}"
+if [ -n $distro ]; then
+    if [ -r "$XDG_CONFIG_HOME_DEFAULT/$distro/@PACKAGE_NAME@/xdgrc" ]; then
+        xdgrc="$XDG_CONFIG_HOME_DEFAULT/$distro/@PACKAGE_NAME@/xdgrc"
+    fi
+fi
+
+# check the host override location
+if [ -r "$XDG_CONFIG_HOME_DEFAULT/$HOSTNAME/@PACKAGE_NAME@/xdgrc" ]; then
+    xdgrc="$XDG_CONFIG_HOME_DEFAULT/$HOSTNAME/@PACKAGE_NAME@/xdgrc"
+fi
+
+# check the toolbox override location
+if [ -e /run/.toolboxenv ]; then
+    if [ -r /run/.containerenv ]; then
+        . /run/.containerenv
+        toolbox="$name"
+        if [ -r "$XDG_CONFIG_HOME_DEFAULT/$toolbox/@PACKAGE_NAME@/xdgrc" ]; then
+            xdgrc="$XDG_CONFIG_HOME_DEFAULT/$toolbox/@PACKAGE_NAME@/xdgrc"
+        fi
+    fi
+fi
+
+if [ -r $xdgrc ]; then
+    . $xdgrc
+fi
+
+unset distro toolbox xdgrc
+
+XDG_CONFIG_HOME=${XDG_CONFIG_HOME:-$XDG_CONFIG_HOME_DEFAULT}
+XDG_DATA_HOME=${XDG_DATA_HOME:-$XDG_DATA_HOME_DEFAULT}
+XDG_STATE_HOME=${XDG_STATE_HOME:-$XDG_STATE_HOME_DEFAULT}
+XDG_CACHE_HOME=${XDG_CACHE_HOME:-$XDG_CACHE_HOME_DEFAULT}
+
+if [ -r "$XDG_CONFIG_HOME/bash/functions" ]; then
+    . "$XDG_CONFIG_HOME/bash/functions"
+fi
+
+if [ -r "$XDG_CONFIG_HOME/bash/profile" ]; then
+    . "$XDG_CONFIG_HOME/bash/profile"
+fi

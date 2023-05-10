@@ -22,5 +22,4 @@ DISTCLEANFILES = $(conf_data) \
 		 $(gitconfig_signing_key) \
 		 $(pager_diff_highlight)
 
-EXTRA_DIST = cred-helper-manager \
-	     cred-helper-pass
+EXTRA_DIST = cred-helper-pass

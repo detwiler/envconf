@@ -2,9 +2,9 @@
 
 # generated data files
 aws-functions.sh
-bash-completion.sh
 cmake3.sh
 ctags-alias.sh
+functions.sh
 git-prompt.sh
 gpg2.sh
 grep.sh

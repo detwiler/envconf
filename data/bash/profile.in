@@ -1,11 +1,7 @@
-
-# profile: environment customizations
-
-# source environment variables 
-
+# source profile settings 
 for file in @profiledir@/*.sh; do
   if [ -r "$file" ]; then
-    source "$file"
+    . "$file"
   fi
 done
 

@@ -8,6 +8,15 @@
 	autocrlf = false
 [color]
 	ui = auto
+[color "branch"]
+	remote = 210
+[color "decorate"]
+	remoteBranch = 210 bold
+[color "diff"]
+	old = 210
+[color "status"]
+	changed = 210
+	untracked = 210
 [gpg]
         program = @GPG@
 [alias]

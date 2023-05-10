@@ -20,7 +20,7 @@ ACLOCAL_AMFLAGS = -I m4 -I .quickhatch/m4
 BUILT_SOURCES = $(gvg_version) \
 		$(pkg_name)
 
-dist_toolbox_DATA = $(pkg_release)
+dist_pkgconf_DATA = $(pkg_release)
 
 CLEANFILES = $(gvg_version) \
 	     $(pkg_name) \
@@ -32,14 +32,6 @@ EXTRA_DIST = $(gvg_version) \
 	     README.md
 
 AM_DISTCHECK_CONFIGURE_FLAGS = HOME=$(top_distdir)
-
-if !ENABLE_AWS_CLI
-AM_DISTCHECK_CONFIGURE_FLAGS += --disable-aws-cli
-endif
-
-if !ENABLE_CONAN
-AM_DISTCHECK_CONFIGURE_FLAGS += --disable-conan
-endif
 
 if !ENABLE_VIM_CMAKE
 AM_DISTCHECK_CONFIGURE_FLAGS += --disable-vim-cmake
@@ -53,7 +45,7 @@ $(gvg_version):
 $(pkg_name):
 	$(AM_V_GEN)echo $(PACKAGE_NAME) > $@-t && mv $@-t $@
 
-$(pkg_release): $(gvg_version)
+$(pkg_release): Makefile
 	$(AM_V_GEN)echo "$(PACKAGE) release $(VERSION)" > $@-t && mv $@-t $@
 
 .PHONY: gen-ChangeLog
@@ -109,23 +101,6 @@ endif
 mk-gnupgdir:
 	$(AM_V_GEN)test -e $(DESTDIR)$(gnupgdir) || \
 	  $(MKDIR_P) -m 0700 $(DESTDIR)$(gnupgdir)
-
-.PHONY: gpg-agent-pinentry-mac
-gpg-agent-pinentry-mac: mk-gnupgdir
-	$(AM_V_GEN)$(GREP) '^pinentry-program' $(DESTDIR)$(gpg_agent_conf) &>/dev/null || \
-	  printf 'pinentry-program %s\n' $(PINENTRY_MAC) >>$(DESTDIR)$(gpg_agent_conf)
-
-.PHONY: rm-gpg-agent-pinentry-mac
-rm-gpg-agent-pinentry-mac: mk-gnupgdir
-	$(AM_V_GEN)$(GREP) -v '^pinentry-program $(PINENTRY_MAC)' $(DESTDIR)$(gpg_agent_conf) &>/dev/null || \
-	  rm $(DESTDIR)$(gpg_agent_conf)
-
-if HAVE_GPG_AGENT
-if HAVE_PINENTRY_MAC
-install_data_targets += gpg-agent-pinentry-mac
-uninstall_targets += rm-gpg-agent-pinentry-mac
-endif
-endif
 
 install-data-hook: $(install_data_targets)
 

@@ -6,7 +6,6 @@ editor.sh
 git.sh
 go.sh
 gnulib.sh
-gvim.sh
 info.sh
 python.sh
 scl.sh
