@@ -8,7 +8,6 @@ editor = editor.sh
 git = git.sh
 gnulib = gnulib.sh
 go = go.sh
-gpg = gpg.sh
 info = info.sh
 python = python.sh
 scl = scl.sh
@@ -16,8 +15,7 @@ vim = vim.sh
 zz_path = zz-path.sh
 
 # static data/scripts (not generated; require explicit distribution)
-static_data = $(bash) \
-	      $(gpg)
+static_data = $(bash)
 
 dist_profile_DATA = $(static_data)
 

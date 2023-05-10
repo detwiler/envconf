@@ -194,12 +194,7 @@ AM_CONDITIONAL([HAVE_CURL], [test "x$CURL" != xno])
 AC_ARG_VAR([GPG], [gpg program])
 AC_CHECK_PROGS([GPG], [gpg2 gpg], [gpg])
 AM_CONDITIONAL([HAVE_GPG2], [test "x$GPG" = xgpg2])
-AM_COND_IF([HAVE_GPG2], [AC_CONFIG_FILES([data/bash/bashrc.d/gpg2.sh])])
-
-# gpg-agent
-AC_ARG_VAR([GPG_AGENT], [gpg-agent program])
-AC_CHECK_PROGS([GPG_AGENT], [gpg-agent], [no])
-AM_CONDITIONAL([HAVE_GPG_AGENT], [test "x$GPG_AGENT" != xno])
+AM_COND_IF([HAVE_GPG2], [AC_CONFIG_FILES([data/gnupg/bashrc.d/gpg2.sh])])
 
 ## git ##
 
@@ -408,6 +403,8 @@ AC_CONFIG_FILES([Makefile
                  data/git/Makefile
                  data/git/.gitconfig
                  data/gnupg/Makefile
+                 data/gnupg/bashrc.d/Makefile
+                 data/gnupg/profile.d/Makefile
                  data/man/Makefile
                  data/readline/Makefile
                  data/readline/profile.d/Makefile

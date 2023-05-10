@@ -3,7 +3,6 @@
 # generated data files
 functions.sh
 git-prompt.sh
-gpg2.sh
 grep.sh
 proxy.sh
 ps1.sh

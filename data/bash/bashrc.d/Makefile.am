@@ -7,7 +7,6 @@ files = files.sh
 functions = functions.sh
 git_prompt = git-prompt.sh
 git_prompt_url = https://raw.githubusercontent.com/git/git/master/contrib/completion/git-prompt.sh
-gpg2 = gpg2.sh
 grep = grep.sh
 ls = ls.sh
 minicom = minicom.sh
@@ -30,10 +29,6 @@ dist_bashrc_DATA = $(static_data)
 conf_data = $(functions) \
 	    $(ps1) \
 	    $(vi)
-
-if HAVE_GPG2
-conf_data += $(gpg2)
-endif
 
 if HAVE_GREP_COLOR
 conf_data += $(grep)
