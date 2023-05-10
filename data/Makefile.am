@@ -37,8 +37,16 @@ if HAVE_GPG2
 SUBDIRS += gnupg
 endif
 
+if HAVE_GREP_COLOR
+SUBDIRS += grep
+endif
+
 if HAVE_RUBY
 SUBDIRS += ruby
+endif
+
+if ENABLE_SCL
+SUBDIRS += scl
 endif
 
 if HAVE_VIM

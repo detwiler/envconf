@@ -287,7 +287,12 @@ AC_CACHE_CHECK([for grep that supports --color],
 AM_CONDITIONAL([HAVE_GREP_COLOR], [test "x$ac_cv_path_GREP_COLOR" != x])
 AM_COND_IF([HAVE_GREP_COLOR],
            [AC_SUBST([GREP_COLOR], [$ac_cv_path_GREP_COLOR])
-            AC_CONFIG_FILES([data/bash/bashrc.d/grep.sh])])
+            AC_CONFIG_FILES([data/grep/bashrc.d/grep.sh])])
+
+## ruby ##
+
+AC_CHECK_PROGS([RUBY], [ruby])
+AM_CONDITIONAL([HAVE_RUBY], [test "x$RUBY" = xruby])
 
 ## software collections ##
 
@@ -300,7 +305,7 @@ AM_COND_IF([ENABLE_SCL],
 	    QH_VAR_ENSURE([SCL_LIST],
 			  [software collections list],
 			  [`$SCL --list`])
-            AC_CONFIG_FILES([data/bash/profile.d/scl.sh])])
+            AC_CONFIG_FILES([data/scl/profile.d/scl.sh])])
 
 ## systemd ##
 
@@ -377,11 +382,6 @@ AC_SUBST_FILE([VIMRC_VIM_PLUG_FILE])
 QH_ARG_ENABLE([vim_plug_install], [no])
 AM_CONDITIONAL([ENABLE_VIM_PLUG_INSTALL], [test "x$enable_vim_plug_install" != xno])
 
-## ruby ##
-
-AC_CHECK_PROGS([RUBY], [ruby])
-AM_CONDITIONAL([HAVE_RUBY], [test "x$RUBY" = xruby])
-
 ## configure output files
 
 AC_CONFIG_FILES([Makefile
@@ -419,10 +419,14 @@ AC_CONFIG_FILES([Makefile
                  data/gnupg/profile.d/Makefile
                  data/go/Makefile
                  data/go/profile.d/Makefile
+                 data/grep/Makefile
+                 data/grep/bashrc.d/Makefile
                  data/man/Makefile
                  data/readline/Makefile
                  data/readline/profile.d/Makefile
                  data/ruby/Makefile
+                 data/scl/Makefile
+                 data/scl/profile.d/Makefile
                  data/ssh/Makefile
                  data/vim/Makefile
                  data/vim/vimrc.in

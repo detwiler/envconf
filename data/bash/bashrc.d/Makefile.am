@@ -5,7 +5,6 @@ include $(top_srcdir)/rules.mk
 # data/script variables
 files = files.sh
 functions = functions.sh
-grep = grep.sh
 ls = ls.sh
 minicom = minicom.sh
 misc = misc.sh
@@ -27,10 +26,6 @@ dist_bashrc_DATA = $(static_data)
 conf_data = $(functions) \
 	    $(ps1) \
 	    $(vi)
-
-if HAVE_GREP_COLOR
-conf_data += $(grep)
-endif
 
 bashrc_DATA = $(conf_data)
 
