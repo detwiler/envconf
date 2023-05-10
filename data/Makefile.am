@@ -2,6 +2,7 @@
 
 SUBDIRS = autoconf \
 	  bash \
+	  coreutils \
 	  git \
 	  gnupg \
 	  man \
@@ -20,10 +21,6 @@ endif
 
 if HAVE_CONAN
 SUBDIRS += conan
-endif
-
-if HAVE_DIRCOLORS
-SUBDIRS += dircolors
 endif
 
 if HAVE_RUBY

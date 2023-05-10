@@ -1,4 +1,4 @@
 # .gitignore
 
 # generated data files
-dircolors.sh
+ls.sh

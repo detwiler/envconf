@@ -6,7 +6,6 @@ functions.sh
 git-prompt.sh
 gpg2.sh
 grep.sh
-ls.sh
 proxy.sh
 ps1.sh
 vi.sh

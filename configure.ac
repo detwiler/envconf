@@ -36,7 +36,6 @@ AC_SUBST([pkgconfdir], ["\$(XDG_CONFIG_HOME)/\$(PACKAGE_NAME)"])
 AC_SUBST([bashconfdir], ["\$(XDG_CONFIG_HOME)/bash"])
 AC_SUBST([bashrcdir], ["\$(bashconfdir)/bashrc.d"])
 AC_SUBST([profiledir], ["\$(bashconfdir)/profile.d"])
-AC_SUBST([dircolorsconfdir], ["\$(XDG_CONFIG_HOME)/dircolors"])
 AC_SUBST([readlineconfdir], ["\$(XDG_CONFIG_HOME)/readline"])
 AC_SUBST([vimconfdir], ["\$(XDG_CONFIG_HOME)/vim"])
 
@@ -160,14 +159,11 @@ AM_COND_IF([HAVE_CONAN],
 
 ## coreutils ##
 
-AC_CHECK_PROG([have_dircolors], [dircolors], [yes])
-AM_CONDITIONAL([HAVE_DIRCOLORS], [test "x$have_dircolors" = xyes])
-
 # check for ls that supports --color
 AM_CONDITIONAL([EC_LSCOLOR], [ls --color &> /dev/null])
 AM_COND_IF([EC_LSCOLOR],
-           [LS_ALIASES=data/bash/bashrc.d/ls-color.aliases],
-           [LS_ALIASES=data/bash/bashrc.d/ls.aliases])
+           [LS_ALIASES=data/coreutils/bashrc.d/ls-color.aliases],
+           [LS_ALIASES=data/coreutils/bashrc.d/ls.aliases])
 AC_SUBST_FILE([LS_ALIASES])
 
 ## ctags ##
@@ -395,7 +391,6 @@ AC_CONFIG_FILES([Makefile
                  data/bash/functions
                  data/bash/bashrc.d/Makefile
                  data/bash/bashrc.d/functions.sh
-                 data/bash/bashrc.d/ls.sh
                  data/bash/bashrc.d/ps1.sh
                  data/bash/bashrc.d/vi.sh
                  data/bash/profile.d/Makefile
@@ -405,7 +400,9 @@ AC_CONFIG_FILES([Makefile
                  data/cmake/bashrc.d/Makefile
                  data/conan/Makefile
                  data/conan/profile.d/Makefile
-                 data/dircolors/Makefile
+                 data/coreutils/Makefile
+                 data/coreutils/bashrc.d/Makefile
+                 data/coreutils/bashrc.d/ls.sh
                  data/git/Makefile
                  data/git/.gitconfig
                  data/gnupg/Makefile
