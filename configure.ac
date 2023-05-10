@@ -394,6 +394,10 @@ AC_SUBST_FILE([VIMRC_VIM_PLUG_FILE])
 QH_ARG_ENABLE([vim_plug_install], [no])
 AM_CONDITIONAL([ENABLE_VIM_PLUG_INSTALL], [test "x$enable_vim_plug_install" != xno])
 
+AM_COND_IF([HAVE_VIM],
+           [AC_CONFIG_FILES([data/vim/vimrc.in
+                             data/vim/bashrc.d/vi.sh])])
+
 ## configure output files
 
 AC_CONFIG_FILES([Makefile
@@ -409,7 +413,6 @@ AC_CONFIG_FILES([Makefile
                  data/bash/bashrc.d/Makefile
                  data/bash/bashrc.d/functions.sh
                  data/bash/bashrc.d/ps1.sh
-                 data/bash/bashrc.d/vi.sh
                  data/bash/profile.d/Makefile
                  data/bash/profile.d/editor.sh
                  data/cmake/Makefile
@@ -442,7 +445,8 @@ AC_CONFIG_FILES([Makefile
                  data/scl/profile.d/Makefile
                  data/ssh/Makefile
                  data/vim/Makefile
-                 data/vim/vimrc.in
+                 data/vim/bashrc.d/Makefile
+                 data/vim/profile.d/Makefile
                  data/xdg/Makefile
                  ])
 AC_OUTPUT

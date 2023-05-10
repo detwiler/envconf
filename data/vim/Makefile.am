@@ -2,6 +2,9 @@
 
 include $(top_srcdir)/rules.mk
 
+SUBDIRS = bashrc.d \
+	  profile.d
+
 # file/directory variables
 cmake = cmake.vim
 init = init.vim
