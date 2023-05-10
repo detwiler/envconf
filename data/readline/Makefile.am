@@ -1,8 +1,8 @@
 # Makefile.am
 
-SUBDIRS = profile.d
-
 include $(top_srcdir)/rules.mk
+
+SUBDIRS = profile.d
 
 # data/script variables
 inputrc = inputrc

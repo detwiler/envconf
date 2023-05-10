@@ -1,9 +1,9 @@
 # Makefile.am
 
+include $(top_srcdir)/rules.mk
+
 SUBDIRS = bashrc.d \
 	  profile.d
-
-include $(top_srcdir)/rules.mk
 
 # data/script variables
 config = config

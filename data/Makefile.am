@@ -28,6 +28,10 @@ if HAVE_GIT
 SUBDIRS += git
 endif
 
+if HAVE_GNULIB_REFDIR
+SUBDIRS += gnulib
+endif
+
 if HAVE_GPG2
 SUBDIRS += gnupg
 endif

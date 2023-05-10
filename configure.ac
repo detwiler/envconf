@@ -189,14 +189,6 @@ AC_ARG_VAR([CURL], [curl program])
 AC_CHECK_PROGS([CURL], [curl], [no])
 AM_CONDITIONAL([HAVE_CURL], [test "x$CURL" != xno])
 
-## gpg ##
-
-# gpg2 #
-AC_ARG_VAR([GPG], [gpg program])
-AC_CHECK_PROGS([GPG], [gpg2 gpg], [gpg])
-AM_CONDITIONAL([HAVE_GPG2], [test "x$GPG" = xgpg2])
-AM_COND_IF([HAVE_GPG2], [AC_CONFIG_FILES([data/gnupg/bashrc.d/gpg2.sh])])
-
 ## git ##
 
 AC_ARG_VAR([GIT], [git program])
@@ -258,13 +250,21 @@ QH_VAR_ENSURE([GNULIB_REFDIR],
               [$REFDIR/gnulib])
 AM_CONDITIONAL([HAVE_GNULIB_REFDIR], [test -d $GNULIB_REFDIR])
 AM_COND_IF([HAVE_GNULIB_REFDIR],
-           [AC_CONFIG_FILES([data/bash/profile.d/gnulib.sh])])
+           [AC_CONFIG_FILES([data/gnulib/profile.d/gnulib.sh])])
 
 ## go ##
 
 QH_VAR_ENSURE([GOPATH],
               [path to Go workspace directory],
               [$WORKDIR/go])
+
+## gpg ##
+
+# gpg2 #
+AC_ARG_VAR([GPG], [gpg program])
+AC_CHECK_PROGS([GPG], [gpg2 gpg], [gpg])
+AM_CONDITIONAL([HAVE_GPG2], [test "x$GPG" = xgpg2])
+AM_COND_IF([HAVE_GPG2], [AC_CONFIG_FILES([data/gnupg/bashrc.d/gpg2.sh])])
 
 ## grep ##
 
@@ -409,6 +409,8 @@ AC_CONFIG_FILES([Makefile
                  data/git/Makefile
                  data/git/bashrc.d/Makefile
                  data/git/profile.d/Makefile
+                 data/gnulib/Makefile
+                 data/gnulib/profile.d/Makefile
                  data/gnupg/Makefile
                  data/gnupg/bashrc.d/Makefile
                  data/gnupg/profile.d/Makefile
