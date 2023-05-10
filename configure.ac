@@ -256,7 +256,10 @@ AM_COND_IF([HAVE_GNULIB_REFDIR],
 
 QH_VAR_ENSURE([GOPATH],
               [path to Go workspace directory],
-              [$WORKDIR/go])
+              ["\$(XDG_DATA_HOME)/go"])
+QH_VAR_ENSURE([GOMODCACHE],
+              [path to Go module cache],
+              ["\$(XDG_CACHE_HOME)/go/mod"])
 
 ## gpg ##
 
@@ -414,6 +417,8 @@ AC_CONFIG_FILES([Makefile
                  data/gnupg/Makefile
                  data/gnupg/bashrc.d/Makefile
                  data/gnupg/profile.d/Makefile
+                 data/go/Makefile
+                 data/go/profile.d/Makefile
                  data/man/Makefile
                  data/readline/Makefile
                  data/readline/profile.d/Makefile
