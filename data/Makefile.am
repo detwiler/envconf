@@ -7,6 +7,7 @@ SUBDIRS = autoconf \
 	  info \
 	  man \
 	  readline \
+	  python \
 	  ssh \
 	  xdg
 

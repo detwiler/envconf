@@ -452,6 +452,8 @@ AC_CONFIG_FILES([Makefile
                  data/readline/profile.d/Makefile
                  data/ruby/Makefile
                  data/ruby/profile.d/Makefile
+                 data/python/Makefile
+                 data/python/profile.d/Makefile
                  data/scl/Makefile
                  data/scl/profile.d/Makefile
                  data/ssh/Makefile
