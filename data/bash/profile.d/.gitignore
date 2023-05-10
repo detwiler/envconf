@@ -1,7 +1,6 @@
 # .gitignore
 
 # generated data files
-editor.sh
 info.sh
 python.sh
 zz-path.sh

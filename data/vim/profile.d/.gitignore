@@ -1,4 +1,5 @@
 # .gitignore
 
 # generated data files
+editor.sh
 vim.sh

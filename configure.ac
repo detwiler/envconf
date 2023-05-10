@@ -396,7 +396,8 @@ AM_CONDITIONAL([ENABLE_VIM_PLUG_INSTALL], [test "x$enable_vim_plug_install" != x
 
 AM_COND_IF([HAVE_VIM],
            [AC_CONFIG_FILES([data/vim/vimrc.in
-                             data/vim/bashrc.d/vi.sh])])
+                             data/vim/bashrc.d/vi.sh 
+                             data/vim/profile.d/editor.sh])])
 
 ## configure output files
 
@@ -414,7 +415,6 @@ AC_CONFIG_FILES([Makefile
                  data/bash/bashrc.d/functions.sh
                  data/bash/bashrc.d/ps1.sh
                  data/bash/profile.d/Makefile
-                 data/bash/profile.d/editor.sh
                  data/cmake/Makefile
                  data/cmake/bashrc.d/Makefile
                  data/conan/Makefile

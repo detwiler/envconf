@@ -5,7 +5,6 @@ include $(top_srcdir)/rules.mk
 # data/script variables
 files = files.sh
 functions = functions.sh
-ls = ls.sh
 minicom = minicom.sh
 misc = misc.sh
 ps1 = ps1.sh
