@@ -188,6 +188,12 @@ AM_COND_IF([HAVE_EXUBERANT_CTAGS],
                      [$ac_cv_path_EXUBERANT_CTAGS])
             AC_CONFIG_FILES([data/bash/bashrc.d/ctags-alias.sh])])
 
+## curl ##
+
+AC_ARG_VAR([CURL], [curl program])
+AC_CHECK_PROGS([CURL], [curl], [no])
+AM_CONDITIONAL([HAVE_CURL], [test "x$CURL" != xno])
+
 ## gpg ##
 
 # gpg2 #

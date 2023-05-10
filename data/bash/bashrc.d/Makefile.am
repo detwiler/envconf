@@ -76,13 +76,17 @@ make_template_data =
 make_data = $(make_template_data)
 
 if !HAVE_GIT_PROMPT
-make_data += $(git_prompt)
 if LOCAL_GIT_PROMPT
+make_data += $(git_prompt)
 $(git_prompt): $(GIT_PROMPT_PATH)
 	$(AM_V_GEN)cat $< > $@-t && mv $@-t $@
 else !LOCAL_GIT_PROMPT
+make_data += $(git_prompt)
+if HAVE_CURL
+make_data += $(git_prompt)
 $(git_prompt):
-	$(AM_V_GEN)$(CURL) --silent --fail --location $(git_prompt_url) > $@-t && mv $@-t $@
+	$(AM_V_GEN)$(CURL) --silent --fail --location $(git_prompt_url) > $@-t && mv $@-t $@ || true
+endif HAVE_CURL
 endif !LOCAL_GIT_PROMPT
 endif !HAVE_GIT_PROMPT
 
