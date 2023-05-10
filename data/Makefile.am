@@ -4,6 +4,7 @@ SUBDIRS = autoconf \
 	  bash \
 	  coreutils \
 	  go \
+	  info \
 	  man \
 	  readline \
 	  ssh \

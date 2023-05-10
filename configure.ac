@@ -431,6 +431,8 @@ AC_CONFIG_FILES([Makefile
                  data/coreutils/bashrc.d/ls.sh
                  data/ctags/Makefile
                  data/ctags/bashrc.d/Makefile
+                 data/info/Makefile
+                 data/info/profile.d/Makefile
                  data/git/Makefile
                  data/git/bashrc.d/Makefile
                  data/git/profile.d/Makefile
