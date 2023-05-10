@@ -114,7 +114,7 @@ AC_ARG_VAR([CMAKE], [cmake program])
 AC_CHECK_PROGS([CMAKE], [cmake cmake3], [no])
 AM_CONDITIONAL([HAVE_CMAKE], [test "x$CMAKE" != xno])
 AM_CONDITIONAL([HAVE_CMAKE3], [test "x$CMAKE" = xcmake3])
-AM_COND_IF([HAVE_CMAKE3], [AC_CONFIG_FILES([data/bash/bashrc.d/cmake3.sh])])
+AM_COND_IF([HAVE_CMAKE3], [AC_CONFIG_FILES([data/cmake/bashrc.d/cmake3.sh])])
 
 ## conan ##
 
@@ -401,6 +401,8 @@ AC_CONFIG_FILES([Makefile
                  data/bash/profile.d/Makefile
                  data/bash/profile.d/git.sh
                  data/bash/profile.d/editor.sh
+                 data/cmake/Makefile
+                 data/cmake/bashrc.d/Makefile
                  data/dircolors/Makefile
                  data/git/Makefile
                  data/git/.gitconfig
