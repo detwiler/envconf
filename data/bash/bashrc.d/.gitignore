@@ -2,7 +2,6 @@
 
 # generated data files
 functions.sh
-git-prompt.sh
 grep.sh
 proxy.sh
 ps1.sh

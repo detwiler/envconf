@@ -37,6 +37,7 @@ AC_SUBST([bashconfdir], ["\$(XDG_CONFIG_HOME)/bash"])
 AC_SUBST([bashrcdir], ["\$(bashconfdir)/bashrc.d"])
 AC_SUBST([profiledir], ["\$(bashconfdir)/profile.d"])
 AC_SUBST([readlineconfdir], ["\$(XDG_CONFIG_HOME)/readline"])
+AC_SUBST([gitconfdir], ["\$(XDG_CONFIG_HOME)/git"])
 AC_SUBST([vimconfdir], ["\$(XDG_CONFIG_HOME)/vim"])
 
 QH_VAR_ENSURE([WORKDIR],
@@ -246,6 +247,10 @@ AS_IF([test "x$GIT_PROMPT_PATH" = x],
 AM_CONDITIONAL([LOCAL_GIT_PROMPT],
                [test "x$GIT_PROMPT_PATH" != x])
 
+AM_COND_IF([HAVE_GIT],
+           [AC_CONFIG_FILES([data/git/config
+                             data/git/profile.d/git.sh])])
+
 ## gnulib ##
 
 QH_VAR_ENSURE([GNULIB_REFDIR],
@@ -309,7 +314,9 @@ AC_SUBST_FILE([XDG_BASEDIR_FILE])
 
 ## vim ##
 
-QH_REQUIRE_PROG([VIM], [vim vi], [path to vim])
+AC_ARG_VAR([VIM], [vim program])
+AC_CHECK_PROGS([VIM], [vim], [no])
+AM_CONDITIONAL([HAVE_VIM], [test "x$VIM" != xno])
 
 # Vim YouCompleteMe requirements
 QH_ARG_ENABLE([ycm], [no])
@@ -389,7 +396,6 @@ AC_CONFIG_FILES([Makefile
                  data/bash/bashrc.d/ps1.sh
                  data/bash/bashrc.d/vi.sh
                  data/bash/profile.d/Makefile
-                 data/bash/profile.d/git.sh
                  data/bash/profile.d/editor.sh
                  data/cmake/Makefile
                  data/cmake/bashrc.d/Makefile
@@ -401,7 +407,8 @@ AC_CONFIG_FILES([Makefile
                  data/ctags/Makefile
                  data/ctags/bashrc.d/Makefile
                  data/git/Makefile
-                 data/git/.gitconfig
+                 data/git/bashrc.d/Makefile
+                 data/git/profile.d/Makefile
                  data/gnupg/Makefile
                  data/gnupg/bashrc.d/Makefile
                  data/gnupg/profile.d/Makefile

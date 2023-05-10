@@ -3,12 +3,9 @@
 SUBDIRS = autoconf \
 	  bash \
 	  coreutils \
-	  git \
-	  gnupg \
 	  man \
 	  readline \
 	  ssh \
-	  vim \
 	  xdg
 
 if HAVE_AWS_CLI
@@ -27,6 +24,18 @@ if HAVE_EXUBERANT_CTAGS
 SUBDIRS += ctags
 endif
 
+if HAVE_GIT
+SUBDIRS += git
+endif
+
+if HAVE_GPG2
+SUBDIRS += gnupg
+endif
+
 if HAVE_RUBY
 SUBDIRS += ruby
+endif
+
+if HAVE_VIM
+SUBDIRS += vim
 endif
