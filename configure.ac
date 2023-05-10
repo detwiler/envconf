@@ -37,6 +37,8 @@ AC_SUBST([bashconfdir], ["\$(XDG_CONFIG_HOME)/bash"])
 AC_SUBST([bashrcdir], ["\$(bashconfdir)/bashrc.d"])
 AC_SUBST([profiledir], ["\$(bashconfdir)/profile.d"])
 AC_SUBST([readlineconfdir], ["\$(XDG_CONFIG_HOME)/readline"])
+AC_SUBST([rubyconfdir], ["\$(XDG_CONFIG_HOME)"])
+AC_SUBST([bundleconfdir], ["\$(XDG_CONFIG_HOME)/bundle"])
 AC_SUBST([gitconfdir], ["\$(XDG_CONFIG_HOME)/git"])
 AC_SUBST([vimconfdir], ["\$(XDG_CONFIG_HOME)/vim"])
 
@@ -294,6 +296,16 @@ AM_COND_IF([HAVE_GREP_COLOR],
 AC_CHECK_PROGS([RUBY], [ruby])
 AM_CONDITIONAL([HAVE_RUBY], [test "x$RUBY" = xruby])
 
+QH_VAR_ENSURE([BUNDLE_USER_CONFIG],
+              [path to bundle user home],
+              ["\$(bundleconfdir)"])
+QH_VAR_ENSURE([BUNDLE_USER_CACHE],
+              [path to Go module cache],
+              ["\$(XDG_CACHE_HOME)/bundle"])
+QH_VAR_ENSURE([BUNDLE_USER_PLUGIN],
+              [path to Go module cache],
+              ["\$(XDG_DATA_HOME)/bundle"])
+
 ## software collections ##
 
 QH_ARG_ENABLE([scl], [no])
@@ -425,6 +437,7 @@ AC_CONFIG_FILES([Makefile
                  data/readline/Makefile
                  data/readline/profile.d/Makefile
                  data/ruby/Makefile
+                 data/ruby/profile.d/Makefile
                  data/scl/Makefile
                  data/scl/profile.d/Makefile
                  data/ssh/Makefile
