@@ -76,14 +76,14 @@ AM_CONDITIONAL([HAVE_AWS_CLI], [test "x$AWS_CLI" != x])
 AM_COND_IF([HAVE_AWS_CLI],
            [QH_VAR_ENSURE([AWS_CONFIG_DIR],
                           [path to aws-cli configuration directory],
-                          [$HOME/.aws])
+			  ["\$(XDG_CONFIG_HOME)/aws"])
             QH_VAR_ENSURE([AWS_CONFIG_FILE],
                           [path to aws-cli config file],
                           [$AWS_CONFIG_DIR/config])
             QH_VAR_ENSURE([AWS_SHARED_CREDENTIALS_FILE],
                           [path to aws-cli shared credentials file],
                           [$AWS_CONFIG_DIR/credentials])
-            AC_CONFIG_FILES([data/bash/bashrc.d/aws-functions.sh])])
+            AC_CONFIG_FILES([data/aws-cli/bashrc.d/aws-functions.sh])])
 
 ## bash ##
 
@@ -389,6 +389,9 @@ AC_CONFIG_FILES([Makefile
                  data/Makefile
                  data/autoconf/Makefile
                  data/autoconf/config.site
+                 data/aws-cli/Makefile
+                 data/aws-cli/bashrc.d/Makefile
+                 data/aws-cli/profile.d/Makefile
                  data/bash/Makefile
                  data/bash/.profile
                  data/bash/functions

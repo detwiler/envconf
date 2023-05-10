@@ -3,8 +3,6 @@
 include $(top_srcdir)/rules.mk
 
 # data/script variables
-aws_cli_completion = aws-cli-completion.sh
-aws_functions = aws-functions.sh
 cmake3 = cmake3.sh
 ctags = ctags.sh
 ctags_alias = ctags-alias.sh
@@ -29,10 +27,6 @@ static_data = $(files) \
 	      $(set) \
 	      $(shopt)
 
-if HAVE_AWS_CLI
-static_data += $(aws_cli_completion)
-endif
-
 if HAVE_EXUBERANT_CTAGS
 static_data += $(ctags)
 endif
@@ -44,10 +38,6 @@ conf_data = $(functions) \
 	    $(ls) \
 	    $(ps1) \
 	    $(vi)
-
-if HAVE_AWS_CLI
-conf_data += $(aws_functions)
-endif
 
 if HAVE_CMAKE3
 conf_data += $(cmake3)

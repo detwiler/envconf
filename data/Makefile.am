@@ -10,6 +10,10 @@ SUBDIRS = autoconf \
 	  vim \
 	  xdg
 
+if HAVE_AWS_CLI
+SUBDIRS += aws-cli
+endif
+
 if HAVE_DIRCOLORS
 SUBDIRS += dircolors
 endif
