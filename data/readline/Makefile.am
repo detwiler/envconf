@@ -1,16 +1,13 @@
 # Makefile.am
 
+SUBDIRS = profile.d
+
 include $(top_srcdir)/rules.mk
 
 # data/script variables
-inputrc = .inputrc
-readline = readline.sh
+inputrc = inputrc
 
 # static data/scripts (not generated; require explicit distribution)
 static_data = $(inputrc)
 
-if BIND_INPUTRC
-static_data += $(readline)
-endif
-
-dist_home_DATA = $(static_data)
+dist_readlineconf_DATA = $(static_data)

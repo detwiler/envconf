@@ -37,6 +37,7 @@ AC_SUBST([bashconfdir], ["\$(XDG_CONFIG_HOME)/bash"])
 AC_SUBST([bashrcdir], ["\$(bashconfdir)/bashrc.d"])
 AC_SUBST([profiledir], ["\$(bashconfdir)/profile.d"])
 AC_SUBST([dircolorsconfdir], ["\$(XDG_CONFIG_HOME)/dircolors"])
+AC_SUBST([readlineconfdir], ["\$(XDG_CONFIG_HOME)/readline"])
 AC_SUBST([vimconfdir], ["\$(XDG_CONFIG_HOME)/vim"])
 
 QH_VAR_ENSURE([WORKDIR],
@@ -86,9 +87,6 @@ AM_COND_IF([HAVE_AWS_CLI],
             AC_CONFIG_FILES([data/aws-cli/bashrc.d/aws-functions.sh])])
 
 ## bash ##
-
-# readline configuration
-AM_CONDITIONAL([BIND_INPUTRC], [test "x$INPUTRC" != x])
 
 # customization of PS1 color
 EC_PS1_DEFAULT
@@ -409,6 +407,7 @@ AC_CONFIG_FILES([Makefile
                  data/gnupg/Makefile
                  data/man/Makefile
                  data/readline/Makefile
+                 data/readline/profile.d/Makefile
                  data/ruby/Makefile
                  data/ssh/Makefile
                  data/vim/Makefile
