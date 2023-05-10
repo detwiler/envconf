@@ -180,7 +180,7 @@ AM_CONDITIONAL([HAVE_EXUBERANT_CTAGS], [test "x$ac_cv_path_EXUBERANT_CTAGS" != x
 AM_COND_IF([HAVE_EXUBERANT_CTAGS],
            [AC_SUBST([EXUBERANT_CTAGS],
                      [$ac_cv_path_EXUBERANT_CTAGS])
-            AC_CONFIG_FILES([data/bash/bashrc.d/ctags-alias.sh])])
+            AC_CONFIG_FILES([data/ctags/bashrc.d/ctags-alias.sh])])
 
 ## curl ##
 
@@ -403,6 +403,8 @@ AC_CONFIG_FILES([Makefile
                  data/coreutils/Makefile
                  data/coreutils/bashrc.d/Makefile
                  data/coreutils/bashrc.d/ls.sh
+                 data/ctags/Makefile
+                 data/ctags/bashrc.d/Makefile
                  data/git/Makefile
                  data/git/.gitconfig
                  data/gnupg/Makefile

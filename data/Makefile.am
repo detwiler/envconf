@@ -23,6 +23,10 @@ if HAVE_CONAN
 SUBDIRS += conan
 endif
 
+if HAVE_EXUBERANT_CTAGS
+SUBDIRS += ctags
+endif
+
 if HAVE_RUBY
 SUBDIRS += ruby
 endif
