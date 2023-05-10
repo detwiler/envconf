@@ -6,7 +6,7 @@ XDG_CACHE_HOME_DEFAULT="$HOME/.cache"
 
 # find XDG init file and source it
 # check the default location
-if [ -r "$XDG_CONFIG_HOME_DEFAULT/@PACKAGE_NAME@/xdgrc" ];
+if [ -r "$XDG_CONFIG_HOME_DEFAULT/@PACKAGE_NAME@/xdgrc" ]; then
     xdgrc="$XDG_CONFIG_HOME_DEFAULT/@PACKAGE_NAME@/xdgrc"
 fi
 
@@ -39,8 +39,10 @@ if [ -e /run/.toolboxenv ]; then
     fi
 fi
 
-if [ -r $xdgrc ]; then
-    . $xdgrc
+if test "x$xdgrc" != x; then
+    if [ -r "$xdgrc" ]; then
+        . "$xdgrc"
+    fi
 fi
 
 unset distro toolbox xdgrc
