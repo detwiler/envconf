@@ -1,7 +1,6 @@
 # .gitignore
 
 # generated data files
-cmake3.sh
 ctags-alias.sh
 functions.sh
 git-prompt.sh

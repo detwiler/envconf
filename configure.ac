@@ -403,6 +403,8 @@ AC_CONFIG_FILES([Makefile
                  data/bash/profile.d/editor.sh
                  data/cmake/Makefile
                  data/cmake/bashrc.d/Makefile
+                 data/conan/Makefile
+                 data/conan/profile.d/Makefile
                  data/dircolors/Makefile
                  data/git/Makefile
                  data/git/.gitconfig

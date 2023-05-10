@@ -18,6 +18,10 @@ if HAVE_CMAKE3
 SUBDIRS += cmake
 endif
 
+if HAVE_CONAN
+SUBDIRS += conan
+endif
+
 if HAVE_DIRCOLORS
 SUBDIRS += dircolors
 endif

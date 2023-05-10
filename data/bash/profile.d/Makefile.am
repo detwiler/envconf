@@ -4,7 +4,6 @@ include $(top_srcdir)/rules.mk
 
 # data/script variables
 bash = bash.sh
-conan = conan.sh
 editor = editor.sh
 git = git.sh
 gnulib = gnulib.sh
@@ -45,10 +44,6 @@ make_data = $(go) \
 	    $(vim) \
 	    $(zz_path)
 
-if HAVE_CONAN
-make_data += $(conan)
-endif
-
 $(make_data): Makefile
 
 profile_DATA += $(make_data)
@@ -65,11 +60,6 @@ CLEANFILES = $(make_output)
 
 # sed command to build data/scripts
 EDIT = -e 's:@bindir[@]:$(bindir):g' \
-       -e 's:@CONAN_CLANG_VERSIONS[@]:$(CONAN_CLANG_VERSIONS):g' \
-       -e 's:@CONAN_GCC_VERSIONS[@]:$(CONAN_GCC_VERSIONS):g' \
-       -e 's:@CONAN_PIP_COMMAND[@]:$(CONAN_PIP_COMMAND):g' \
-       -e 's:@CONAN_USER_HOME[@]:$(CONAN_USER_HOME):g' \
-       -e 's:@CONAN_USERNAME[@]:$(CONAN_USERNAME):g' \
        -e 's:@GOPATH[@]:$(GOPATH):g' \
        -e 's:@infodir[@]:$(infodir):g' \
        -e 's:@prefix[@]:$(prefix):g' \

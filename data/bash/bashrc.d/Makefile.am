@@ -3,7 +3,6 @@
 include $(top_srcdir)/rules.mk
 
 # data/script variables
-cmake3 = cmake3.sh
 ctags = ctags.sh
 ctags_alias = ctags-alias.sh
 files = files.sh
@@ -38,10 +37,6 @@ conf_data = $(functions) \
 	    $(ls) \
 	    $(ps1) \
 	    $(vi)
-
-if HAVE_CMAKE3
-conf_data += $(cmake3)
-endif
 
 if HAVE_EXUBERANT_CTAGS
 conf_data += $(ctags_alias)
