@@ -291,10 +291,17 @@ AM_COND_IF([HAVE_GREP_COLOR],
            [AC_SUBST([GREP_COLOR], [$ac_cv_path_GREP_COLOR])
             AC_CONFIG_FILES([data/grep/bashrc.d/grep.sh])])
 
+## minicom ##
+
+AC_ARG_VAR([MINICOM], [minicom program])
+AC_CHECK_PROGS([MINICOM], [minicom], [no])
+AM_CONDITIONAL([HAVE_MINICOM], [test "x$MINICOM" != xno])
+
 ## ruby ##
 
-AC_CHECK_PROGS([RUBY], [ruby])
-AM_CONDITIONAL([HAVE_RUBY], [test "x$RUBY" = xruby])
+AC_ARG_VAR([RUBY], [ruby program])
+AC_CHECK_PROGS([RUBY], [ruby], [no])
+AM_CONDITIONAL([HAVE_RUBY], [test "x$RUBY" != xno])
 
 QH_VAR_ENSURE([BUNDLE_USER_CONFIG],
               [path to bundle user home],
@@ -437,6 +444,8 @@ AC_CONFIG_FILES([Makefile
                  data/grep/Makefile
                  data/grep/bashrc.d/Makefile
                  data/man/Makefile
+                 data/minicom/Makefile
+                 data/minicom/bashrc.d/Makefile
                  data/readline/Makefile
                  data/readline/profile.d/Makefile
                  data/ruby/Makefile

@@ -3,18 +3,14 @@
 include $(top_srcdir)/rules.mk
 
 # data/script variables
-files = files.sh
 functions = functions.sh
-minicom = minicom.sh
 misc = misc.sh
 ps1 = ps1.sh
 set = set.sh
 shopt = shopt.sh
 
 # static data/scripts (not generated; require explicit distribution)
-static_data = $(files) \
-	      $(minicom) \
-	      $(misc) \
+static_data = $(misc) \
 	      $(set) \
 	      $(shopt)
 

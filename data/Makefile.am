@@ -41,6 +41,10 @@ if HAVE_GREP_COLOR
 SUBDIRS += grep
 endif
 
+if HAVE_MINICOM
+SUBDIRS += minicom
+endif
+
 if HAVE_RUBY
 SUBDIRS += ruby
 endif
