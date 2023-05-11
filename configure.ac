@@ -10,7 +10,7 @@ AC_CONFIG_AUX_DIR([build-aux])
 AC_CONFIG_MACRO_DIR([m4])
 AC_CONFIG_SRCDIR([data/autoconf/config.site.in])
 
-AM_INIT_AUTOMAKE([-Wall -Wno-portability -Werror foreign])
+AM_INIT_AUTOMAKE([-Wall -Wno-portability -Werror tar-pax foreign])
 AM_SILENT_RULES([yes])
 
 AC_PREFIX_DEFAULT([$HOME/.local])
