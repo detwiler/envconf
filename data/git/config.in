@@ -1,0 +1,33 @@
+[user]
+	name = @GIT_AUTHOR_NAME@
+	email = @GIT_AUTHOR_EMAIL@
+	@GIT_SIGNING_KEY_FILE@
+[core]
+	editor = vim
+	autocrlf = false
+[color]
+	ui = auto
+[color "branch"]
+	remote = 210
+[color "decorate"]
+	remoteBranch = 210 bold
+[color "diff"]
+	old = 210
+[color "status"]
+	changed = 210
+	untracked = 210
+[gpg]
+        program = @GPG@
+[alias]
+	subupdate = submodule update --remote --merge
+	subpush = push --recurse-submodules=on-demand
+[diff]
+	submodule = log
+[status]
+	submodulesummary = 1
+[push]
+	recurseSubmodules = check
+[pull]
+	ff = only
+@GIT_CRED_HELPER_FILE@
+@GIT_PAGER_FILE@

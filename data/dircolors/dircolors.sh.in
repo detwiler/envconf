@@ -1,7 +1,0 @@
-if [[ -z "$LS_COLORS" ]]; then
-  if [[ -f @pkgconfdir@/dircolors ]]; then 
-    eval "$(dircolors -b @pkgconfdir@/dircolors)"
-  elif [[ -f "/etc/DIR_COLORS" ]]; then
-    eval "$(dircolors -b /etc/DIR_COLORS)"
-  fi
-fi

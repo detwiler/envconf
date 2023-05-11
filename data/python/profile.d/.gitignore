@@ -1,0 +1,4 @@
+# .gitignore
+
+# generated data files
+python.sh

@@ -1,0 +1,4 @@
+# readline settings
+# vim: ft=sh :
+
+export INPUTRC=@readlineconfdir@/inputrc

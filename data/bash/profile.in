@@ -1,0 +1,8 @@
+# source profile settings 
+for file in @profiledir@/*.sh; do
+  if [ -r "$file" ]; then
+    . "$file"
+  fi
+done
+
+unset file

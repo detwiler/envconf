@@ -1,0 +1,5 @@
+# go settings
+
+export GOPATH=@GOPATH@
+export GOMODCACHE=@GOMODCACHE@
+export GOBIN=@bindir@

@@ -1,1 +1,0 @@
-export GVIMINIT='let $MYGVIMRC="@vimdir@/gvimrc" | source $MYGVIMRC'

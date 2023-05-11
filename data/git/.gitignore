@@ -1,6 +1,6 @@
 # .gitignore
 
 # generated data files
-.gitconfig
+config
 gitconfig-signing-key
 pager-diff-highlight

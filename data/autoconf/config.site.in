@@ -2,6 +2,9 @@
 
 @XDG_BASEDIR_FILE@
 
+test "$sysconfdir" = '${prefix}/etc' && sysconfdir="${XDG_CONFIG_HOME:-$HOME/.config}"
+test "$localstatedir" = '${prefix}/var' && localstatedir="${prefix}/state"
+
 # set FLAGS accordingly
 test "x$CFLAGS" = x && CFLAGS='-march=native'
 test "x$CPPFLAGS" = x && CPPFLAGS="-I$includedir"

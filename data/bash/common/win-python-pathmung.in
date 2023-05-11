@@ -1,5 +1,0 @@
-# vim: ft=sh
-
-# Windows python3
-pathmung_force @WIN_PY3_BASEDIR@
-pathmung_force @WIN_PY3_SCRIPTDIR@
