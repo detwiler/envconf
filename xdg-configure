@@ -137,7 +137,10 @@ else
     echo
 fi
 
-./configure \
+env -i \
+    HOME=$HOME \
+    PATH=$PATH \
+    ./configure \
     --prefix="$prefix" \
     --sysconfdir="$sysconfdir" \
     --localstatedir="$localstatedir" \

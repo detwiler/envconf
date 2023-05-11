@@ -60,6 +60,7 @@ QH_VAR_ENSURE([CONTAINER_ENV_FILE],
 
 ### Checks for programs. ###
 
+AC_PROG_CC
 AC_PROG_INSTALL
 AC_PROG_LN_S
 AC_PROG_MKDIR_P
@@ -79,7 +80,7 @@ AM_CONDITIONAL([HAVE_AWS_CLI], [test "x$AWS_CLI" != x])
 AM_COND_IF([HAVE_AWS_CLI],
            [QH_VAR_ENSURE([AWS_CONFIG_DIR],
                           [path to aws-cli configuration directory],
-			  ["\$(XDG_CONFIG_HOME)/aws"])
+			  ["\$XDG_CONFIG_HOME/aws"])
             QH_VAR_ENSURE([AWS_CONFIG_FILE],
                           [path to aws-cli config file],
                           [$AWS_CONFIG_DIR/config])
@@ -133,9 +134,8 @@ AC_CHECK_PROGS([PIP3], [pip3], [no])
 AM_CONDITIONAL([HAVE_PIP3], [test "x$PIP3" != xno])
 
 # gcc #
-AC_ARG_VAR([GCC], [gcc program])
-AC_CHECK_PROGS([GCC], [gcc], [no])
-AM_CONDITIONAL([HAVE_GCC], [test "x$GCC" != xno])
+# GCC set by AC_PROG_CC
+AM_CONDITIONAL([HAVE_GCC], [test "x$GCC" = xyes])
 
 AM_COND_IF([HAVE_CONAN],
 	   [QH_VAR_ENSURE([CONAN_USER_HOME],
@@ -158,7 +158,7 @@ AM_COND_IF([HAVE_CONAN],
 	   [AM_COND_IF([HAVE_GCC],
 	               [QH_COMPILER_C_VERSION_MAJOR([CONAN_GCC_VERSIONS],
 					            [gcc version for conan],
-					            [$GCC])])])
+					            [$CC])])])
 
 ## coreutils ##
 
