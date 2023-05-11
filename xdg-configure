@@ -79,7 +79,7 @@ function config_distro()
     else
         die 'Could not read os-release file.'
     fi
-    local distro="$ID-$VERSION_ID"
+    local distro="${ID}${VERSION_ID}"
     prefix="$prefix/$distro"
     sysconfdir="$sysconfdir/$distro"
     localstatedir="$prefix/state"
