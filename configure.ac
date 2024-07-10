@@ -191,6 +191,16 @@ AC_ARG_VAR([CURL], [curl program])
 AC_CHECK_PROGS([CURL], [curl], [no])
 AM_CONDITIONAL([HAVE_CURL], [test "x$CURL" != xno])
 
+## gpg ##
+
+AC_ARG_VAR([GPG], [gpg program])
+AC_CHECK_PROGS([GPG], [gpg2 gpg], [gpg])
+AM_CONDITIONAL([HAVE_GPG], [test "x$GPG" != x])
+
+# gpg2 #
+AM_CONDITIONAL([HAVE_GPG2], [test "x$GPG" = xgpg2])
+AM_COND_IF([HAVE_GPG2], [AC_CONFIG_FILES([data/gnupg/bashrc.d/gpg2.sh])])
+
 ## git ##
 
 AC_ARG_VAR([GIT], [git program])
@@ -262,14 +272,6 @@ QH_VAR_ENSURE([GOPATH],
 QH_VAR_ENSURE([GOMODCACHE],
               [path to Go module cache],
               ["\$(XDG_CACHE_HOME)/go/mod"])
-
-## gpg ##
-
-# gpg2 #
-AC_ARG_VAR([GPG], [gpg program])
-AC_CHECK_PROGS([GPG], [gpg2 gpg], [gpg])
-AM_CONDITIONAL([HAVE_GPG2], [test "x$GPG" = xgpg2])
-AM_COND_IF([HAVE_GPG2], [AC_CONFIG_FILES([data/gnupg/bashrc.d/gpg2.sh])])
 
 ## grep ##
 

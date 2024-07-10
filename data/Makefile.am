@@ -35,7 +35,7 @@ if HAVE_GNULIB_REFDIR
 SUBDIRS += gnulib
 endif
 
-if HAVE_GPG2
+if HAVE_GPG
 SUBDIRS += gnupg
 endif
 

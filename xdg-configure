@@ -138,8 +138,9 @@ else
 fi
 
 env --ignore-environment \
-    HOME=$HOME \
-    PATH=$PATH \
+    HOME="$HOME" \
+    PATH="$PATH" \
+    TERM="$TERM" \
     ./configure \
     --prefix="$prefix" \
     --sysconfdir="$sysconfdir" \
