@@ -141,6 +141,7 @@ env --ignore-environment \
     HOME="$HOME" \
     PATH="$PATH" \
     TERM="$TERM" \
+    USER="$USER" \
     ./configure \
     --prefix="$prefix" \
     --sysconfdir="$sysconfdir" \
