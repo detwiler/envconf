@@ -2,22 +2,21 @@
 
 SUBDIRS = data
 
-gvg_version = $(top_srcdir)/.version
+version_stamp = $(top_srcdir)/.version
 pkg_name = $(top_srcdir)/.package-name
 pkg_release = $(PACKAGE)-release
 
 ACLOCAL_AMFLAGS = -I m4 -I .quickhatch/m4
 
-BUILT_SOURCES = $(gvg_version) \
+BUILT_SOURCES = $(version_stamp) \
 		$(pkg_name)
 
 dist_pkgconf_DATA = $(pkg_release)
 
-CLEANFILES = $(gvg_version) \
-	     $(pkg_name) \
+CLEANFILES = $(pkg_name) \
 	     $(pkg_release)
 
-EXTRA_DIST = $(gvg_version) \
+EXTRA_DIST = $(version_stamp) \
 	     m4/gnulib-cache.m4 \
 	     $(pkg_name) \
 	     README.md \
@@ -25,13 +24,10 @@ EXTRA_DIST = $(gvg_version) \
 
 AM_DISTCHECK_CONFIGURE_FLAGS = HOME=$(top_distdir)
 
-$(gvg_version):
-	$(AM_V_GEN)echo $(VERSION) > $@-t && mv $@-t $@
-
 $(pkg_name):
 	$(AM_V_GEN)echo $(PACKAGE_NAME) > $@-t && mv $@-t $@
 
-$(pkg_release): Makefile
+$(pkg_release): $(version_stamp)
 	$(AM_V_GEN)echo "$(PACKAGE) release $(VERSION)" > $@-t && mv $@-t $@
 
 .PHONY: gen-ChangeLog
@@ -42,8 +38,8 @@ gen-ChangeLog:
 	  mv $(distdir)/cl-t $(distdir)/ChangeLog;			\
 	fi
 
-.PHONY: gen-tarball-version
-gen-tarball-version:
-	$(AM_V_GEN)echo $(VERSION) > $(distdir)/.tarball-version
+.PHONY: dist-tarball-version
+dist-tarball-version:
+	$(AM_V_GEN)echo '$(VERSION)' > $(distdir)/.tarball-version
 
-dist-hook: gen-ChangeLog gen-tarball-version
+dist-hook: gen-ChangeLog dist-tarball-version

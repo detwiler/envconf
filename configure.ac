@@ -1,15 +1,14 @@
 #                                               -*- Autoconf -*-
 # Process this file with autoconf to produce a configure script.
 
-AC_INIT([envconf],
-        [m4_esyscmd([build-aux/git-version-gen .tarball-version])],
-        [mike@detwiler.io])
+AC_INIT([envconf], [package], [mike@detwiler.io])
 
 AC_PREREQ([2.64])
 AC_CONFIG_AUX_DIR([build-aux])
 AC_CONFIG_MACRO_DIR([m4])
 AC_CONFIG_SRCDIR([data/autoconf/config.site.in])
-
+VERSION_NUMBER=`cd $srcdir && build-aux/git-version-gen .tarball-version`
+gl_INIT_PACKAGE_VERSION([$VERSION_NUMBER])
 AM_INIT_AUTOMAKE([-Wall -Wno-portability -Werror tar-pax foreign])
 AM_SILENT_RULES([yes])
 
@@ -464,4 +463,5 @@ AC_CONFIG_FILES([Makefile
                  data/vim/profile.d/Makefile
                  data/xdg/Makefile
                  ])
+gl_CONFIG_VERSION_STAMP
 AC_OUTPUT
