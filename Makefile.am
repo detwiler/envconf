@@ -2,24 +2,24 @@
 
 SUBDIRS = data
 
-version_stamp = $(top_srcdir)/.version
 pkg_name = $(top_srcdir)/.package-name
 pkg_release = $(PACKAGE)-release
+version_stamp = $(top_srcdir)/.version
 
 ACLOCAL_AMFLAGS = -I m4 -I .quickhatch/m4
 
-BUILT_SOURCES = $(version_stamp) \
-		$(pkg_name)
+BUILT_SOURCES = $(pkg_name) \
+		$(version_stamp)
 
 dist_pkgconf_DATA = $(pkg_release)
 
 CLEANFILES = $(pkg_name) \
 	     $(pkg_release)
 
-EXTRA_DIST = $(version_stamp) \
-	     m4/gnulib-cache.m4 \
+EXTRA_DIST = m4/gnulib-cache.m4 \
 	     $(pkg_name) \
 	     README.md \
+	     $(version_stamp) \
 	     xdg-configure
 
 AM_DISTCHECK_CONFIGURE_FLAGS = HOME=$(top_distdir)
