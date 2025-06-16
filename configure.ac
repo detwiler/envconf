@@ -5,6 +5,7 @@ AC_INIT([envconf], [package], [mike@detwiler.io])
 
 AC_PREREQ([2.64])
 AC_CONFIG_AUX_DIR([build-aux])
+AC_REQUIRE_AUX_FILE([git-version-gen])
 AC_CONFIG_MACRO_DIRS([m4])
 AC_CONFIG_SRCDIR([data/autoconf/config.site.in])
 VERSION_NUMBER=`cd $srcdir && build-aux/git-version-gen .tarball-version`
