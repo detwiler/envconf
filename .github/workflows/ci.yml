@@ -19,7 +19,6 @@ jobs:
           - image: registry.access.redhat.com/ubi9/ubi
           - image: rockylinux:8
           - image: rockylinux:9
-          - image: ubuntu:20.04
           - image: ubuntu:latest
           - image: ubuntu:rolling
 
