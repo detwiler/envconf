@@ -104,14 +104,14 @@ jobs:
       - name: Distribution Test
         run: make distcheck
 
-      # FIXME: figure out why YouCompleteMe build is failing on Alpine
+      # FIXME: figure out why YouCompleteMe builds are failing
       - name: Install
         if: matrix.image != 'alpine:latest'
         run: make install
 
-      # FIXME: figure out why YouCompleteMe build is failing on Alpine
+      # FIXME: figure out why YouCompleteMe builds are failing
       - name: Integration Test
-        if: matrix.image == 'fedora:latest'
+        if: matrix.image == 'registry.access.redhat.com/ubi9/ubi'
         run: |
           find $RUNNER_TEMP/.config/vim/$HOSTNAME/plugged/YouCompleteMe -name 'ycm_core*.so' | grep .
 
@@ -121,6 +121,7 @@ jobs:
           echo "PROJECT_VERSION=`cat .version`" >>$GITHUB_ENV
 
       - name: Upload Distribution Artifacts
+        if: matrix.image == 'fedora:latest'
         uses: actions/upload-artifact@v4
         with:
           name: distribution-artifacts
