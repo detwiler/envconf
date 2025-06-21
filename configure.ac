@@ -13,38 +13,31 @@ gl_INIT_PACKAGE_VERSION([$VERSION_NUMBER])
 AM_INIT_AUTOMAKE([-Wall -Wno-portability -Werror tar-pax foreign])
 AM_SILENT_RULES([yes])
 
-AC_PREFIX_DEFAULT([$HOME/.local])
+# Installation directories
+QH_VAR_ENSURE([EC_HOME],
+              [User HOME directory],
+              [$HOME])
 
-QH_VAR_ENSURE([XDG_CONFIG_HOME],
-              [user-specific configuration files],
-              ["\$(sysconfdir)"])
-
-QH_VAR_ENSURE([XDG_CACHE_HOME],
-              [user-specific non-essential (cached) data],
-              ["\$(sharedstatedir)"])
-
-QH_VAR_ENSURE([XDG_DATA_HOME],
-              [user-specific data files],
-              ["\$(datadir)"])
-
-QH_VAR_ENSURE([XDG_STATE_HOME],
-              [user-specific state files],
-              ["\$(localstatedir)"])
-
-AC_SUBST([homedir], [$HOME])
-AC_SUBST([pkgconfdir], ["\$(XDG_CONFIG_HOME)/\$(PACKAGE_NAME)"])
-AC_SUBST([bashconfdir], ["\$(XDG_CONFIG_HOME)/bash"])
+AC_SUBST([homedir], [$EC_HOME])
+AC_SUBST([pkgconfdir], ["\$(sysconfdir)/\$(PACKAGE_NAME)"])
+AC_SUBST([bashconfdir], ["\$(sysconfdir)/bash"])
 AC_SUBST([bashrcdir], ["\$(bashconfdir)/bashrc.d"])
 AC_SUBST([profiledir], ["\$(bashconfdir)/profile.d"])
-AC_SUBST([readlineconfdir], ["\$(XDG_CONFIG_HOME)/readline"])
-AC_SUBST([rubyconfdir], ["\$(XDG_CONFIG_HOME)"])
-AC_SUBST([bundleconfdir], ["\$(XDG_CONFIG_HOME)/bundle"])
-AC_SUBST([gitconfdir], ["\$(XDG_CONFIG_HOME)/git"])
-AC_SUBST([vimconfdir], ["\$(XDG_CONFIG_HOME)/vim"])
+AC_SUBST([readlineconfdir], ["\$(sysconfdir)/readline"])
+AC_SUBST([rubyconfdir], ["\$(sysconfdir)"])
+AC_SUBST([bundleconfdir], ["\$(sysconfdir)/bundle"])
+AC_SUBST([gitconfdir], ["\$(sysconfdir)/git"])
+AC_SUBST([vimconfdir], ["\$(sysconfdir)/vim"])
+
+# Runtime environment variables
+AC_SUBST([XDG_CONFIG_HOME], ["\$(sysconfdir)"])
+AC_SUBST([XDG_CACHE_HOME], ["\$(sharedstatedir)"])
+AC_SUBST([XDG_DATA_HOME], ["\$(datadir)"])
+AC_SUBST([XDG_STATE_HOME], ["\$(localstatedir)"])
 
 QH_VAR_ENSURE([WORKDIR],
               [path to local work directory],
-              [$HOME/work])
+              [$EC_HOME/work])
 
 QH_VAR_ENSURE([REFDIR],
               [path to local directory with reference repositories],

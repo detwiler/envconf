@@ -22,7 +22,7 @@ EXTRA_DIST = m4/gnulib-cache.m4 \
 	     $(version_stamp) \
 	     xdg-configure
 
-AM_DISTCHECK_CONFIGURE_FLAGS = HOME=$(top_distdir)
+AM_DISTCHECK_CONFIGURE_FLAGS = EC_HOME=$(top_distdir)
 
 $(pkg_name):
 	$(AM_V_GEN)echo $(PACKAGE_NAME) > $@-t && mv $@-t $@
