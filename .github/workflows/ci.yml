@@ -90,7 +90,13 @@ jobs:
         run: ./bootstrap --install-buildreqs --install-reqs
 
       - name: Configure
-        run: ./configure --prefix=$RUNNER_TEMP/.local --sysconfdir=$RUNNER_TEMP/.config
+        run: |
+          ./configure --prefix=$RUNNER_TEMP/.local \
+                      --sysconfdir=$RUNNER_TEMP/.config \
+                      --enable-vim-plug \
+                      --enable-vim-plug-install \
+                      --enable-vim-cmake \
+                      --enable-ycm
 
       - name: Build
         run: make
@@ -98,14 +104,10 @@ jobs:
       - name: Distribution Test
         run: make distcheck
 
-      # FIXME: figure out why vim-plug PlugInstall is failing on CentOS 7
       - name: Install
-        if: endsWith(matrix.image, 'centos7') != true
         run: make install
 
-      # FIXME: figure out why vim-plug PlugInstall is failing on CentOS 7
       - name: Integration Test
-        if: endsWith(matrix.image, 'centos7') != true
         run: |
           find $RUNNER_TEMP/.config/vim/$HOSTNAME/plugged/YouCompleteMe -name 'ycm_core*.so' | grep .
 
