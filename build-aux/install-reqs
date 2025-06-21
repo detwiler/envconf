@@ -144,7 +144,6 @@ case $ID in
     ubuntu)
         $SUDO apt-get --assume-yes update
         $SUDO apt-get --assume-yes install $pkgs_common $pkgs_ubuntu
-        pip3 install awscli --user
         ;;
 
 esac
