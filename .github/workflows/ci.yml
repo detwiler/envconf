@@ -111,7 +111,7 @@ jobs:
 
       # FIXME: figure out why YouCompleteMe builds are failing
       - name: Integration Test
-        if: matrix.image == 'fedora:latest'
+        if: matrix.image == 'ubuntu:latest'
         run: |
           find $RUNNER_TEMP/.config/vim/$HOSTNAME/plugged/YouCompleteMe -name 'ycm_core*.so' | grep .
 
