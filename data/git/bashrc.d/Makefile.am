@@ -18,7 +18,6 @@ make_data += $(git_prompt)
 $(git_prompt): $(GIT_PROMPT_PATH)
 	$(AM_V_GEN)cat $< > $@-t && mv $@-t $@
 else !LOCAL_GIT_PROMPT
-make_data += $(git_prompt)
 if HAVE_CURL
 make_data += $(git_prompt)
 $(git_prompt):
