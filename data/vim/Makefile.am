@@ -72,7 +72,7 @@ EXTRA_DIST = $(make_sources) \
 CLEANFILES = $(make_output)
 
 # sed command to build data/scripts
-# we use % delimiters with vimconfdir below,  because vimrc is processed by
+# we use % delimiters with vimconfdir below, because vimrc is processed by
 # both configure and make, and we want to prevent configure from substituting
 # vimconfdir with $(pkgconfdir)/...
 EDIT = -e 's:@vimautoloaddir[@]:$(vimautoloaddir):g' \

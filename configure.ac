@@ -401,6 +401,24 @@ AM_COND_IF([HAVE_VIM],
                              data/vim/bashrc.d/vi.sh 
                              data/vim/profile.d/editor.sh])])
 
+## additional modules
+
+AC_ARG_WITH([bashrc-module],
+            [AS_HELP_STRING([--with-bashrc-module=MODULE],
+                            [Install additional bashrc module])],
+            [bashrc_module="$withval"],
+            [bashrc_module=''])
+AC_SUBST([bashrc_module])
+AM_CONDITIONAL([WITH_BASHRC_MODULE], [test "x$bashrc_module" != x])
+
+AC_ARG_WITH([profile-module],
+            [AS_HELP_STRING([--with-profile-module=MODULE],
+                            [Install additional profile module])],
+            [profile_module="$withval"],
+            [profile_module=''])
+AC_SUBST([profile_module])
+AM_CONDITIONAL([WITH_PROFILE_MODULE], [test "x$profile_module" != x])
+
 ## configure output files
 
 AC_CONFIG_FILES([Makefile

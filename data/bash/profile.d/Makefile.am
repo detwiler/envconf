@@ -31,3 +31,26 @@ CLEANFILES = $(make_output)
 # sed command to build data/scripts
 EDIT = -e 's:@bindir[@]:$(bindir):g' \
        -e 's:@sbindir[@]:$(sbindir):g'
+
+## user-provided module support
+
+module = $(notdir $(profile_module))
+
+.PHONY: mk-profiledir
+mk-profiledir:
+	$(AM_V_GEN)test -e $(DESTDIR)$(profiledir) \
+	  || $(MKDIR_P) $(DESTDIR)$(profiledir)
+
+.PHONY: profile-module
+profile-module: mk-profiledir
+	$(AM_V_GEN)$(INSTALL_DATA) $(profile_module) $(DESTDIR)$(profiledir)
+
+.PHONY: rm-profile-module
+rm-profile-module:
+	$(AM_V_GEN)cd $(DESTDIR)$(profiledir) && \
+	  rm -f $(module)
+
+if WITH_BASHRC_MODULE
+install-data-local: profile-module
+uninstall-local: rm-profile-module
+endif

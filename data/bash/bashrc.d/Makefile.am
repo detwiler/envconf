@@ -23,3 +23,26 @@ conf_data = $(functions) \
 bashrc_DATA = $(conf_data)
 
 DISTCLEANFILES = $(conf_data)
+
+## user-provided module support
+
+module = $(notdir $(bashrc_module))
+
+.PHONY: mk-bashrcdir
+mk-bashrcdir:
+	$(AM_V_GEN)test -e $(DESTDIR)$(bashrcdir) \
+	  || $(MKDIR_P) $(DESTDIR)$(bashrcdir)
+
+.PHONY: bashrc-module
+bashrc-module: mk-bashrcdir
+	$(AM_V_GEN)$(INSTALL_DATA) $(bashrc_module) $(DESTDIR)$(bashrcdir)
+
+.PHONY: rm-bashrc-module
+rm-bashrc-module:
+	$(AM_V_GEN)cd $(DESTDIR)$(bashrcdir) && \
+	  rm -f $(module)
+
+if WITH_BASHRC_MODULE
+install-data-local: bashrc-module
+uninstall-local: rm-bashrc-module
+endif
