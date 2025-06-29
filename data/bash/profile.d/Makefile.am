@@ -34,7 +34,7 @@ EDIT = -e 's:@bindir[@]:$(bindir):g' \
 
 ## user-provided module support
 
-module = $(notdir $(profile_module))
+profile_module = $(notdir $(PROFILE_MODULE))
 
 .PHONY: mk-profiledir
 mk-profiledir:
@@ -43,14 +43,14 @@ mk-profiledir:
 
 .PHONY: profile-module
 profile-module: mk-profiledir
-	$(AM_V_GEN)$(INSTALL_DATA) $(profile_module) $(DESTDIR)$(profiledir)
+	$(AM_V_GEN)$(INSTALL_DATA) $(PROFILE_MODULE) $(DESTDIR)$(profiledir)
 
 .PHONY: rm-profile-module
 rm-profile-module:
 	$(AM_V_GEN)cd $(DESTDIR)$(profiledir) && \
-	  rm -f $(module)
+	  rm -f $(profile_module)
 
-if WITH_BASHRC_MODULE
+if WITH_PROFILE_MODULE
 install-data-local: profile-module
 uninstall-local: rm-profile-module
 endif

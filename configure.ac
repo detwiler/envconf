@@ -311,7 +311,7 @@ QH_VAR_ENSURE([BUNDLE_USER_PLUGIN],
 ## software collections ##
 
 QH_ARG_ENABLE([scl], [no])
-AM_CONDITIONAL([ENABLE_SCL], [test "x$enable_scl" = xyes])
+AM_CONDITIONAL([ENABLE_SCL], [test "x$enable_scl" != xno])
 AM_COND_IF([ENABLE_SCL],
 	   [QH_REQUIRE_PROG([SCL], [scl], [path to scl])
 	    QH_REQUIRE_PROG([SCL_ENABLED], [scl_enabled], [path to scl_enabled])
@@ -370,7 +370,7 @@ AM_COND_IF([ENABLE_YCM],
 
 # Vim CMake requirements
 QH_ARG_ENABLE([vim_cmake], [no])
-AM_CONDITIONAL([ENABLE_VIM_CMAKE], [test "x$enable_vim_cmake" = xyes])
+AM_CONDITIONAL([ENABLE_VIM_CMAKE], [test "x$enable_vim_cmake" != xno])
 AM_COND_IF([ENABLE_VIM_CMAKE],
 	   [QH_REQUIRE_PROG([CMAKE], [cmake cmake3], [path to cmake])
 	    QH_VAR_ENSURE([VIM_CMAKE_BUILD_DIR],
@@ -403,21 +403,13 @@ AM_COND_IF([HAVE_VIM],
 
 ## additional modules
 
-AC_ARG_WITH([bashrc-module],
-            [AS_HELP_STRING([--with-bashrc-module=MODULE],
-                            [Install additional bashrc module])],
-            [bashrc_module="$withval"],
-            [bashrc_module=''])
-AC_SUBST([bashrc_module])
-AM_CONDITIONAL([WITH_BASHRC_MODULE], [test "x$bashrc_module" != x])
+QH_ARG_WITH([bashrc_module], [no])
+AC_SUBST([BASHRC_MODULE], [$with_bashrc_module])
+AM_CONDITIONAL([WITH_BASHRC_MODULE], [test "x$with_bashrc_module" != xno])
 
-AC_ARG_WITH([profile-module],
-            [AS_HELP_STRING([--with-profile-module=MODULE],
-                            [Install additional profile module])],
-            [profile_module="$withval"],
-            [profile_module=''])
-AC_SUBST([profile_module])
-AM_CONDITIONAL([WITH_PROFILE_MODULE], [test "x$profile_module" != x])
+QH_ARG_WITH([profile_module], [no])
+AC_SUBST([PROFILE_MODULE], [$with_profile_module])
+AM_CONDITIONAL([WITH_PROFILE_MODULE], [test "x$with_profile_module" != xno])
 
 ## configure output files
 
