@@ -1,0 +1,7 @@
+# .gitignore
+
+# generated data files
+bashrc
+functions
+.profile
+profile

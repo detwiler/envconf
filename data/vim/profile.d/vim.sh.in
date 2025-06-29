@@ -1,0 +1,1 @@
+export VIMINIT='let $MYVIMRC="@vimconfdir@/vimrc" | source $MYVIMRC'

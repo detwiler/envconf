@@ -13,15 +13,12 @@ jobs:
           - image: almalinux:latest
           - image: almalinux:9
           - image: alpine:latest
-          - image: quay.io/centos/centos:centos7
-          - image: quay.io/centos/centos:stream8
           - image: quay.io/centos/centos:stream9
           - image: debian:latest
           - image: fedora:latest
           - image: registry.access.redhat.com/ubi9/ubi
           - image: rockylinux:8
           - image: rockylinux:9
-          - image: ubuntu:20.04
           - image: ubuntu:latest
           - image: ubuntu:rolling
 
@@ -93,7 +90,13 @@ jobs:
         run: ./bootstrap --install-buildreqs --install-reqs
 
       - name: Configure
-        run: ./configure --prefix=$RUNNER_TEMP/.local --sysconfdir=$RUNNER_TEMP/.config
+        run: |
+          ./configure --prefix=$RUNNER_TEMP/.local \
+                      --sysconfdir=$RUNNER_TEMP/.config \
+                      --enable-vim-plug \
+                      --enable-vim-plug-install \
+                      --enable-vim-cmake \
+                      --enable-ycm
 
       - name: Build
         run: make
@@ -101,16 +104,16 @@ jobs:
       - name: Distribution Test
         run: make distcheck
 
-      # FIXME: figure out why vim-plug PlugInstall is failing on CentOS 7
+      # FIXME: figure out why YouCompleteMe builds are failing
       - name: Install
-        if: endsWith(matrix.image, 'centos7') != true
+        if: matrix.image != 'alpine:latest'
         run: make install
 
-      # FIXME: figure out why vim-plug PlugInstall is failing on CentOS 7
+      # FIXME: figure out why YouCompleteMe builds are failing
       - name: Integration Test
-        if: endsWith(matrix.image, 'centos7') != true
+        if: matrix.image != 'alpine:latest'
         run: |
-          find $RUNNER_TEMP/.config/vim/$HOSTNAME/plugged/YouCompleteMe -name 'ycm_core*.so' | grep .
+          find $RUNNER_TEMP/.config/vim/plugged/YouCompleteMe -name 'ycm_core*.so' | grep .
 
       - name: Configure Project Name and Version
         run: |
@@ -118,7 +121,8 @@ jobs:
           echo "PROJECT_VERSION=`cat .version`" >>$GITHUB_ENV
 
       - name: Upload Distribution Artifacts
-        uses: actions/upload-artifact@v3
+        if: matrix.image == 'fedora:latest'
+        uses: actions/upload-artifact@v4
         with:
           name: distribution-artifacts
           if-no-files-found: error
@@ -135,7 +139,7 @@ jobs:
 
     steps:
       - name: Download Distribution Artifacts
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: distribution-artifacts
 

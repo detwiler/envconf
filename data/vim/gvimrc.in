@@ -1,9 +1,0 @@
-" gvimrc
-" vim: set ft=vim :
-
-" set the default font for gvim
-set guifont=@GVIM_FONT@@GVIM_FONT_SEPARATOR@@GVIM_FONT_SIZE@
-
-set guioptions=aei
-
-colorscheme desert

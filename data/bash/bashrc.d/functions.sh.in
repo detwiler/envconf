@@ -1,0 +1,20 @@
+# :vim ft=sh: 
+
+# Function to print hostname or toolbox name
+function __ps1_hostname()
+{
+    if [[ -f @TOOLBOX_ENV_FILE@ ]]; then
+        if [[ -f @CONTAINER_ENV_FILE@ ]]; then
+            ps1_hostname=$(source @CONTAINER_ENV_FILE@ && printf $name)
+        else
+            ps1_hostname=$(flatpak-spawn --host hostname)
+        fi
+    else
+        ps1_hostname=$(hostname)
+    fi
+    printf "$ps1_hostname"
+} # ps1_hostname()
+export -f __ps1_hostname
+
+# Some example functions
+function settitle() { echo -ne "\e]2;$@\a\e]1;$@\a"; }

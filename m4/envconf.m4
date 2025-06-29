@@ -156,7 +156,7 @@ AS_CASE([$TERM],
                           [rocky],     [AS_VAR_SET([_ec_ps1_host_default], ['38;5;214'])],
                           [ubuntu],    [AS_VAR_SET([_ec_ps1_host_default], ['38;5;202'])],
                           [AS_VAR_SET([_ec_ps1_host_default], ['38;5;6'])])
-                  AS_VAR_SET([_ec_ps1_git_default], ['38;5;202'])
+                  AS_VAR_SET([_ec_ps1_git_default], ['0'])
                   AS_VAR_SET([_ec_ps1_aws_default], ['38;5;214'])],
                  [AS_CASE([$_ec_user_id],
                           [0], [AS_VAR_SET([_ec_ps1_user_default], [31])],

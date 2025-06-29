@@ -1,0 +1,5 @@
+# aws-cli settings
+# vim: ft=sh :
+
+export AWS_CONFIG_FILE=@AWS_CONFIG_FILE@
+export AWS_SHARED_CREDENTIALS_FILE=@AWS_SHARED_CREDENTIALS_FILE@

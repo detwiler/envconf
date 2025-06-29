@@ -1,0 +1,22 @@
+# the old PS1="[\u@\h \W]\$ "
+
+# use a cygwin-style prompt
+
+# only do this in interactive shells
+echo $- | @GREP@ i &> /dev/null || return
+
+case "$TERM" in
+
+  xterm* | cygwin)
+      PS1='\[\e]0;\u@\h \w\a\]\n\[\e[1;@PS1_USER_COLOR@m\]\u\[\e[0m\]@\[\e[1;@PS1_HOST_COLOR@m\]$(__ps1_hostname) \[\e[1;@PS1_AWS_COLOR@m\]$(@AWS_PROFILE_FUNC@)\[\e[1;@PS1_GIT_COLOR@m\]$(__git_ps1 " (%s)")\n\[\e[@PS1_PWD_COLOR@m\]\w\[\e[0m\]\n$ '
+    ;;
+
+  linux)
+      PS1='\n\[\e[1;@PS1_USER_COLOR@m\]\u\[\e[0m\]@\[\e[1;@PS1_HOST_COLOR@m\]$(__ps1_hostname) \[\e[1;@PS1_AWS_COLOR@m\]$(@AWS_PROFILE_FUNC@)\[\e[1;@PS1_GIT_COLOR@m\]$(__git_ps1 " (%s)")\n\[\e[@PS1_PWD_COLOR@m\]\w\[\e[0m\]\n$ '
+    ;;
+
+  *) 
+    PS1='\n\u@\h \w\n\$ '
+    ;;
+
+esac

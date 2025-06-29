@@ -1,0 +1,6 @@
+# .gitignore
+
+# generated data files
+functions.sh
+proxy.sh
+ps1.sh

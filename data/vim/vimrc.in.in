@@ -5,5 +5,5 @@ source %vimconfdir%/init.vim
 source %vimconfdir%/map.vim
 @VIMRC_CMAKE_FILE@
 @VIMRC_YCM_FILE@
-source %vimconfdir%/vim-plug.vim
+@VIMRC_VIM_PLUG_FILE@
 source %vimconfdir%/option.vim
