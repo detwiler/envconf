@@ -79,7 +79,18 @@ function config_distro()
     else
         die 'Could not read os-release file.'
     fi
-    local distro="${ID}${VERSION_ID}"
+
+    # For Enterprise Linux, we only care about the major version
+    case $PLATFORM_ID in
+        platform:el*)
+            version_id=${VERSION_ID%%.*}
+            ;;
+        *)
+            version_id=$VERSION_ID
+            ;;
+    esac
+
+    local distro="${ID}${version_id}"
     prefix="$prefix/$distro"
     sysconfdir="$sysconfdir/$distro"
     localstatedir="$prefix/state"
