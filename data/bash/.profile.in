@@ -16,7 +16,18 @@ if [ -r /etc/os-release ]; then
 elif [ -r /usr/lib/os-release ]; then
     . /usr/lib/os-release
 fi
-distro="${ID}${VERSION_ID}"
+
+# For Enterprise Linux, we only care about the major version
+case $PLATFORM_ID in
+    platform:el*)
+        version_id=${VERSION_ID%%.*}
+        ;;
+    *)
+        version_id=$VERSION_ID
+        ;;
+esac
+
+distro="${ID}${version_id}"
 if [ -n $distro ]; then
     if [ -r "$XDG_CONFIG_HOME_DEFAULT/$distro/@PACKAGE_NAME@/xdgrc" ]; then
         xdgrc="$XDG_CONFIG_HOME_DEFAULT/$distro/@PACKAGE_NAME@/xdgrc"
