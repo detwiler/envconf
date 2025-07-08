@@ -126,6 +126,7 @@ jobs:
         with:
           name: distribution-artifacts
           if-no-files-found: error
+          include-hidden-files: true
           path: |
             ${{ env.PROJECT_NAME }}-${{ env.PROJECT_VERSION }}.tar.gz
             .package-name
