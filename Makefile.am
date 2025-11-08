@@ -17,6 +17,7 @@ CLEANFILES = $(pkg_name) \
 	     $(pkg_release)
 
 EXTRA_DIST = m4/gnulib-cache.m4 \
+	     bootstrap-funclib.sh \
 	     $(pkg_name) \
 	     README.md \
 	     $(version_stamp) \
