@@ -7,7 +7,17 @@ me=$(basename $0)
 medir=$(dirname $0)
 
 # use gnulib's boostrap function library
-source "$medir"/bootstrap-funclib.sh
+if [[ -f "$medir"/bootstrap-funclib.sh ]]; then
+    source "$medir"/bootstrap-funclib.sh
+elif [[ -f @pkgdatadir@/bootstrap-funclib.sh ]]; then
+    source @pkgdatadir@/bootstrap-funclib.sh
+fi
+
+function print_version()
+{
+  local utility="$1"
+  printf "%s\n" "$utility (@PACKAGE_STRING@)"
+} # print_version()
 
 function usage()
 {
@@ -15,14 +25,14 @@ function usage()
 
 	Usage: $me [OPTIONS] -- [CONFIGURE-ARG]...
 
-	Call envconf's configure script with key installation directory options
+	Call a package's configure script with installation directory options
 	aligned with the XDG Base Directory Specification. Optionally, compute
 	XDG-ish installation directory options that allow isolation of this
-	envconf installation from other envconf installations. In this way,
-	envconf installations can reside alongside each other on a per-host,
+	package installation from other installations of the package. In this way,
+	package installations can reside alongside each other on a per-host,
 	per-toolbox, or per-distro basis. This can help mitigate issues that
-	arise when a home directory is shared across multiple hosts, distros,
-	or tooolboxes.
+	arise when a package is installed in a user's home directory, and the home
+	directory is shared across multiple hosts, distros, or toolboxes.
 
 
 	Options:
@@ -33,6 +43,7 @@ function usage()
 	  --dry-run		display installation directories, but do
 	  			not call configure
 	  --help		display this help and exit
+	  --version		display version
 
 	Arguments:
 
@@ -109,7 +120,7 @@ function display_config()
 }
 
 short_opts='dht'
-long_opts='distro,dry-run,help,host,toolbox'
+long_opts='distro,dry-run,help,host,toolbox,version'
 
 if ! options=$(getopt --options $short_opts --longoptions $long_opts --name $me -- "$@"); then
   die "Option parsing failed"
@@ -134,6 +145,7 @@ while true; do
     --dry-run) dryrun=true; shift ;;
     -h|--host) config_host; shift ;;
     -t|--toolbox) config_toolbox; shift ;;
+    --version) print_version $me; exit 0 ;;
     --) shift; break ;;
     *) die 'Option parsing failed' ;;
   esac
