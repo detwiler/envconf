@@ -6,6 +6,9 @@ let mapleader = "s"
 " usually we move to the end of a word to begin editing there
 nnoremap e ea
 
+" toggle list
+nnoremap <F3> :set list!<CR>
+
 " call :make
 nnoremap <leader>m :make<CR>
 
